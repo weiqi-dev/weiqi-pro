@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>定式发现 | 对手分析</title>
-    <link rel="icon" type="image/x-icon" href="/weiqi-page/assets/favicon/favicon.ico">
-    <script>document.write('<script src="/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
+    <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico">
+    <script>const BASE_PATH = '/weiqi-pro/weiqi-page';</script>
+    <script>document.write('<script src="/weiqi-pro/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -45,7 +46,7 @@
         .stone-icon { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; display: inline-block; margin-right: 4px; vertical-align: middle; }
         .stone-black { background: radial-gradient(circle at 30% 30%, #666, #000); box-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
         .stone-white { background: radial-gradient(circle at 30% 30%, #fff, #ddd); border: 1px solid #ccc; box-shadow: 1px 1px 3px rgba(0,0,0,0.2); }
-        
+
         /* 标签过滤器 */
         .filter-tabs { display: flex; gap: 3px; margin-bottom: 12px; padding-bottom: 4px; flex-wrap: nowrap; }
         .filter-tab { flex: 1; min-width: 0; padding: 5px 4px; border-radius: 10px; font-size: 0.75em; font-weight: 500; cursor: pointer; border: 1px solid #e0e0e0; background: white; color: #666; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 2px; white-space: nowrap; }
@@ -53,7 +54,7 @@
         .filter-tab.active { background: #667eea; color: white; border-color: #667eea; }
         .filter-tab .count { font-size: 0.8em; padding: 1px 4px; background: rgba(0,0,0,0.1); border-radius: 8px; margin-left: 1px; }
         .filter-tab.active .count { background: rgba(255,255,255,0.3); }
-        
+
         .joseki-list { padding: 0; display: flex; flex-direction: column; gap: 12px; }
         .joseki-card {
             background: white;
@@ -151,7 +152,7 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         footer { text-align: center; padding: 15px; color: #999; font-size: 0.8em; }
-        
+
         /* iframe 全屏容器 */
         .replay-overlay {
             position: fixed;
@@ -166,7 +167,7 @@
             height: 100%;
             border: none;
         }
-        
+
         /* 弹窗样式 */
         .modal-backdrop {
             position: fixed;
@@ -228,25 +229,25 @@
             <h1>📚 定式发现</h1>
 
         </header>
-        
+
         <div id="content">
             <div class="loading">
                 <div class="spinner"></div>
                 <p>加载中...</p>
             </div>
         </div>
-        
+
         <footer><p>围棋智能助手 &copy; 2026</p></footer>
     </div>
-    
+
     <!-- 棋谱显示容器 -->
     <div id="replayOverlay" class="replay-overlay">
         <iframe id="replayIframe" class="replay-iframe"></iframe>
     </div>
-    
+
     <div id="tempDiv" style="display:none">
     </div>
-    
+
     <!-- 定式详情弹窗 -->
     <div id="modalBackdrop" class="modal-backdrop" onclick="closeModal()"></div>
     <div id="modalSheet" class="modal-sheet">
@@ -256,29 +257,29 @@
         </div>
         <div class="moves-display" id="modalContent"></div>
     </div>
-    
+
     <script>
         let opponentData = null;
         let allResults = [];
         let currentFilter = 'all';
-        
+
         // 加载数据
         async function loadData() {
             if (!hasToken()) {
                 redirectToAuth();
                 return;
             }
-            
+
             try {
                 const stored = sessionStorage.getItem('opponent_data');
                 if (!stored) {
                     location.href = 'index.html';
                     return;
                 }
-                
+
                 opponentData = JSON.parse(stored);
                 displayJoseki();
-                
+
             } catch (error) {
                 document.getElementById('content').innerHTML = `
                     <div class="empty-state">
@@ -288,7 +289,7 @@
                 `;
             }
         }
-        
+
         // 判断定式标签类型
         function getJosekiTags(item) {
             const prefixLen = item.prefix_len || 0;
@@ -300,14 +301,14 @@
             if (prefixLen >= 12) tags.push('complex');
             return tags;
         }
-        
+
         // 显示定式列表
         function displayJoseki() {
             const content = document.getElementById('content');
-            
+
             const josekiData = opponentData.joseki || null;
             allResults = josekiData ? josekiData.results || [] : [];
-            
+
             if (allResults.length === 0) {
                 content.innerHTML = `
                     <div class="empty-state">
@@ -317,7 +318,7 @@
                 `;
                 return;
             }
-            
+
             // 计算各类数量
             let counts = { all: allResults.length, hot: 0, hit: 0, complex: 0 };
             allResults.forEach(item => {
@@ -326,7 +327,7 @@
                 if (tags.includes('hit')) counts.hit++;
                 if (tags.includes('complex')) counts.complex++;
             });
-            
+
             let html = `
                 <div class="filter-tabs">
                     <div class="filter-tab" data-filter="hot" onclick="setFilter('hot')">🔥 热门<span class="count">${counts.hot}</span></div>
@@ -336,16 +337,16 @@
                 </div>
                 <div class="joseki-list" id="josekiList">
             `;
-            
+
             html += renderJosekiList(allResults);
             html += '</div>';
             content.innerHTML = html;
         }
-        
+
         // 渲染定式列表
         function renderJosekiList(results) {
             let html = '';
-            
+
             results.forEach((item, index) => {
                 const gameInfo = item.game_info || {};
                 const prefix = item.prefix || '';
@@ -355,10 +356,10 @@
                 const corner = item.source_corner || '';
                 const josekiId = item.joseki_id || '';
                 const totalMoves = item.total_moves || 0;
-                
+
                 // 匹配率计算
                 const matchRate = totalMoves > 0 ? (prefixLen / totalMoves * 100).toFixed(1) : '0';
-                
+
                 // 概率显示
                 let probDisplay;
                 if (probability >= 0.01) probDisplay = (probability * 100).toFixed(1) + '%';
@@ -366,17 +367,17 @@
                 else if (probability >= 0.0001) probDisplay = (probability * 100).toFixed(3) + '%';
                 else if (probability > 0) probDisplay = (probability * 100).toFixed(4) + '%';
                 else probDisplay = '0%';
-                
+
                 // 标签
                 const tags = getJosekiTags(item);
                 let tagsHtml = '';
                 if (tags.includes('hot')) tagsHtml += '<span class="tag tag-hot">🔥 热门</span>';
                 if (tags.includes('hit')) tagsHtml += '<span class="tag tag-hit">🎯 命中</span>';
                 if (tags.includes('complex')) tagsHtml += '<span class="tag tag-complex">🧩 复杂</span>';
-                
+
                 // 数据属性用于过滤
                 const dataTags = tags.join(' ');
-                
+
                 html += `
                     <div class="joseki-card" data-tags="${dataTags}" onclick="viewJosekiMoves(${index})">
                         <div class="joseki-header">
@@ -410,19 +411,19 @@
                     </div>
                 `;
             });
-            
+
             return html;
         }
-        
+
         // 设置过滤器
         function setFilter(filter) {
             currentFilter = filter;
-            
+
             // 更新标签样式
             document.querySelectorAll('.filter-tab').forEach(tab => {
                 tab.classList.toggle('active', tab.dataset.filter === filter);
             });
-            
+
             // 过滤卡片
             const cards = document.querySelectorAll('.joseki-card');
             cards.forEach(card => {
@@ -434,36 +435,36 @@
                 }
             });
         }
-        
-        // 点击定式条目：使用extracted_moves作为SGF，跳转到prefix_len
+
+        // 点击定式条目:使用extracted_moves作为SGF,跳转到prefix_len
         async function viewJosekiMoves(index) {
             const item = allResults[index];
             if (!item) return;
-            
+
             const prefixLen = item.prefix_len || 0;
             const extractedMoves = item.extracted_moves || '';
-            
+
             if (!extractedMoves) {
                 alert('没有着法数据');
                 return;
             }
-            
+
             try {
                 const response = await fetchWithAuth('/api/replay', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ sgf: extractedMoves })
                 });
-                
+
                 if (!response) return;
-                
+
                 const data = await response.json();
-                
+
                 if (!data.success || !data.data) {
                     alert('生成棋谱数据失败');
                     return;
                 }
-                
+
                 // 设置跳转手数
                 const gotoMove = prefixLen > 0 ? prefixLen : 'last';
                 if (gotoMove === 'last') {
@@ -471,73 +472,73 @@
                 } else {
                     data.data.default_move = parseInt(gotoMove);
                 }
-                
+
                 // 生成唯一 key
                 const localKey = 'replay_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                
+
                 // 保存到 localStorage
                 localStorage.setItem(localKey, JSON.stringify(data.data));
-                
+
                 // 跳转到 replay.html
-                const replayUrl = `/weiqi-page/replay.html?local=${localKey}`;
+                const replayUrl = `${BASE_PATH}/replay.html?local=${localKey}`;
                 window.location.href = replayUrl;
-                
+
             } catch (error) {
                 alert('加载失败: ' + error.message);
             }
         }
-        
-        // 点击棋谱按钮：查看file对应的完整棋谱
+
+        // 点击棋谱按钮:查看file对应的完整棋谱
         async function viewJosekiGame(index) {
             const item = allResults[index];
             if (!item) return;
-            
+
             // 从 games 中找对应的棋谱
             const games = opponentData.games || [];
             const filename = item.file || '';
             let game = null;
-            
+
             for (const g of games) {
                 if (filename.includes(g.file) || g.file.includes(filename)) {
                     game = g;
                     break;
                 }
             }
-            
+
             if (!game || !game.sgf) {
                 alert('无法获取棋谱数据');
                 return;
             }
-            
+
             try {
                 const response = await fetchWithAuth('/api/replay', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ sgf: game.sgf })
                 });
-                
+
                 if (!response) return;
-                
+
                 const data = await response.json();
-                
+
                 if (!data.success || !data.data) {
                     alert('生成棋谱数据失败');
                     return;
                 }
-                
+
                 // 跳转到最后一手
                 data.data.default_move = -1;
-                
+
                 // 生成唯一 key
                 const localKey = 'replay_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                
+
                 // 保存到 localStorage
                 localStorage.setItem(localKey, JSON.stringify(data.data));
-                
+
                 // 跳转到 replay.html
-                const replayUrl = `/weiqi-page/replay.html?local=${localKey}`;
+                const replayUrl = `${BASE_PATH}/replay.html?local=${localKey}`;
                 window.location.href = replayUrl;
-                
+
                 // 添加 popstate 监听（只添加一次）
                 if (!window._replayPopstateAdded) {
                     window._replayPopstateAdded = true;
@@ -548,12 +549,12 @@
                         }
                     });
                 }
-                
+
             } catch (error) {
                 alert('加载失败: ' + error.message);
             }
         }
-        
+
         loadData();
     </script>
 </body>

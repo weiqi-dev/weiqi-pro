@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>棋谱列表 | 对手分析</title>
-    <link rel="icon" type="image/x-icon" href="/weiqi-page/assets/favicon/favicon.ico">
-    <script>document.write('<script src="/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
+    <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico">
+    <script>const BASE_PATH = '/weiqi-pro/weiqi-page';</script>
+    <script>document.write('<script src="/weiqi-pro/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -295,7 +296,7 @@
                 localStorage.setItem(localKey, JSON.stringify(data.data));
                 
                 // 跳转到 replay.html
-                const replayUrl = `/weiqi-page/replay.html?local=${localKey}`;
+                const replayUrl = `${BASE_PATH}/replay.html?local=${localKey}`;
                 window.location.href = replayUrl;
                 
             } catch (error) {

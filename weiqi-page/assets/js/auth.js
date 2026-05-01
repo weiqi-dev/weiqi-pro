@@ -5,6 +5,14 @@
 
 const TOKEN_KEY = 'weiqi_token';
 
+// 动态获取 base_path（根据当前页面路径）
+function getBasePath() {
+    const path = window.location.pathname;
+    // 匹配 /weiqi-pro/weiqi-page 或 /weiqi-page
+    const match = path.match(/^(\/[^/]+\/weiqi-page|\/weiqi-page)/);
+    return match ? match[1] : '/weiqi-page';
+}
+
 // GitHub Pages 上的域名配置
 const DOMAIN_JS_URL = 'https://weiqi-dev.github.io/weiqi-assets/js/domain.js';
 const DOMAIN_CACHE_KEY = 'weiqi_api_domain';
@@ -117,8 +125,9 @@ function hasToken() {
 function redirectToAuth(returnUrl) {
     const url = returnUrl || window.location.href;
     const encodedReturnUrl = encodeURIComponent(url);
+    const basePath = getBasePath();
     setTimeout(() => {
-        window.location.replace(`/weiqi-page/auth.html?return=${encodedReturnUrl}`);
+        window.location.replace(`${basePath}/auth.html?return=${encodedReturnUrl}`);
     }, 10);
 }
 

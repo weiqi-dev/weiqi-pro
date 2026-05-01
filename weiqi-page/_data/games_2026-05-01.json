@@ -1,0 +1,74 @@
+[
+  {
+    "id": "202605020648510001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-01/野狐/game_202605020648510001.json",
+    "black": "孟繁雄",
+    "white": "陈俊宇",
+    "black_rank": "9段",
+    "white_rank": "9段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第十五届陈毅杯预选<绝艺讲解>"
+  },
+  {
+    "id": "202605020648510002",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-01/野狐/game_202605020648510002.json",
+    "black": "朴永训",
+    "white": "정준우",
+    "black_rank": "P9段",
+    "white_rank": "P3段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第31届LG杯世界棋王战韩国预选<绝艺讲解>"
+  },
+  {
+    "id": "202605020648510003",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-01/野狐/game_202605020648510003.json",
+    "black": "睦镇硕",
+    "white": "崔明勋",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+1.50",
+    "result_cn": "白胜1.50目",
+    "event": "第13届韩国大舟杯元老赛决赛<绝艺讲解>"
+  },
+  {
+    "id": "202605020648510004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-01/野狐/game_202605020648510004.json",
+    "black": "朴廷桓",
+    "white": "김승진",
+    "black_rank": "P9段",
+    "white_rank": "P7段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第31届韩国GS加德士杯胜者组半决赛<绝艺讲解>"
+  },
+  {
+    "id": "202605020648510005",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-01/野狐/game_202605020648510005.json",
+    "black": "简中凡",
+    "white": "陈镱夫",
+    "black_rank": "9段",
+    "white_rank": "9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第十五届陈毅杯预选<绝艺讲解>"
+  },
+  {
+    "id": "202605020648510006",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-01/野狐/game_202605020648510006.json",
+    "black": "曹汝旭",
+    "white": "潘文君",
+    "black_rank": "9段",
+    "white_rank": "9段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第十五届陈毅杯预选<绝艺讲解>"
+  }
+]
