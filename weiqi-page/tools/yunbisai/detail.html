@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>比赛详情 - 云比赛</title>
+    <link rel="icon" type="image/x-icon" href="/weiqi-page/assets/favicon/favicon.ico">
+    <script>document.write('<script src="/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; min-height: 100vh; color: #333; }
+        .container { max-width: 480px; margin: 0 auto; padding: 12px; min-height: 100vh; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 15px; margin-bottom: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+        h1 { font-size: 1.2em; margin: 0; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 15px; margin-bottom: 12px; border-radius: 8px; display: flex; justify-content: center; align-items: center; }
+        .group-select { padding: 6px 10px; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; font-size: 0.9em; background: rgba(255,255,255,0.15); color: white; min-width: 120px; }
+        .group-select option { background: white; color: #333; }
+        .group-select:focus { outline: none; border-color: rgba(255,255,255,0.5); }
+        .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+        .tab { flex: 1; padding: 12px; background: #f5f5f5; border: none; border-radius: 8px; cursor: pointer; font-size: 0.95em; color: #666; }
+        .tab.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .ranking-table { width: 100%; border-collapse: collapse; font-size: 0.9em; background: white; border-radius: 8px; overflow: hidden; }
+        .ranking-table th { background: #f5f5f5; padding: 10px 6px; text-align: center; font-weight: 600; color: #666; font-size: 0.85em; }
+        .ranking-table td { padding: 10px 6px; border-bottom: 1px solid #f0f0f0; text-align: center; }
+        .ranking-table tr:last-child td { border-bottom: none; }
+        .ranking-table .rank-num { font-weight: 600; color: #667eea; }
+        .ranking-table .rank-num.top3 { color: #ff9800; }
+        .ranking-table .rank-name { text-align: left; font-weight: 500; }
+        .ranking-table .rank-score { font-weight: 600; color: #333; }
+        .round-nav { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 12px; background: white; border-radius: 12px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .round-nav button { width: 36px; height: 36px; padding: 0; border-radius: 50%; font-size: 1em; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; cursor: pointer; }
+        .round-nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+        .round-info { font-weight: 600; color: #333; min-width: 100px; text-align: center; }
+        .match-card { background: white; border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .match-round { color: #667eea; font-weight: 600; margin-bottom: 8px; font-size: 0.9em; }
+        .match-players { display: flex; align-items: center; justify-content: space-between; }
+        .match-player { text-align: center; flex: 1; }
+        .match-player.black::before { content: "⚫"; display: block; font-size: 0.8em; }
+        .match-player.white::before { content: "⚪"; display: block; font-size: 0.8em; }
+        .match-player .player-name { font-weight: 500; font-size: 0.95em; }
+        .match-player .player-score { font-size: 0.8em; color: #4caf50; margin-top: 2px; }
+        .match-player .player-integral { font-size: 0.75em; color: #ff9800; margin-top: 4px; font-weight: 600; background: #fff3e0; padding: 2px 8px; border-radius: 10px; display: inline-block; }
+        .match-result { font-size: 0.75em; color: #667eea; margin-top: 4px; font-weight: 500; }
+        .match-vs { color: #888; padding: 0 8px; font-size: 0.9em; }
+        .loading { text-align: center; padding: 40px 20px; }
+        .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 16px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        footer { text-align: center; padding: 20px; color: #999; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header style="justify-content:flex-start;gap:10px;">
+            <span>👥</span>
+            <select id="groupSelect" class="group-select" onchange="onGroupChange()" style="margin:0;min-width:150px;max-width:200px;">
+                <option value="">选择分组</option>
+            </select>
+        </header>
+        
+        <!-- 排名/对阵标签 -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('ranking')" id="rankingTab">📊 排名</button>
+            <button class="tab" onclick="switchTab('matches')" id="matchesTab">⚔️ 对阵</button>
+        </div>
+        
+        <div id="rankingContent">
+            <div id="rankingList"></div>
+        </div>
+        
+        <div id="matchesContent" style="display: none;">
+            <div class="round-nav">
+                <button onclick="prevRound()" id="prevRoundBtn">◀</button>
+                <span class="round-info" id="roundInfo">第1轮</span>
+                <button onclick="nextRound()" id="nextRoundBtn">▶</button>
+            </div>
+            <div id="matchesList"></div>
+        </div>
+        
+        <footer><p>围棋智能助手 &copy; 2026</p></footer>
+    </div>
+    <script>
+        let event = null, groups = [], selectedGroup = null, totalRounds = 1, currentRound = 1, rankingsMap = {};
+        const LAST_GROUP_KEY = 'yunbisai_last_group';
+        
+        async function init() {
+            event = JSON.parse(sessionStorage.getItem('yunbisai_event') || '{}');
+            if (!event.id) { location.href = 'events.html'; return; }
+            await loadGroups();
+        }
+        
+        async function loadGroups() {
+            // 清空旧数据，防止不同比赛的分组混在一起
+            groups = [];
+            document.getElementById('groupSelect').innerHTML = '<option value="">选择分组</option>';
+            if (!hasToken()) { redirectToAuth(); return; }
+            try {
+                const response = await fetchWithAuth(`/api/v1/yunbisai/events/${event.id}/groups`);
+                if (!response) return;
+                const data = await response.json();
+                if (!data.success) throw new Error(data.error?.message);
+                groups = data.data.groups || [];
+                renderGroupSelect();
+                
+                // 尝试恢复最近访问的分组
+                restoreLastGroup();
+            } catch (error) {
+                document.getElementById('groupSelect').innerHTML = `<option>${error.message}</option>`;
+            }
+        }
+        
+        function renderGroupSelect() {
+            const select = document.getElementById('groupSelect');
+            let html = '<option value="">选择分组</option>';
+            groups.forEach(g => {
+                const playerCount = g.players ?? g.playernum ?? g.participant_count;
+                const label = playerCount !== undefined ? `${g.name} (${playerCount}人)` : g.name;
+                html += `<option value="${g.id}">${label}</option>`;
+            });
+            select.innerHTML = html;
+        }
+        
+        // 保存最近访问的分组到 localStorage
+        function saveLastGroup(group) {
+            if (!group || !event) return;
+            const data = {
+                eventId: event.id,
+                groupId: group.id,
+                groupName: group.name,
+                timestamp: Date.now()
+            };
+            localStorage.setItem(LAST_GROUP_KEY, JSON.stringify(data));
+        }
+        
+        // 从 localStorage 恢复最近访问的分组
+        function restoreLastGroup() {
+            try {
+                const saved = localStorage.getItem(LAST_GROUP_KEY);
+                if (!saved) return;
+                
+                const data = JSON.parse(saved);
+                // 检查是否是当前比赛的分组
+                if (data.eventId !== event.id) return;
+                
+                // 检查该分组是否存在于当前分组列表中
+                const group = groups.find(g => g.id == data.groupId);
+                if (!group) return;
+                
+                // 自动选择该分组
+                document.getElementById('groupSelect').value = data.groupId;
+                selectedGroup = group;
+                
+                // 加载数据
+                loadGroupData();
+            } catch (e) {
+                console.error('恢复分组失败:', e);
+            }
+        }
+        
+        // 加载分组数据（排名和对阵）
+        async function loadGroupData() {
+            const rankingData = await loadRanking();
+            if (rankingData && rankingData.total_rounds) {
+                totalRounds = rankingData.total_rounds;
+                currentRound = totalRounds;
+                await loadMatches(currentRound);
+            }
+        }
+        
+        async function onGroupChange() {
+            const groupId = document.getElementById('groupSelect').value;
+            if (!groupId) {
+                selectedGroup = null;
+                return;
+            }
+            selectedGroup = groups.find(g => g.id == groupId);
+            if (!selectedGroup) return;
+            
+            // 保存到 localStorage
+            saveLastGroup(selectedGroup);
+            
+            await loadGroupData();
+        }
+        
+        async function loadRanking() {
+            // 检查是否已选择分组
+            if (!selectedGroup) {
+                document.getElementById('rankingList').innerHTML = '<div style="text-align:center;padding:40px;color:#666;">请先选择分组</div>';
+                return null;
+            }
+            
+            document.getElementById('rankingList').innerHTML = '<div class="loading"><div class="spinner"></div><p>加载排名...</p></div>';
+            if (!hasToken()) { redirectToAuth(); return null; }
+            try {
+                const response = await fetchWithAuth(`/api/v1/yunbisai/groups/${selectedGroup.id}`);
+                if (!response) return null;
+                const data = await response.json();
+                if (!data.success) throw new Error(data.error?.message);
+                renderRanking(data.data);
+                return data.data;
+            } catch (error) {
+                document.getElementById('rankingList').innerHTML = `<div style="color:red;text-align:center;padding:20px;">${error.message}</div>`;
+                return null;
+            }
+        }
+        
+        function renderRanking(data) {
+            rankingsMap = {};
+            if (data.rankings) {
+                data.rankings.forEach(p => { rankingsMap[p.name] = p.score; });
+            }
+            
+            if (!data.rankings || data.rankings.length === 0) {
+                document.getElementById('rankingList').innerHTML = '<div style="text-align:center;padding:40px;">暂无排名</div>';
+                return;
+            }
+            const isFinal = data.completed_rounds >= data.total_rounds;
+            let html = '<table class="ranking-table"><thead><tr><th>排名</th><th>姓名</th><th>积分</th><th>对手分</th>';
+            if (isFinal) html += '<th>累进分</th><th>逆减</th>';
+            html += '</tr></thead><tbody>';
+            data.rankings.forEach((player, index) => {
+                const rankClass = index < 3 ? 'top3' : '';
+                html += `<tr><td class="rank-num ${rankClass}">${player.rank}</td><td class="rank-name">${player.name}</td><td class="rank-score">${player.score}</td><td>${player.opponent_score || 0}</td>`;
+                if (isFinal) html += `<td>${player.progressive_score || 0}</td><td>${player.opponent_score_reverse_minus || '-'}</td>`;
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
+            document.getElementById('rankingList').innerHTML = html;
+        }
+        
+        async function loadMatches(round) {
+            // 检查是否已选择分组
+            if (!selectedGroup) {
+                document.getElementById('matchesList').innerHTML = '<div style="text-align:center;padding:40px;color:#666;">请先选择分组</div>';
+                return;
+            }
+            
+            currentRound = round;
+            document.getElementById('matchesList').innerHTML = '<div class="loading"><div class="spinner"></div><p>加载中...</p></div>';
+            if (!hasToken()) { redirectToAuth(); return; }
+            try {
+                // 加载对阵
+                const response = await fetchWithAuth(`/api/v1/yunbisai/groups/${selectedGroup.id}/matches?round=${round}`);
+                if (!response) return;
+                const data = await response.json();
+                if (!data.success) throw new Error(data.error?.message);
+                
+                // 加载该轮之前的排名数据（该轮开始前的积分）
+                const prevRound = round > 1 ? round - 1 : 0;
+                if (prevRound > 0) {
+                    await loadRoundRanking(prevRound);
+                } else {
+                    rankingsMap = {}; // 第1轮，初始积分为0
+                }
+                
+                renderMatches(data.data);
+            } catch (error) {
+                document.getElementById('matchesList').innerHTML = `<div style="color:red;text-align:center;padding:20px;">${error.message}</div>`;
+            }
+        }
+        
+        async function loadRoundRanking(round) {
+            try {
+                const response = await fetchWithAuth(`/api/v1/yunbisai/groups/${selectedGroup.id}?round=${round}`);
+                if (!response) return;
+                const data = await response.json();
+                if (!data.success) return;
+                
+                rankingsMap = {};
+                if (data.data.rankings) {
+                    data.data.rankings.forEach(p => { rankingsMap[p.name] = p.score; });
+                }
+            } catch (e) {}
+        }
+        
+        function renderMatches(data) {
+            totalRounds = data.total_rounds || totalRounds;
+            document.getElementById('roundInfo').textContent = `第${currentRound}轮/共${totalRounds}轮`;
+            document.getElementById('prevRoundBtn').disabled = currentRound <= 1;
+            document.getElementById('nextRoundBtn').disabled = currentRound >= totalRounds;
+            if (!data.matches || data.matches.length === 0) {
+                document.getElementById('matchesList').innerHTML = '<div style="text-align:center;padding:40px;">暂无对阵</div>';
+                return;
+            }
+            let html = '';
+            data.matches.forEach(match => {
+                const result = match.result ? `<div class="match-result">${match.result}</div>` : '';
+                // 显示选手积分（black_integral 和 white_integral）
+                const blackIntegral = match.black_integral !== undefined ? `<div class="player-integral">积分: ${match.black_integral}</div>` : '';
+                const whiteIntegral = match.white_integral !== undefined ? `<div class="player-integral">积分: ${match.white_integral}</div>` : '';
+                html += `<div class="match-card"><div class="match-round">台号 ${match.table}</div><div class="match-players"><div class="match-player black"><div class="player-name">${match.black}</div>${blackIntegral}</div><div class="match-vs">VS${result}</div><div class="match-player white"><div class="player-name">${match.white}</div>${whiteIntegral}</div></div></div>`;
+            });
+            document.getElementById('matchesList').innerHTML = html;
+        }
+        
+        function prevRound() { if (currentRound > 1) loadMatches(currentRound - 1); }
+        function nextRound() { if (currentRound < totalRounds) loadMatches(currentRound + 1); }
+        
+        function switchTab(tab) {
+            // 如果切换到对阵标签但没有选择分组，显示提示
+            if (tab === 'matches' && !selectedGroup) {
+                document.getElementById('rankingTab').classList.remove('active');
+                document.getElementById('matchesTab').classList.add('active');
+                document.getElementById('rankingContent').style.display = 'none';
+                document.getElementById('matchesContent').style.display = 'block';
+                document.getElementById('matchesList').innerHTML = '<div style="text-align:center;padding:40px;color:#666;">请先选择分组</div>';
+                return;
+            }
+            
+            document.getElementById('rankingTab').classList.toggle('active', tab === 'ranking');
+            document.getElementById('matchesTab').classList.toggle('active', tab === 'matches');
+            document.getElementById('rankingContent').style.display = tab === 'ranking' ? 'block' : 'none';
+            document.getElementById('matchesContent').style.display = tab === 'matches' ? 'block' : 'none';
+            if (tab === 'matches') loadMatches(currentRound);
+        }
+        
+        init();
+    </script>
+</body>
+</html>

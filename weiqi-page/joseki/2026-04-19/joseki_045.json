@@ -1,0 +1,126 @@
+{
+  "game_name": "实战右上角标准化定式（5手）",
+  "black": "黑棋",
+  "white": "白棋",
+  "black_rank": "",
+  "white_rank": "",
+  "board_size": 19,
+  "handicap": 0,
+  "handicap_stones": [],
+  "result": "",
+  "tree": {
+    "color": null,
+    "coord": null,
+    "children": [
+      {
+        "color": "B",
+        "coord": "pc",
+        "children": [
+          {
+            "color": "W",
+            "coord": "tt",
+            "children": [
+              {
+                "color": "B",
+                "coord": "pe",
+                "children": [
+                  {
+                    "color": "W",
+                    "coord": "tt",
+                    "children": [
+                      {
+                        "color": "B",
+                        "coord": "mf",
+                        "children": [
+                          {
+                            "color": "W",
+                            "coord": "nd",
+                            "children": [
+                              {
+                                "color": "B",
+                                "coord": "og",
+                                "children": [
+                                  {
+                                    "color": "W",
+                                    "coord": "qh",
+                                    "children": [
+                                      {
+                                        "color": "B",
+                                        "coord": "tt",
+                                        "children": [
+                                          {
+                                            "color": "W",
+                                            "coord": "oc",
+                                            "children": [
+                                              {
+                                                "color": "B",
+                                                "coord": "pb",
+                                                "children": [
+                                                  {
+                                                    "color": "W",
+                                                    "coord": "lg",
+                                                    "children": [
+                                                      {
+                                                        "color": "B",
+                                                        "coord": "tt",
+                                                        "children": [
+                                                          {
+                                                            "color": "W",
+                                                            "coord": "lf",
+                                                            "children": [
+                                                              {
+                                                                "color": "B",
+                                                                "coord": "qf",
+                                                                "children": [
+                                                                  {
+                                                                    "color": "W",
+                                                                    "coord": "tt",
+                                                                    "children": [
+                                                                      {
+                                                                        "color": "B",
+                                                                        "coord": "pi",
+                                                                        "children": [
+                                                                          {
+                                                                            "color": "W",
+                                                                            "coord": "qi"
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "download_filename": "joseki_045.sgf",
+  "default_move": 5,
+  "max_moves": 18
+}

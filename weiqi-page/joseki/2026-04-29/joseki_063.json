@@ -1,0 +1,54 @@
+{
+  "game_name": "实战左上角标准化定式（5手）",
+  "black": "黑棋",
+  "white": "白棋",
+  "black_rank": "",
+  "white_rank": "",
+  "board_size": 19,
+  "handicap": 0,
+  "handicap_stones": [],
+  "result": "",
+  "tree": {
+    "color": null,
+    "coord": null,
+    "children": [
+      {
+        "color": "B",
+        "coord": "pc",
+        "children": [
+          {
+            "color": "W",
+            "coord": "qe",
+            "children": [
+              {
+                "color": "B",
+                "coord": "od",
+                "children": [
+                  {
+                    "color": "W",
+                    "coord": "qh",
+                    "children": [
+                      {
+                        "color": "B",
+                        "coord": "tt",
+                        "children": [
+                          {
+                            "color": "W",
+                            "coord": "oj"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "download_filename": "joseki_063.sgf",
+  "default_move": 5,
+  "max_moves": 7
+}

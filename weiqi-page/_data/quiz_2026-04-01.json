@@ -1,0 +1,44 @@
+[
+  {
+    "id": "202604012310070002",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-01/野狐/quiz_202604012310070002.json",
+    "game_path": "/weiqi-page/games/2026-04-01/野狐/game_202604012310070002.html",
+    "black": "汪雨博",
+    "white": "徐海哲",
+    "event": "第6届中国女子国手赛预选决赛轮<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604012310070005",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-01/野狐/quiz_202604012310070005.json",
+    "game_path": "/weiqi-page/games/2026-04-01/野狐/game_202604012310070005.html",
+    "black": "崔精",
+    "white": "安成浚",
+    "event": "第31届韩国GS加德士杯败者组<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 6,
+    "stats": {
+      "total": 6,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 5,
+        "endgame": 0
+      }
+    }
+  }
+]

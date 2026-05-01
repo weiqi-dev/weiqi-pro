@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>对手分析 - 围棋智能助手</title>
+    <link rel="icon" type="image/x-icon" href="/weiqi-page/assets/favicon/favicon.ico">
+    <script>document.write('<script src="/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 12px;
+            min-height: 100vh;
+        }
+        
+        header {
+            padding: 12px 10px;
+            color: white;
+            text-align: center;
+        }
+        
+        h1 { 
+            font-size: 1.6em; 
+            margin-bottom: 4px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card h2 {
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            color: #333;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 12px;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        /* 统计卡片 */
+        .stats-cards {
+            display: none;
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .stats-card:active {
+            transform: scale(0.98);
+        }
+        
+        .stats-card h3 {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 4px;
+        }
+        
+        .stat-item-full {
+            grid-column: span 2;
+            text-align: center;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+        
+        .stat-item-full .stat-value {
+            font-size: 1.8em;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 对手分析</h1>
+            <p class="subtitle">分析野狐棋手棋谱与定式</p>
+        </header>
+        
+        <!-- 查询输入 -->
+        <div class="card">
+            <h2>🔍 野狐棋手ID</h2>
+            <input type="text" id="foxwqIdInput" placeholder="请输入野狐昵称..." maxlength="20">
+            <select id="limitSelect">
+                <option value="10" selected>最近 10 盘</option>
+                <option value="30">最近 30 盘</option>
+                <option value="50">最近 50 盘</option>
+                <option value="100">最近 100 盘</option>
+            </select>
+            <button onclick="analyzeOpponent()" id="queryBtn">开始分析</button>
+        </div>
+        
+        <!-- 结果显示 -->
+        <div id="statsSection" class="stats-cards">
+            <!-- 棋谱统计卡片 -->
+            <div class="stats-card" onclick="viewGames()">
+                <h3>📋 棋谱统计</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalGames">-</div>
+                        <div class="stat-label">总对局数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalOpponents">-</div>
+                        <div class="stat-label">对弈对手</div>
+                    </div>
+                    <div class="stat-item stat-item-full">
+                        <div class="stat-value" id="topOpponent">-</div>
+                        <div class="stat-label">最常对手</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="firstDate">-</div>
+                        <div class="stat-label">最早对局</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="lastDate">-</div>
+                        <div class="stat-label">最新对局</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 定式统计卡片 -->
+            <div class="stats-card" onclick="viewJoseki()">
+                <h3>📚 定式发现</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="josekiCount">-</div>
+                        <div class="stat-label">匹配定式数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="hotCount">-</div>
+                        <div class="stat-label">🔥 热门</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="hitCount">-</div>
+                        <div class="stat-label">🎯 命中</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="complexCount">-</div>
+                        <div class="stat-label">🧩 复杂</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>围棋智能助手 &copy; 2026</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 页面加载时检查是否有缓存数据
+        window.addEventListener('pageshow', function(event) {
+            // pageshow 在每次页面显示时触发，包括从缓存恢复
+            if (!hasToken()) {
+                redirectToAuth();
+                return;
+            }
+            
+            const stored = sessionStorage.getItem('opponent_data');
+            if (stored) {
+                try {
+                    const data = JSON.parse(stored);
+                    console.log('恢复数据:', data.foxwqId, 'games:', data.games ? data.games.length : 0);
+                    
+                    if (data.foxwqId) {
+                        document.getElementById('foxwqIdInput').value = data.foxwqId;
+                    }
+                    if (data.limit) {
+                        document.getElementById('limitSelect').value = data.limit;
+                    }
+                    // 恢复显示统计（无论数据多旧都恢复）
+                    if (data.games && data.games.length > 0) {
+                        displayStats(data);
+                    }
+                } catch (e) {
+                    console.error('恢复数据失败:', e);
+                }
+            }
+        });
+        
+        // 分析对手
+        async function analyzeOpponent() {
+            const foxwqId = document.getElementById('foxwqIdInput').value.trim();
+            const limit = parseInt(document.getElementById('limitSelect').value);
+            const queryBtn = document.getElementById('queryBtn');
+            const statsSection = document.getElementById('statsSection');
+            
+            if (!foxwqId) {
+                alert('请输入野狐昵称');
+                return;
+            }
+            
+            if (!hasToken()) {
+                redirectToAuth();
+                return;
+            }
+            
+            queryBtn.disabled = true;
+            queryBtn.textContent = '分析中...';
+            statsSection.style.display = 'none';
+            
+            statsSection.innerHTML = `
+                <div class="card loading">
+                    <div class="spinner"></div>
+                    <p>正在分析 "${foxwqId}" 的棋谱...</p>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 8px;">
+                        请耐心等待，分析需要一定时间...
+                    </p>
+                </div>
+            `;
+            statsSection.style.display = 'block';
+            
+            try {
+                const response = await fetchWithAuth(
+                    '/api/opponent',
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ foxwq_id: foxwqId, limit: limit })
+                    }
+                );
+                
+                if (!response) return;
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || '分析失败');
+                }
+                
+                // 存储数据
+                sessionStorage.setItem('opponent_data', JSON.stringify({
+                    foxwqId: foxwqId,
+                    limit: limit,
+                    ...data
+                }));
+                
+                // 显示统计
+                displayStats(data);
+                
+            } catch (error) {
+                statsSection.innerHTML = `
+                    <div class="card">
+                        <div class="error">
+                            <strong>分析失败</strong>
+                            <p>${error.message}</p>
+                        </div>
+                    </div>
+                `;
+            } finally {
+                queryBtn.disabled = false;
+                queryBtn.textContent = '开始分析';
+            }
+        }
+        
+        // 显示统计
+        function displayStats(data) {
+            const statsSection = document.getElementById('statsSection');
+            const games = data.games || [];
+            const gamesCount = games.length;
+            
+            // 计算棋谱统计
+            let firstDate = null;
+            let lastDate = null;
+            const opponents = new Set();
+            const opponentCounts = {};
+            
+            games.forEach(game => {
+                if (game.date) {
+                    if (game.date && (!firstDate || firstDate > game.date)) firstDate = game.date;
+                    if (game.date && (!lastDate || lastDate < game.date)) lastDate = game.date;
+                }
+                if (game.opponent && game.opponent !== '未知') {
+                    opponents.add(game.opponent);
+                    opponentCounts[game.opponent] = (opponentCounts[game.opponent] || 0) + 1;
+                }
+            });
+            
+            // 活跃对手（最常对手）
+            let topOpponent = '-';
+            let maxCount = 0;
+            for (const [opponent, count] of Object.entries(opponentCounts)) {
+                if (count > maxCount) {
+                    maxCount = count;
+                    topOpponent = opponent;
+                }
+            }
+            
+            // 定式统计
+            let josekiCount = 0;
+            let hotCount = 0;
+            let hitCount = 0;
+            let complexCount = 0;
+            
+            if (data.joseki && data.joseki.results) {
+                const results = data.joseki.results;
+                josekiCount = results.length || 0;
+                
+                results.forEach(r => {
+                    const prefixLen = r.prefix_len || 0;
+                    const frequency = r.frequency || 0;
+                    const totalMoves = r.total_moves || 0;
+                    
+                    // 热门: prefixLen >= 8 && frequency >= 5
+                    if (prefixLen >= 8 && frequency >= 5) hotCount++;
+                    // 命中: prefixLen >= 8 && prefixLen >= totalMoves
+                    if (prefixLen >= 8 && prefixLen >= totalMoves) hitCount++;
+                    // 复杂: prefixLen >= 12
+                    if (prefixLen >= 12) complexCount++;
+                });
+            }
+            
+            statsSection.innerHTML = `
+                <div class="stats-card" onclick="viewGames()">
+                    <h3>📋 棋谱统计</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">${gamesCount}</div>
+                            <div class="stat-label">总对局数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${opponents.size}</div>
+                            <div class="stat-label">对弈对手</div>
+                        </div>
+                        <div class="stat-item stat-item-full">
+                            <div class="stat-value" style="font-size:1.2em">${topOpponent}</div>
+                            <div class="stat-label">活跃对手</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" style="font-size:1em">${firstDate || '-'}</div>
+                            <div class="stat-label">最早对局</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" style="font-size:1em">${lastDate || '-'}</div>
+                            <div class="stat-label">最新对局</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-card" onclick="viewJoseki()">
+                    <h3>📚 定式发现</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">${josekiCount}</div>
+                            <div class="stat-label">匹配定式数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${hotCount}</div>
+                            <div class="stat-label">🔥 热门</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${hitCount}</div>
+                            <div class="stat-label">🎯 命中</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${complexCount}</div>
+                            <div class="stat-label">🧩 复杂</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 查看棋谱列表
+        function viewGames() {
+            location.href = 'games.html';
+        }
+        
+        // 查看定式列表
+        function viewJoseki() {
+            location.href = 'joseki.html';
+        }
+        
+        // 回车键查询
+        document.getElementById('foxwqIdInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                analyzeOpponent();
+            }
+        });
+    </script>
+</body>
+</html>

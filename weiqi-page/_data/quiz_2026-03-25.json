@@ -1,0 +1,149 @@
+[
+  {
+    "id": "202603261055390002",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-25/野狐/quiz_202603261055390002.json",
+    "game_path": "/weiqi-page/games/2026-03-25/野狐/game_202603261055390002.html",
+    "black": "박지현",
+    "white": "김승구",
+    "event": "第11届顾比斯杯世界U22新锐战韩国选拔赛<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 5,
+    "stats": {
+      "total": 5,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 5,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202603261055390003",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-25/野狐/quiz_202603261055390003.json",
+    "game_path": "/weiqi-page/games/2026-03-25/野狐/game_202603261055390003.html",
+    "black": "黄宰渊",
+    "white": "申真谞",
+    "event": "第31届韩国GS加德士杯8强<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202603261055390004",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-25/野狐/quiz_202603261055390004.json",
+    "game_path": "/weiqi-page/games/2026-03-25/野狐/game_202603261055390004.html",
+    "black": "金恩善",
+    "white": "金湊笌",
+    "event": "第6届韩国MOA女子最佳棋士战预选<绝艺讲解>",
+    "result": "黑胜0.50目",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "黑胜0.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202603261055390007",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-25/野狐/quiz_202603261055390007.json",
+    "game_path": "/weiqi-page/games/2026-03-25/野狐/game_202603261055390007.html",
+    "black": "丁浩",
+    "white": "谢科",
+    "event": "第19届中国棋王争霸赛8强<张学斌＆夏夏＆绝艺解说>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202603261055390008",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-25/野狐/quiz_202603261055390008.json",
+    "game_path": "/weiqi-page/games/2026-03-25/野狐/game_202603261055390008.html",
+    "black": "范胤",
+    "white": "范廷钰",
+    "event": "第19届中国棋王争霸赛8强<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202603261055390009",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-25/野狐/quiz_202603261055390009.json",
+    "game_path": "/weiqi-page/games/2026-03-25/野狐/game_202603261055390009.html",
+    "black": "王星昊",
+    "white": "陈玉侬",
+    "event": "第19届中国棋王争霸赛8强<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202603261055390010",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-25/野狐/quiz_202603261055390010.json",
+    "game_path": "/weiqi-page/games/2026-03-25/野狐/game_202603261055390010.html",
+    "black": "李昊潼",
+    "white": "邱启航",
+    "event": "第2届烂柯杯中国青少年公开赛南京站2轮<绝艺讲解>",
+    "result": "黑胜1.75目",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑胜1.75目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  }
+]

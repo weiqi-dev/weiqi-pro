@@ -1,0 +1,120 @@
+{
+  "game_name": "实战左上角标准化定式（4手）",
+  "black": "黑棋",
+  "white": "白棋",
+  "black_rank": "",
+  "white_rank": "",
+  "board_size": 19,
+  "handicap": 0,
+  "handicap_stones": [],
+  "result": "",
+  "tree": {
+    "color": null,
+    "coord": null,
+    "children": [
+      {
+        "color": "B",
+        "coord": "pd",
+        "children": [
+          {
+            "color": "W",
+            "coord": "ld",
+            "children": [
+              {
+                "color": "B",
+                "coord": "mc",
+                "children": [
+                  {
+                    "color": "W",
+                    "coord": "kg",
+                    "children": [
+                      {
+                        "color": "B",
+                        "coord": "kh",
+                        "children": [
+                          {
+                            "color": "W",
+                            "coord": "lg",
+                            "children": [
+                              {
+                                "color": "B",
+                                "coord": "lh",
+                                "children": [
+                                  {
+                                    "color": "W",
+                                    "coord": "md",
+                                    "children": [
+                                      {
+                                        "color": "B",
+                                        "coord": "nd",
+                                        "children": [
+                                          {
+                                            "color": "W",
+                                            "coord": "ne",
+                                            "children": [
+                                              {
+                                                "color": "B",
+                                                "coord": "oe",
+                                                "children": [
+                                                  {
+                                                    "color": "W",
+                                                    "coord": "nc",
+                                                    "children": [
+                                                      {
+                                                        "color": "B",
+                                                        "coord": "od",
+                                                        "children": [
+                                                          {
+                                                            "color": "W",
+                                                            "coord": "ng",
+                                                            "children": [
+                                                              {
+                                                                "color": "B",
+                                                                "coord": "ni",
+                                                                "children": [
+                                                                  {
+                                                                    "color": "W",
+                                                                    "coord": "nb",
+                                                                    "children": [
+                                                                      {
+                                                                        "color": "B",
+                                                                        "coord": "mb"
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "download_filename": "joseki_034.sgf",
+  "default_move": 4,
+  "max_moves": 17
+}

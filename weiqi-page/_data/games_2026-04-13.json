@@ -1,0 +1,62 @@
+[
+  {
+    "id": "202604140735210001",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-13/野狐/game_202604140735210001.json",
+    "black": "小林覚",
+    "white": "小林泉美",
+    "black_rank": "P9段",
+    "white_rank": "P7段",
+    "result": "W+14.50",
+    "result_cn": "白胜14.50目",
+    "event": "第5届日本传奇元老赛<绝艺讲解>"
+  },
+  {
+    "id": "202604140735210002",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-13/野狐/game_202604140735210002.json",
+    "black": "王立诚",
+    "white": "赵治勋",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第5届日本传奇元老赛<绝艺讲解>"
+  },
+  {
+    "id": "202604140735210003",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-13/野狐/game_202604140735210003.json",
+    "black": "辰己茜",
+    "white": "鈴木歩",
+    "black_rank": "P4段",
+    "white_rank": "P7段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第45期日本女流本因坊战本赛<绝艺讲解>"
+  },
+  {
+    "id": "202604140735210004",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-13/野狐/game_202604140735210004.json",
+    "black": "后藤一",
+    "white": "田中健太郎",
+    "black_rank": "P2段",
+    "white_rank": "P1段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第51期日本新人王战本赛<绝艺讲解>"
+  },
+  {
+    "id": "202604140735210005",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-13/野狐/game_202604140735210005.json",
+    "black": "近藤登志希",
+    "white": "上野梨紗",
+    "black_rank": "P3段",
+    "white_rank": "P4段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第51期日本棋圣战预选<绝艺讲解>"
+  }
+]

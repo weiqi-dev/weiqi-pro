@@ -1,0 +1,86 @@
+[
+  {
+    "id": "202604261529360002",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-25/野狐/quiz_202604261529360002.json",
+    "game_path": "/weiqi-page/games/2026-04-25/野狐/game_202604261529360002.html",
+    "black": "桑原樹",
+    "white": "国松聪",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "黑胜1.50目",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "黑胜1.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 1
+      }
+    }
+  },
+  {
+    "id": "202604261529360003",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-25/野狐/quiz_202604261529360003.json",
+    "game_path": "/weiqi-page/games/2026-04-25/野狐/game_202604261529360003.html",
+    "black": "渡辺寛大",
+    "white": "表悠斗",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "白胜1.50目",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白胜1.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604261529360006",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-25/野狐/quiz_202604261529360006.json",
+    "game_path": "/weiqi-page/games/2026-04-25/野狐/game_202604261529360006.html",
+    "black": "国松聪",
+    "white": "高尾紳路",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604261529360008",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-25/野狐/quiz_202604261529360008.json",
+    "game_path": "/weiqi-page/games/2026-04-25/野狐/game_202604261529360008.html",
+    "black": "小山空也",
+    "white": "表悠斗",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 4,
+    "stats": {
+      "total": 4,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  }
+]

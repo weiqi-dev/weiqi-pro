@@ -1,0 +1,66 @@
+{
+  "game_name": "实战左上角标准化定式（2手）",
+  "black": "黑棋",
+  "white": "白棋",
+  "black_rank": "",
+  "white_rank": "",
+  "board_size": 19,
+  "handicap": 0,
+  "handicap_stones": [],
+  "result": "",
+  "tree": {
+    "color": null,
+    "coord": null,
+    "children": [
+      {
+        "color": "B",
+        "coord": "pc",
+        "children": [
+          {
+            "color": "W",
+            "coord": "mc",
+            "children": [
+              {
+                "color": "B",
+                "coord": "jd",
+                "children": [
+                  {
+                    "color": "W",
+                    "coord": "kc",
+                    "children": [
+                      {
+                        "color": "B",
+                        "coord": "pf",
+                        "children": [
+                          {
+                            "color": "W",
+                            "coord": "qh",
+                            "children": [
+                              {
+                                "color": "B",
+                                "coord": "rg",
+                                "children": [
+                                  {
+                                    "color": "W",
+                                    "coord": "ql"
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "download_filename": "joseki_028.sgf",
+  "default_move": 2,
+  "max_moves": 8
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "202605010722080001",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-30/野狐/game_202605010722080001.json",
+    "black": "赵治勋",
+    "white": "彦坂直人",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第5届日本传奇元老赛半决赛<绝艺讲解>"
+  },
+  {
+    "id": "202605010722080002",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-30/野狐/game_202605010722080002.json",
+    "black": "依田纪基",
+    "white": "王立诚",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第82期日本本因坊战预选<绝艺讲解>"
+  },
+  {
+    "id": "202605010722090003",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-30/野狐/game_202605010722090003.json",
+    "black": "姜秉卷",
+    "white": "崔宰荣",
+    "black_rank": "P5段",
+    "white_rank": "P8段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第31届LG杯世界棋王战韩国预选<绝艺讲解>"
+  },
+  {
+    "id": "202605010722090004",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-30/野狐/game_202605010722090004.json",
+    "black": "姜東潤",
+    "white": "朴河旼",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第31届LG杯世界棋王战韩国预选<绝艺讲解>"
+  },
+  {
+    "id": "202605010722090005",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-30/野狐/game_202605010722090005.json",
+    "black": "安成浚",
+    "white": "韩昇周",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+0.50",
+    "result_cn": "白胜0.50目",
+    "event": "第31届LG杯世界棋王战韩国预选<绝艺讲解>"
+  },
+  {
+    "id": "202605010722090006",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-30/野狐/game_202605010722090006.json",
+    "black": "金志锡",
+    "white": "罗玄",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第31届LG杯世界棋王战韩国预选<绝艺讲解>"
+  },
+  {
+    "id": "202605010722090007",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-30/野狐/game_202605010722090007.json",
+    "black": "高根台",
+    "white": "尹畯相",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第6届韩国最佳棋士战16强<绝艺讲解>"
+  },
+  {
+    "id": "202605010722090008",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-30/野狐/game_202605010722090008.json",
+    "black": "余正麒",
+    "white": "村川大介",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第52期日本天元战本赛<绝艺讲解>"
+  },
+  {
+    "id": "202605010722090009",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-30/野狐/game_202605010722090009.json",
+    "black": "大西龙平",
+    "white": "伊了",
+    "black_rank": "P7段",
+    "white_rank": "P5段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第65期日本十段战预选<绝艺讲解>"
+  },
+  {
+    "id": "202605010722090010",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-30/野狐/game_202605010722090010.json",
+    "black": "党毅飞",
+    "white": "杨楷文",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第31届LG杯世界棋王战中国选拔赛<张学斌＆夏夏＆绝艺解说>"
+  }
+]

@@ -1,0 +1,144 @@
+{
+  "game_name": "实战右上角标准化定式（6手）",
+  "black": "黑棋",
+  "white": "白棋",
+  "black_rank": "",
+  "white_rank": "",
+  "board_size": 19,
+  "handicap": 0,
+  "handicap_stones": [],
+  "result": "",
+  "tree": {
+    "color": null,
+    "coord": null,
+    "children": [
+      {
+        "color": "B",
+        "coord": "pc",
+        "children": [
+          {
+            "color": "W",
+            "coord": "tt",
+            "children": [
+              {
+                "color": "B",
+                "coord": "qf",
+                "children": [
+                  {
+                    "color": "W",
+                    "coord": "tt",
+                    "children": [
+                      {
+                        "color": "B",
+                        "coord": "kd",
+                        "children": [
+                          {
+                            "color": "W",
+                            "coord": "nc",
+                            "children": [
+                              {
+                                "color": "B",
+                                "coord": "tt",
+                                "children": [
+                                  {
+                                    "color": "W",
+                                    "coord": "lc",
+                                    "children": [
+                                      {
+                                        "color": "B",
+                                        "coord": "kc",
+                                        "children": [
+                                          {
+                                            "color": "W",
+                                            "coord": "ld",
+                                            "children": [
+                                              {
+                                                "color": "B",
+                                                "coord": "ke",
+                                                "children": [
+                                                  {
+                                                    "color": "W",
+                                                    "coord": "le",
+                                                    "children": [
+                                                      {
+                                                        "color": "B",
+                                                        "coord": "pe",
+                                                        "children": [
+                                                          {
+                                                            "color": "W",
+                                                            "coord": "lf",
+                                                            "children": [
+                                                              {
+                                                                "color": "B",
+                                                                "coord": "kf",
+                                                                "children": [
+                                                                  {
+                                                                    "color": "W",
+                                                                    "coord": "lh",
+                                                                    "children": [
+                                                                      {
+                                                                        "color": "B",
+                                                                        "coord": "kg",
+                                                                        "children": [
+                                                                          {
+                                                                            "color": "W",
+                                                                            "coord": "nh",
+                                                                            "children": [
+                                                                              {
+                                                                                "color": "B",
+                                                                                "coord": "tt",
+                                                                                "children": [
+                                                                                  {
+                                                                                    "color": "W",
+                                                                                    "coord": "ph",
+                                                                                    "children": [
+                                                                                      {
+                                                                                        "color": "B",
+                                                                                        "coord": "qh"
+                                                                                      }
+                                                                                    ]
+                                                                                  }
+                                                                                ]
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "download_filename": "joseki_048.sgf",
+  "default_move": 6,
+  "max_moves": 21
+}

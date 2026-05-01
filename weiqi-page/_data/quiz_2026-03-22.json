@@ -1,0 +1,44 @@
+[
+  {
+    "id": "202604261614119468240032",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-22/野狐/quiz_202604261614119468240032.json",
+    "game_path": "/weiqi-page/games/2026-03-22/野狐/game_202604261614119468240032.html",
+    "black": "한주영",
+    "white": "최민서",
+    "event": "第7届韩国利鹏杯新锐战决赛<绝艺讲解>",
+    "result": "黑胜7.50目",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑胜7.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604261614119468290033",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-22/野狐/quiz_202604261614119468290033.json",
+    "game_path": "/weiqi-page/games/2026-03-22/野狐/game_202604261614119468290033.html",
+    "black": "陈耀烨",
+    "white": "傅健恒",
+    "event": "第20届倡棋杯中国职业锦标赛复赛1轮<绝艺讲解>",
+    "result": "黑胜2.75目",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑胜2.75目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  }
+]

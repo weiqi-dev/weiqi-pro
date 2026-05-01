@@ -1,0 +1,149 @@
+[
+  {
+    "id": "202604031750170001",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-03/野狐/quiz_202604031750170001.json",
+    "game_path": "/weiqi-page/games/2026-04-03/野狐/game_202604031750170001.html",
+    "black": "金多彬",
+    "white": "姜升旼",
+    "event": "2026韩国冲岩道场循环赛<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604031750170002",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-03/野狐/quiz_202604031750170002.json",
+    "game_path": "/weiqi-page/games/2026-04-03/野狐/game_202604031750170002.html",
+    "black": "金贤硕",
+    "white": "郑元灿",
+    "event": "2026韩国冲岩道场循环赛<绝艺讲解>",
+    "result": "白胜2.50目",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "白胜2.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 1
+      }
+    }
+  },
+  {
+    "id": "202604031750170003",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-03/野狐/quiz_202604031750170003.json",
+    "game_path": "/weiqi-page/games/2026-04-03/野狐/game_202604031750170003.html",
+    "black": "平田智也",
+    "white": "佐田篤史",
+    "event": "日本围棋国家队网训<绝艺讲解>",
+    "result": "白胜3.50目",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "白胜3.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604031750170004",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-03/野狐/quiz_202604031750170004.json",
+    "game_path": "/weiqi-page/games/2026-04-03/野狐/game_202604031750170004.html",
+    "black": "上野梨紗",
+    "white": "余正麒",
+    "event": "日本围棋国家队网训<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 5,
+    "stats": {
+      "total": 5,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 2,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604031750170006",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-03/野狐/quiz_202604031750170006.json",
+    "game_path": "/weiqi-page/games/2026-04-03/野狐/game_202604031750170006.html",
+    "black": "이승민",
+    "white": "임상규",
+    "event": "韩国冲岩联赛<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 0,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604031750180011",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-03/野狐/quiz_202604031750180011.json",
+    "game_path": "/weiqi-page/games/2026-04-03/野狐/game_202604031750180011.html",
+    "black": "韩钟振",
+    "white": "安祚永",
+    "event": "第13届韩国大舟杯元老赛8强<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 6,
+    "stats": {
+      "total": 6,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 6,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604031750180012",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-03/野狐/quiz_202604031750180012.json",
+    "game_path": "/weiqi-page/games/2026-04-03/野狐/game_202604031750180012.html",
+    "black": "牛栄子",
+    "white": "藤沢里菜",
+    "event": "第2届日本女子围棋联赛主将战<绝艺讲解>",
+    "result": "白胜5.50目",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "白胜5.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  }
+]

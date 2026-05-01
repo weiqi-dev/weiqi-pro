@@ -1,0 +1,254 @@
+[
+  {
+    "id": "202604190825500002",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-18/野狐/quiz_202604190825500002.json",
+    "game_path": "/weiqi-page/games/2026-04-18/野狐/game_202604190825500002.html",
+    "black": "平田智也",
+    "white": "余正麒",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604190825500003",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-18/野狐/quiz_202604190825500003.json",
+    "game_path": "/weiqi-page/games/2026-04-18/野狐/game_202604190825500003.html",
+    "black": "一力遼",
+    "white": "伊田笃史",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604190825500004",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-18/野狐/quiz_202604190825500004.json",
+    "game_path": "/weiqi-page/games/2026-04-18/野狐/game_202604190825500004.html",
+    "black": "渡辺寛大",
+    "white": "小山空也",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604190825500005",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-18/野狐/quiz_202604190825500005.json",
+    "game_path": "/weiqi-page/games/2026-04-18/野狐/game_202604190825500005.html",
+    "black": "国松聪",
+    "white": "加藤千笑",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604190825500006",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-18/野狐/quiz_202604190825500006.json",
+    "game_path": "/weiqi-page/games/2026-04-18/野狐/game_202604190825500006.html",
+    "black": "上野梨紗",
+    "white": "上野愛咲美",
+    "event": "第2届日本女子围棋联赛主将战<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 0,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604190825500007",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-18/野狐/quiz_202604190825500007.json",
+    "game_path": "/weiqi-page/games/2026-04-18/野狐/game_202604190825500007.html",
+    "black": "이정은",
+    "white": "스미레",
+    "event": "第6届韩国MOA女子最佳棋士战预选决赛<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604190825510008",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-18/野狐/quiz_202604190825510008.json",
+    "game_path": "/weiqi-page/games/2026-04-18/野狐/game_202604190825510008.html",
+    "black": "向井千瑛",
+    "white": "鈴木歩",
+    "event": "第2届日本女子围棋联赛副将战<绝艺讲解>",
+    "result": "黑胜8.50目",
+    "count": 4,
+    "stats": {
+      "total": 4,
+      "result": "黑胜8.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604190825510009",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-18/野狐/quiz_202604190825510009.json",
+    "game_path": "/weiqi-page/games/2026-04-18/野狐/game_202604190825510009.html",
+    "black": "萧正浩",
+    "white": "许皓鋐",
+    "event": "2026雙城盃圍棋交流賽職業組巅峰组選拔決賽<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604190825510010",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-18/野狐/quiz_202604190825510010.json",
+    "game_path": "/weiqi-page/games/2026-04-18/野狐/game_202604190825510010.html",
+    "black": "奥田彩",
+    "white": "井泽秋乃",
+    "event": "第2届日本女子围棋联赛三将战<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604190825510011",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-18/野狐/quiz_202604190825510011.json",
+    "game_path": "/weiqi-page/games/2026-04-18/野狐/game_202604190825510011.html",
+    "black": "牛栄子",
+    "white": "渡辺寛大",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604190825510012",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-18/野狐/quiz_202604190825510012.json",
+    "game_path": "/weiqi-page/games/2026-04-18/野狐/game_202604190825510012.html",
+    "black": "大竹优",
+    "white": "加藤千笑",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 0,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604190825510013",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-18/野狐/quiz_202604190825510013.json",
+    "game_path": "/weiqi-page/games/2026-04-18/野狐/game_202604190825510013.html",
+    "black": "酒井佑規",
+    "white": "伊田笃史",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 0,
+        "endgame": 0
+      }
+    }
+  }
+]

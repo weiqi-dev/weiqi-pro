@@ -1,0 +1,128 @@
+[
+  {
+    "id": "202604011049530001",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-31/野狐/quiz_202604011049530001.json",
+    "game_path": "/weiqi-page/games/2026-03-31/野狐/game_202604011049530001.html",
+    "black": "储可儿",
+    "white": "徐晶琦",
+    "event": "第6届中国女子国手赛预选1轮<绝艺讲解>",
+    "result": "白胜0.25目",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白胜0.25目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 0,
+        "endgame": 1
+      }
+    }
+  },
+  {
+    "id": "202604011049530002",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-31/野狐/quiz_202604011049530002.json",
+    "game_path": "/weiqi-page/games/2026-03-31/野狐/game_202604011049530002.html",
+    "black": "马加特",
+    "white": "谢佳言",
+    "event": "第6届中国女子国手赛预选1轮<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 4,
+    "stats": {
+      "total": 4,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 4,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604011049530003",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-31/野狐/quiz_202604011049530003.json",
+    "game_path": "/weiqi-page/games/2026-03-31/野狐/game_202604011049530003.html",
+    "black": "崔宰荣",
+    "white": "金庭贤",
+    "event": "第6届韩国最佳棋士战16强<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604011049530004",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-31/野狐/quiz_202604011049530004.json",
+    "game_path": "/weiqi-page/games/2026-03-31/野狐/game_202604011049530004.html",
+    "black": "朴廷桓",
+    "white": "卞相壹",
+    "event": "第27届韩国麦馨杯九段战决赛2/3<绝艺讲解>",
+    "result": "黑胜0.50目",
+    "count": 4,
+    "stats": {
+      "total": 4,
+      "result": "黑胜0.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 1
+      }
+    }
+  },
+  {
+    "id": "202604011049530005",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-31/野狐/quiz_202604011049530005.json",
+    "game_path": "/weiqi-page/games/2026-03-31/野狐/game_202604011049530005.html",
+    "black": "李赫",
+    "white": "叶子萌",
+    "event": "第6届中国女子国手赛预选2轮<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604011049530006",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-31/野狐/quiz_202604011049530006.json",
+    "game_path": "/weiqi-page/games/2026-03-31/野狐/game_202604011049530006.html",
+    "black": "王爽",
+    "white": "高星",
+    "event": "第6届中国女子国手赛预选2轮<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  }
+]

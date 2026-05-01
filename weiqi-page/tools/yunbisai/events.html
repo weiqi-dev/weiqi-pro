@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>比赛列表 - 云比赛</title>
+    <link rel="icon" type="image/x-icon" href="/weiqi-page/assets/favicon/favicon.ico">
+    <script>document.write('<script src="/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; min-height: 100vh; color: #333; }
+        .container { max-width: 480px; margin: 0 auto; padding: 12px; min-height: 100vh; }
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 15px; margin-bottom: 12px; border-radius: 8px; text-align: center; }
+        h1 { font-size: 1.3em; margin: 0; }
+        .filter-tabs { display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto; }
+        .filter-tab { padding: 8px 16px; background: white; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; font-size: 0.9em; white-space: nowrap; }
+        .filter-tab.active { background: #667eea; color: white; border-color: #667eea; }
+        .event-card { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
+        .event-card:hover { transform: translateY(-2px); }
+        .event-title { font-weight: 600; font-size: 1.1em; color: #333; margin-bottom: 8px; }
+        .event-meta { display: flex; gap: 16px; color: #666; font-size: 0.9em; }
+        .event-status { font-size: 0.75em; padding: 2px 8px; border-radius: 10px; margin-left: 8px; }
+        .event-status.ended { background: #e8f5e9; color: #4caf50; }
+        .event-status.ongoing { background: #fff3e0; color: #ff9800; }
+        .loading { text-align: center; padding: 40px 20px; }
+        .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 16px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .query-time { text-align: center; color: #888; font-size: 0.8em; margin-top: 8px; }
+        footer { text-align: center; padding: 20px; color: #999; font-size: 0.8em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>比赛列表</h1>
+        </header>
+        
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterEvents('all')" id="filterAll">全部</button>
+            <button class="filter-tab" onclick="filterEvents('ongoing')" id="filterOngoing">未结束</button>
+            <button class="filter-tab" onclick="filterEvents('ended')" id="filterEnded">已结束</button>
+        </div>
+        
+        <div id="eventsList"></div>
+        
+        <footer><p>围棋智能助手 &copy; 2026</p></footer>
+    </div>
+    
+    <script>
+        let events = [];
+        let filter = 'all';
+        
+        function loadEvents() {
+            const query = JSON.parse(sessionStorage.getItem('yunbisai_query') || '{}');
+            if (!query.data || !query.data.events) {
+                location.href = 'index.html';
+                return;
+            }
+            
+            // 按日期倒序
+            events = query.data.events.sort((a, b) => {
+                return (b.date || '').localeCompare(a.date || '');
+            });
+            
+            renderEvents();
+        }
+        
+        function renderEvents() {
+            const container = document.getElementById('eventsList');
+            const today = new Date().toISOString().split('T')[0];
+            
+            // 计算数量
+            const total = events.length;
+            const ended = events.filter(e => e.date && e.date < today).length;
+            const ongoing = events.filter(e => e.date && e.date >= today).length;
+            
+            document.getElementById('filterAll').textContent = `全部 ${total}`;
+            document.getElementById('filterOngoing').textContent = `未结束 ${ongoing}`;
+            document.getElementById('filterEnded').textContent = `已结束 ${ended}`;
+            
+            // 筛选
+            let filtered = events;
+            if (filter === 'ongoing') filtered = events.filter(e => e.date && e.date >= today);
+            if (filter === 'ended') filtered = events.filter(e => e.date && e.date < today);
+            
+            if (filtered.length === 0) {
+                container.innerHTML = '<div style="text-align:center;padding:40px;color:#888;">没有符合条件的比赛</div>';
+                return;
+            }
+            
+            let html = '';
+            filtered.forEach(event => {
+                const isEnded = event.date && event.date < today;
+                const statusTag = isEnded ? 
+                    '<span class="event-status ended">已结束</span>' : 
+                    '<span class="event-status ongoing">未结束</span>';
+                html += `
+                    <div class="event-card" onclick="selectEvent(${event.id}, '${event.title.replace(/'/g, "\\'")}')">
+                        <div class="event-title">${event.title}</div>
+                        <div class="event-meta">
+                            <span>📍 ${event.city || '未知'}</span>
+                            <span>📅 ${event.date || '日期待定'}</span>
+                            <span style="margin-left:auto;">${statusTag}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+        
+        function filterEvents(type) {
+            filter = type;
+            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+            if (type === 'all') document.getElementById('filterAll').classList.add('active');
+            if (type === 'ongoing') document.getElementById('filterOngoing').classList.add('active');
+            if (type === 'ended') document.getElementById('filterEnded').classList.add('active');
+            renderEvents();
+        }
+        
+        function selectEvent(eventId, eventTitle) {
+            // 记录最近访问
+            try {
+                let visited = JSON.parse(localStorage.getItem('yunbisai_visited') || '[]');
+                visited = visited.filter(e => e.id !== eventId);
+                visited.unshift({ id: eventId, title: eventTitle, time: new Date().toISOString() });
+                visited = visited.slice(0, 5);
+                localStorage.setItem('yunbisai_visited', JSON.stringify(visited));
+            } catch (e) {}
+            
+            sessionStorage.setItem('yunbisai_event', JSON.stringify({ id: eventId, title: eventTitle }));
+            location.href = 'detail.html';
+        }
+        
+        loadEvents();
+    </script>
+</body>
+</html>

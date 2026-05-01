@@ -1,0 +1,65 @@
+[
+  {
+    "id": "202604022248210001",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-02/野狐/quiz_202604022248210001.json",
+    "game_path": "/weiqi-page/games/2026-04-02/野狐/game_202604022248210001.html",
+    "black": "星合志保",
+    "white": "苏耀国",
+    "event": "第52期日本碁圣战预选<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 0,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604022248220006",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-02/野狐/quiz_202604022248220006.json",
+    "game_path": "/weiqi-page/games/2026-04-02/野狐/game_202604022248220006.html",
+    "black": "佐田篤史",
+    "white": "村川大介",
+    "event": "第51期日本碁圣战本赛<绝艺讲解>",
+    "result": "黑胜1.50目",
+    "count": 5,
+    "stats": {
+      "total": 5,
+      "result": "黑胜1.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 4
+      }
+    }
+  },
+  {
+    "id": "202604022248220007",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-02/野狐/quiz_202604022248220007.json",
+    "game_path": "/weiqi-page/games/2026-04-02/野狐/game_202604022248220007.html",
+    "black": "卞相壹",
+    "white": "朴廷桓",
+    "event": "第27届韩国麦馨杯九段战决赛决胜局<张学斌＆夏夏＆绝艺解说>",
+    "result": "黑中盘胜",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 2,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  }
+]

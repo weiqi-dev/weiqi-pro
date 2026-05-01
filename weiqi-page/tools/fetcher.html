@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>棋谱抓取 - 围棋智能助手</title>
+    <link rel="icon" type="image/x-icon" href="/weiqi-page/assets/favicon/favicon.ico">
+    <script>document.write('<script src="/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 12px;
+            min-height: 100vh;
+        }
+        
+        /* 头部 */
+        header {
+            padding: 12px 10px;
+            color: white;
+            text-align: center;
+        }
+        
+        h1 { 
+            font-size: 1.6em; 
+            margin-bottom: 4px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+        
+        /* 卡片通用样式 */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card h2 {
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* 输入框 */
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            resize: none;
+            min-height: 80px;
+            font-family: inherit;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        /* 按钮 */
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            width: 100%;
+            margin-top: 12px;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #e0e0e0;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 结果区域 */
+        .result {
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+        }
+        
+        /* 棋谱信息 */
+        .game-info {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .info-value {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .player-name {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .vs-divider {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            padding: 4px 0;
+        }
+        
+        /* 错误提示 */
+        .error-card {
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+            display: none;
+        }
+        
+        .error-card.show {
+            display: block;
+        }
+        
+        .error-title {
+            color: #c53030;
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .error-message {
+            color: #742a2a;
+            font-size: 14px;
+        }
+        
+        /* 来源标签 */
+        .source-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        /* 下载按钮 */
+        .download-btn {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+        
+        /* 二维码弹窗 */
+        .qr-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        
+        .qr-modal.show {
+            display: flex;
+        }
+        
+        .qr-container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 280px;
+            width: 90%;
+        }
+        
+        .qr-title {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        #qrcode {
+            margin: 0 auto;
+        }
+        
+        .qr-hint {
+            font-size: 13px;
+            color: #666;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+        
+        .qr-close {
+            margin-top: 15px;
+            padding: 10px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        /* 提示信息 */
+        .clipboard-hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .clipboard-hint.success {
+            color: #38a169;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header>
+            <h1>🎯 棋谱抓取</h1>
+            <p class="subtitle">粘贴分享链接，自动下载 SGF 棋谱</p>
+        </header>
+        
+        <!-- 输入区域 -->
+        <div class="card">
+            <h2>📋 分享链接</h2>
+            <textarea id="urlInput" placeholder="支持：野狐、弈城、OGS、101围棋、弈客、元萝卜、腾讯围棋等平台..."></textarea>
+            <div id="clipboardHint" class="clipboard-hint" style="display: none;">
+                <span>✓</span>
+                <span>已自动填入剪贴板内容</span>
+            </div>
+            <button id="fetchBtn" onclick="fetchGame()">🔍 抓取棋谱</button>
+            
+            <!-- 错误提示 -->
+            <div id="errorCard" class="error-card">
+                <div class="error-title">
+                    <span>⚠️</span>
+                    <span id="errorTitle">错误</span>
+                </div>
+                <div id="errorMessage" class="error-message"></div>
+            </div>
+        </div>
+        
+        <!-- 加载状态 -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>正在抓取棋谱，请稍候...</p>
+        </div>
+        
+        <!-- 结果展示 -->
+        <div id="result" class="result">
+            <div class="card">
+                <h2>
+                    📄 棋谱信息
+                    <span id="sourceTag" class="source-tag"></span>
+                </h2>
+                
+                <div class="game-info">
+                    <div class="info-row">
+                        <span class="info-label">黑方</span>
+                        <span id="blackPlayer" class="info-value player-name">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">段位</span>
+                        <span id="blackRank" class="info-value">-</span>
+                    </div>
+                    <div class="vs-divider">VS</div>
+                    <div class="info-row">
+                        <span class="info-label">白方</span>
+                        <span id="whitePlayer" class="info-value player-name">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">段位</span>
+                        <span id="whiteRank" class="info-value">-</span>
+                    </div>
+                    <div class="vs-divider">─</div>
+                    <div class="info-row">
+                        <span class="info-label">结果</span>
+                        <span id="gameResult" class="info-value">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">手数</span>
+                        <span id="moveCount" class="info-value">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">日期</span>
+                        <span id="gameDate" class="info-value">-</span>
+                    </div>
+                    <div class="info-row" id="komiRow">
+                        <span class="info-label">贴目</span>
+                        <span id="gameKomi" class="info-value">-</span>
+                    </div>
+                    <div class="info-row" id="eventRow">
+                        <span class="info-label">赛事</span>
+                        <span id="gameEvent" class="info-value">-</span>
+                    </div>
+                </div>
+                
+                <button id="downloadBtn" class="download-btn" onclick="downloadSGF()">📥 下载 SGF 棋谱</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 二维码弹窗 -->
+    <div id="qrModal" class="qr-modal">
+        <div class="qr-container">
+            <div class="qr-title">扫码下载棋谱</div>
+            <div id="qrcode"></div>
+            <div class="qr-hint">截图或长按二维码<br>识别后即可下载SGF文件</div>
+            <button class="qr-close" onclick="closeQRCode()">关闭</button>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let currentGameData = null;
+        let isWeChat = /MicroMessenger/i.test(navigator.userAgent);
+        
+        // 页面加载时读取剪贴板
+        document.addEventListener('DOMContentLoaded', async function() {
+            // 先检查是否有保存的 URL（从认证页返回时恢复）
+            restoreUrlFromStorage();
+            await checkClipboard();
+            
+            // 微信环境下加载 share.js
+            if (isWeChat) {
+                loadShareJS();
+            }
+        });
+        
+        // 保存 URL 到 localStorage（跳转认证页前）
+        function saveUrlToStorage(url) {
+            if (url) {
+                localStorage.setItem('pending_fetch_url', url);
+            }
+        }
+        
+        // 从 localStorage 恢复 URL（认证返回后）
+        function restoreUrlFromStorage() {
+            const savedUrl = localStorage.getItem('pending_fetch_url');
+            if (savedUrl && isShareLink(savedUrl)) {
+                document.getElementById('urlInput').value = savedUrl;
+                localStorage.removeItem('pending_fetch_url');
+                const hint = document.getElementById('clipboardHint');
+                hint.innerHTML = '<span>✓</span><span>已恢复上次输入</span>';
+                hint.style.display = 'flex';
+                hint.classList.add('success');
+            }
+        }
+        
+        // 加载 share.js
+        function loadShareJS() {
+            const script = document.createElement('script');
+            script.src = 'https://weiqi-dev.github.io/weiqi-assets/js/share.js';
+            script.onload = function() {
+                console.log('Share.js 加载成功');
+            };
+            script.onerror = function() {
+                console.error('Share.js 加载失败');
+            };
+            document.head.appendChild(script);
+        }
+        
+        // 检查剪贴板
+        async function checkClipboard() {
+            try {
+                const text = await navigator.clipboard.readText();
+                // 提取纯 URL（过滤野狐等平台分享链接前面的中文）
+                const cleanUrl = extractUrl(text);
+                if (cleanUrl && isShareLink(cleanUrl)) {
+                    document.getElementById('urlInput').value = cleanUrl;
+                    const hint = document.getElementById('clipboardHint');
+                    hint.style.display = 'flex';
+                    hint.classList.add('success');
+                }
+            } catch (err) {
+                console.log('剪贴板读取失败:', err);
+                // 无权限或非安全环境，静默处理
+            }
+        }
+        
+        // 从文本中提取 URL
+        function extractUrl(text) {
+            if (!text) return null;
+            
+            // 如果本身是纯 URL，直接返回
+            if (/^https?:\/\//i.test(text.trim())) {
+                return text.trim();
+            }
+            
+            // 尝试从文本中提取 URL（匹配 http:// 或 https:// 开头到空白或引号前的部分）
+            const match = text.match(/(https?:\/\/[^\s"'<>]+)/i);
+            if (match) {
+                return match[1];
+            }
+            
+            return null;
+        }
+        
+        // 分享链接���别
+        function isShareLink(text) {
+            if (!text) return false;
+            const patterns = [
+                /foxwq\.com/i,           // 野狐
+                /online-go\.com/i,       // OGS
+                /101weiqi\.com/i,        // 101围棋
+                /yikeweiqi\.com/i,       // 弈客
+                /yuanluobo\.com/i,       // 元萝卜
+                /19x19\.com/i,           // 19x19
+                /izis\.cn/i,             // 弈城
+                /eweiqi\.com/i,          // 弈城
+                /txwq\.qq\.com/i,        // 腾讯围棋
+                /xinboduiyi\.com/i,      // 新博
+                /dzqzd\.com/i,           // 大棋渣
+            ];
+            return patterns.some(p => p.test(text));
+        }
+        
+        // 抓取棋谱
+        async function fetchGame() {
+            const urlInput = document.getElementById('urlInput');
+            const url = urlInput.value.trim();
+            
+            if (!url) {
+                showError('INPUT_EMPTY', '请输入棋谱分享链接');
+                return;
+            }
+            
+            if (!isShareLink(url)) {
+                showError('UNSUPPORTED_URL', '不支持的链接格式，请检查是否为围棋平台的分享链接');
+                return;
+            }
+            
+            // 检查 Token
+            if (!hasToken()) {
+                // 保存当前 URL，跳转认证页后恢复
+                saveUrlToStorage(url);
+                redirectToAuth();
+                return;
+            }
+            
+            // 隐藏错误，显示加载
+            hideError();
+            showLoading(true);
+            hideResult();
+            
+            try {
+                const response = await fetchWithAuth(
+                    `/api/v1/fetch?url=${encodeURIComponent(url)}`
+                );
+                
+                // 如果 response 为 null，说明已跳转到认证页
+                if (!response) return;
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    handleAPIError(data.error);
+                    return;
+                }
+                
+                // 保存数据并显示结果
+                currentGameData = data.data;
+                displayResult(currentGameData);
+                
+            } catch (err) {
+                console.error('抓取失败:', err);
+                showError('NETWORK_ERROR', '网络请求失败，请检查网络连接后重试');
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        // 处理 API 错误
+        function handleAPIError(error) {
+            if (!error) {
+                showError('UNKNOWN_ERROR', '未知错误，请稍后重试');
+                return;
+            }
+            
+            const code = error.code || '';
+            const message = error.message || '';
+            
+            switch (code) {
+                case 'MISSING_PARAM':
+                    showError('INPUT_ERROR', '请输入分享链接');
+                    break;
+                case 'UNSUPPORTED_URL':
+                    showError('UNSUPPORTED_URL', '无法识别该链接格式，目前支持：野狐、弈城、OGS、101围棋、弈客、元萝卜、腾讯围棋等平台');
+                    break;
+                case 'FETCH_FAILED':
+                    if (message.includes('超时')) {
+                        showError('TIMEOUT_ERROR', '下载超时，请检查链接是否有效或稍后重试');
+                    } else {
+                        showError('FETCH_ERROR', '棋谱下载失败：' + message);
+                    }
+                    break;
+                case 'UNAUTHORIZED':
+                    showError('AUTH_ERROR', '认证失败，请重新登录');
+                    break;
+                case 'INTERNAL_ERROR':
+                    showError('SERVER_ERROR', '服务器内部错误，请稍后重试');
+                    break;
+                default:
+                    showError('UNKNOWN_ERROR', message || '请求失败，请稍后重试');
+            }
+        }
+        
+        // 显示结果
+        function displayResult(data) {
+            const info = data.game_info || {};
+            
+            // 来源标签
+            const sourceNames = {
+                'fox': '野狐围棋',
+                'ogs': 'OGS',
+                '101': '101围棋',
+                'yike': '弈客',
+                'yuanluobo': '元萝卜',
+                '1919': '19x19',
+                'izis': '弈城',
+                'eweiqi': '弈城',
+                'txwq': '腾讯围棋',
+                'xinbo': '新博',
+                'dzqzd': '大棋渣',
+                'unknown': '未知来源'
+            };
+            document.getElementById('sourceTag').textContent = data.source_name || sourceNames[data.source] || '未知';
+            
+            // 棋谱信息
+            document.getElementById('blackPlayer').textContent = info.black || '黑方';
+            document.getElementById('blackRank').textContent = info.black_rank || '-';
+            document.getElementById('whitePlayer').textContent = info.white || '白方';
+            document.getElementById('whiteRank').textContent = info.white_rank || '-';
+            document.getElementById('gameResult').textContent = formatResult(info.result) || '-';
+            document.getElementById('moveCount').textContent = info.moves ? `${info.moves} 手` : '-';
+            document.getElementById('gameDate').textContent = info.date || '-';
+            
+            // 可选信息
+            const komiRow = document.getElementById('komiRow');
+            if (info.komi) {
+                document.getElementById('gameKomi').textContent = info.komi;
+                komiRow.style.display = 'flex';
+            } else {
+                komiRow.style.display = 'none';
+            }
+            
+            const eventRow = document.getElementById('eventRow');
+            if (info.event) {
+                document.getElementById('gameEvent').textContent = info.event;
+                eventRow.style.display = 'flex';
+            } else {
+                eventRow.style.display = 'none';
+            }
+            
+            // 显示结果区域
+            document.getElementById('result').classList.add('show');
+        }
+        
+        // 格式化结果
+        function formatResult(result) {
+            if (!result) return '-';
+            if (result === 'Void') return '无胜负';
+            return result;
+        }
+        
+        // 下载 SGF
+        function downloadSGF() {
+            if (!currentGameData) return;
+            
+            // 微信环境：显示二维码
+            if (isWeChat && typeof WeiqiShare !== 'undefined') {
+                showQRCodeDownload();
+                return;
+            }
+            
+            // 普通浏览器：直接下载
+            directDownload();
+        }
+        
+        // 直接下载
+        function directDownload() {
+            const sgfContent = atob(currentGameData.sgf_base64);
+            const blob = new Blob([sgfContent], { type: 'application/x-go-sgf' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = currentGameData.filename || 'game.sgf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            URL.revokeObjectURL(url);
+        }
+        
+        // 显示二维码下载
+        function showQRCodeDownload() {
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = '';
+            
+            // 解析 SGF 为 moves 数组
+            const sgfContent = atob(currentGameData.sgf_base64);
+            const gameState = parseSgfToMoves(sgfContent);
+            
+            if (gameState.length === 0) {
+                // 无法解析，回退到直接下载
+                console.error('无法解析 SGF，回退到直接下载');
+                directDownload();
+                return;
+            }
+            
+            WeiqiShare.generateQR(qrContainer, gameState)
+                .then(() => {
+                    document.getElementById('qrModal').classList.add('show');
+                })
+                .catch(err => {
+                    console.error('二维码生成失败:', err);
+                    directDownload();
+                });
+        }
+        
+        // 解析 SGF 为 moves 数组 [{col, row, player, isPass}]
+        function parseSgfToMoves(sgf) {
+            const moves = [];
+            // 匹配 ;B[xx] 或 ;W[xx] 格式，xx 是两个小写字母 (a-s, 0-18)
+            const regex = /;([BW])\[([a-s]{2})\]/g;
+            let match;
+            while ((match = regex.exec(sgf)) !== null) {
+                const player = match[1];
+                const col = match[2].charCodeAt(0) - 97; // 第一个字符 a-s
+                const row = match[2].charCodeAt(1) - 97; // 第二个字符 a-s
+                moves.push({ col, row, player, isPass: false });
+            }
+            return moves;
+        }
+        
+        // 关闭二维码弹窗
+        function closeQRCode() {
+            document.getElementById('qrModal').classList.remove('show');
+            document.getElementById('qrcode').innerHTML = '';
+        }
+        
+        // 点击弹窗背景关闭
+        document.getElementById('qrModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeQRCode();
+            }
+        });
+        
+        // 显示/隐藏加载
+        function showLoading(show) {
+            document.getElementById('loading').classList.toggle('show', show);
+            document.getElementById('fetchBtn').disabled = show;
+        }
+        
+        // 显示错误
+        function showError(code, message) {
+            const errorTitles = {
+                'INPUT_EMPTY': '输入为空',
+                'INPUT_ERROR': '输入错误',
+                'UNSUPPORTED_URL': '不支持的链接',
+                'TIMEOUT_ERROR': '请求超时',
+                'FETCH_ERROR': '下载失败',
+                'AUTH_ERROR': '认证失败',
+                'SERVER_ERROR': '服务器错误',
+                'NETWORK_ERROR': '网络错误',
+                'UNKNOWN_ERROR': '未知错误'
+            };
+            
+            document.getElementById('errorTitle').textContent = errorTitles[code] || '错误';
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorCard').classList.add('show');
+        }
+        
+        // 隐藏错误
+        function hideError() {
+            document.getElementById('errorCard').classList.remove('show');
+        }
+        
+        // 隐藏结果
+        function hideResult() {
+            document.getElementById('result').classList.remove('show');
+            currentGameData = null;
+        }
+        
+        // 回车键触发抓取
+        document.getElementById('urlInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                fetchGame();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,342 @@
+{
+  "game_name": "衢州葛道职业训练赛<绝艺讲解>",
+  "black": "刘云程",
+  "white": "韩卓然",
+  "black_rank": "P5段",
+  "white_rank": "P4段",
+  "board_size": 19,
+  "handicap": 0,
+  "handicap_stones": [],
+  "result": "draw",
+  "tree": {
+    "color": null,
+    "coord": null,
+    "children": [
+      {
+        "color": "B",
+        "coord": "qd",
+        "children": [
+          {
+            "color": "W",
+            "coord": "cp",
+            "children": [
+              {
+                "color": "B",
+                "coord": "pq",
+                "children": [
+                  {
+                    "color": "W",
+                    "coord": "dc",
+                    "children": [
+                      {
+                        "color": "B",
+                        "coord": "ep",
+                        "children": [
+                          {
+                            "color": "W",
+                            "coord": "eq",
+                            "children": [
+                              {
+                                "color": "B",
+                                "coord": "fq",
+                                "children": [
+                                  {
+                                    "color": "W",
+                                    "coord": "dq",
+                                    "children": [
+                                      {
+                                        "color": "B",
+                                        "coord": "fp",
+                                        "children": [
+                                          {
+                                            "color": "W",
+                                            "coord": "cn",
+                                            "children": [
+                                              {
+                                                "color": "B",
+                                                "coord": "lp",
+                                                "children": [
+                                                  {
+                                                    "color": "W",
+                                                    "coord": "oc",
+                                                    "children": [
+                                                      {
+                                                        "color": "B",
+                                                        "coord": "pe",
+                                                        "children": [
+                                                          {
+                                                            "color": "W",
+                                                            "coord": "pn",
+                                                            "children": [
+                                                              {
+                                                                "color": "B",
+                                                                "coord": "qp",
+                                                                "children": [
+                                                                  {
+                                                                    "color": "W",
+                                                                    "coord": "pk",
+                                                                    "children": [
+                                                                      {
+                                                                        "color": "B",
+                                                                        "coord": "qi",
+                                                                        "children": [
+                                                                          {
+                                                                            "color": "W",
+                                                                            "coord": "lc",
+                                                                            "children": [
+                                                                              {
+                                                                                "color": "B",
+                                                                                "coord": "ce",
+                                                                                "children": [
+                                                                                  {
+                                                                                    "color": "W",
+                                                                                    "coord": "ed",
+                                                                                    "children": [
+                                                                                      {
+                                                                                        "color": "B",
+                                                                                        "coord": "ch",
+                                                                                        "children": [
+                                                                                          {
+                                                                                            "color": "W",
+                                                                                            "coord": "qo",
+                                                                                            "children": [
+                                                                                              {
+                                                                                                "color": "B",
+                                                                                                "coord": "np",
+                                                                                                "children": [
+                                                                                                  {
+                                                                                                    "color": "W",
+                                                                                                    "coord": "rp",
+                                                                                                    "children": [
+                                                                                                      {
+                                                                                                        "color": "B",
+                                                                                                        "coord": "rq",
+                                                                                                        "children": [
+                                                                                                          {
+                                                                                                            "color": "W",
+                                                                                                            "coord": "jd",
+                                                                                                            "children": [
+                                                                                                              {
+                                                                                                                "color": "B",
+                                                                                                                "coord": "em",
+                                                                                                                "children": [
+                                                                                                                  {
+                                                                                                                    "color": "W",
+                                                                                                                    "coord": "df",
+                                                                                                                    "children": [
+                                                                                                                      {
+                                                                                                                        "color": "B",
+                                                                                                                        "coord": "cf",
+                                                                                                                        "children": [
+                                                                                                                          {
+                                                                                                                            "color": "W",
+                                                                                                                            "coord": "dg",
+                                                                                                                            "children": [
+                                                                                                                              {
+                                                                                                                                "color": "B",
+                                                                                                                                "coord": "ml",
+                                                                                                                                "children": [
+                                                                                                                                  {
+                                                                                                                                    "color": "W",
+                                                                                                                                    "coord": "pp",
+                                                                                                                                    "children": [
+                                                                                                                                      {
+                                                                                                                                        "color": "B",
+                                                                                                                                        "coord": "qq",
+                                                                                                                                        "children": [
+                                                                                                                                          {
+                                                                                                                                            "color": "W",
+                                                                                                                                            "coord": "rj",
+                                                                                                                                            "children": [
+                                                                                                                                              {
+                                                                                                                                                "color": "B",
+                                                                                                                                                "coord": "if",
+                                                                                                                                                "children": [
+                                                                                                                                                  {
+                                                                                                                                                    "color": "W",
+                                                                                                                                                    "coord": "jo",
+                                                                                                                                                    "children": [
+                                                                                                                                                      {
+                                                                                                                                                        "color": "B",
+                                                                                                                                                        "coord": "jq",
+                                                                                                                                                        "children": [
+                                                                                                                                                          {
+                                                                                                                                                            "color": "W",
+                                                                                                                                                            "coord": "jl",
+                                                                                                                                                            "children": [
+                                                                                                                                                              {
+                                                                                                                                                                "color": "B",
+                                                                                                                                                                "coord": "om",
+                                                                                                                                                                "children": [
+                                                                                                                                                                  {
+                                                                                                                                                                    "color": "W",
+                                                                                                                                                                    "coord": "pm",
+                                                                                                                                                                    "children": [
+                                                                                                                                                                      {
+                                                                                                                                                                        "color": "B",
+                                                                                                                                                                        "coord": "id",
+                                                                                                                                                                        "children": [
+                                                                                                                                                                          {
+                                                                                                                                                                            "color": "W",
+                                                                                                                                                                            "coord": "ie",
+                                                                                                                                                                            "children": [
+                                                                                                                                                                              {
+                                                                                                                                                                                "color": "B",
+                                                                                                                                                                                "coord": "he",
+                                                                                                                                                                                "children": [
+                                                                                                                                                                                  {
+                                                                                                                                                                                    "color": "W",
+                                                                                                                                                                                    "coord": "je",
+                                                                                                                                                                                    "children": [
+                                                                                                                                                                                      {
+                                                                                                                                                                                        "color": "B",
+                                                                                                                                                                                        "coord": "hf",
+                                                                                                                                                                                        "children": [
+                                                                                                                                                                                          {
+                                                                                                                                                                                            "color": "W",
+                                                                                                                                                                                            "coord": "hd",
+                                                                                                                                                                                            "children": [
+                                                                                                                                                                                              {
+                                                                                                                                                                                                "color": "B",
+                                                                                                                                                                                                "coord": "gd",
+                                                                                                                                                                                                "children": [
+                                                                                                                                                                                                  {
+                                                                                                                                                                                                    "color": "W",
+                                                                                                                                                                                                    "coord": "ic",
+                                                                                                                                                                                                    "children": [
+                                                                                                                                                                                                      {
+                                                                                                                                                                                                        "color": "B",
+                                                                                                                                                                                                        "coord": "hc",
+                                                                                                                                                                                                        "children": [
+                                                                                                                                                                                                          {
+                                                                                                                                                                                                            "color": "W",
+                                                                                                                                                                                                            "coord": "cd",
+                                                                                                                                                                                                            "children": [
+                                                                                                                                                                                                              {
+                                                                                                                                                                                                                "color": "B",
+                                                                                                                                                                                                                "coord": "de",
+                                                                                                                                                                                                                "children": [
+                                                                                                                                                                                                                  {
+                                                                                                                                                                                                                    "color": "W",
+                                                                                                                                                                                                                    "coord": "ee",
+                                                                                                                                                                                                                    "children": [
+                                                                                                                                                                                                                      {
+                                                                                                                                                                                                                        "color": "B",
+                                                                                                                                                                                                                        "coord": "cg",
+                                                                                                                                                                                                                        "children": [
+                                                                                                                                                                                                                          {
+                                                                                                                                                                                                                            "color": "W",
+                                                                                                                                                                                                                            "coord": "qb"
+                                                                                                                                                                                                                          }
+                                                                                                                                                                                                                        ]
+                                                                                                                                                                                                                      }
+                                                                                                                                                                                                                    ]
+                                                                                                                                                                                                                  }
+                                                                                                                                                                                                                ]
+                                                                                                                                                                                                              }
+                                                                                                                                                                                                            ]
+                                                                                                                                                                                                          }
+                                                                                                                                                                                                        ]
+                                                                                                                                                                                                      }
+                                                                                                                                                                                                    ]
+                                                                                                                                                                                                  }
+                                                                                                                                                                                                ]
+                                                                                                                                                                                              }
+                                                                                                                                                                                            ]
+                                                                                                                                                                                          }
+                                                                                                                                                                                        ]
+                                                                                                                                                                                      }
+                                                                                                                                                                                    ]
+                                                                                                                                                                                  }
+                                                                                                                                                                                ]
+                                                                                                                                                                              }
+                                                                                                                                                                            ]
+                                                                                                                                                                          }
+                                                                                                                                                                        ]
+                                                                                                                                                                      }
+                                                                                                                                                                    ]
+                                                                                                                                                                  }
+                                                                                                                                                                ]
+                                                                                                                                                              }
+                                                                                                                                                            ]
+                                                                                                                                                          }
+                                                                                                                                                        ]
+                                                                                                                                                      }
+                                                                                                                                                    ]
+                                                                                                                                                  }
+                                                                                                                                                ]
+                                                                                                                                              }
+                                                                                                                                            ]
+                                                                                                                                          }
+                                                                                                                                        ]
+                                                                                                                                      }
+                                                                                                                                    ]
+                                                                                                                                  }
+                                                                                                                                ]
+                                                                                                                              }
+                                                                                                                            ]
+                                                                                                                          }
+                                                                                                                        ]
+                                                                                                                      }
+                                                                                                                    ]
+                                                                                                                  }
+                                                                                                                ]
+                                                                                                              }
+                                                                                                            ]
+                                                                                                          }
+                                                                                                        ]
+                                                                                                      }
+                                                                                                    ]
+                                                                                                  }
+                                                                                                ]
+                                                                                              }
+                                                                                            ]
+                                                                                          }
+                                                                                        ]
+                                                                                      }
+                                                                                    ]
+                                                                                  }
+                                                                                ]
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "download_filename": "20260424_衢州葛道职业训练赛_绝艺讲解__刘云程_vs_韩卓然_280001.sgf",
+  "default_move": 63,
+  "max_moves": 63
+}

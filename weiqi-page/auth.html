@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>身份认证 - 围棋智能助手</title>
+    <link rel="icon" type="image/x-icon" href="/weiqi-page/assets/favicon/favicon.ico">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .auth-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px 20px;
+            width: 100%;
+            max-width: 340px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .auth-icon {
+            font-size: 40px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 1.3em;
+            margin-bottom: 4px;
+            color: #333;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 16px;
+            font-size: 0.85em;
+        }
+        
+        .form-group {
+            margin-bottom: 14px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 0.9em;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .divider {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 16px 0;
+        }
+        
+        .help-text {
+            text-align: center;
+            color: #888;
+            font-size: 0.85em;
+            line-height: 1.6;
+        }
+        
+        .help-text strong {
+            color: #555;
+        }
+        
+        .qr-code {
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .qr-code img {
+            max-width: 140px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <div class="auth-icon">🔐</div>
+        <h1>身份认证</h1>
+        <p class="subtitle">您访问的页面需要验证身份</p>
+        
+        <form id="authForm">
+            <div class="form-group">
+                <label for="tokenInput">请输入访问凭证</label>
+                <textarea id="tokenInput" placeholder="粘贴您的访问凭证..." rows="3" autocomplete="off" required></textarea>
+<p id="errorMsg" style="color: #c62828; font-size: 0.85em; margin-top: 8px; display: none;">⚠️ 访问凭证只能包含字母、数字和符号，不能包含中文</p>
+            </div>
+            
+            <button type="submit" id="submitBtn">✅ 进入</button>
+        </form>
+        
+        <div class="divider"></div>
+        
+        <div class="help-text">
+            <p><strong>还没有访问凭证？</strong></p>
+            <p>请扫码关注公众号获取</p>
+            <div class="qr-code">
+                <img src="/weiqi-page/assets/images/public.jpg" alt="公众号二维码" onerror="this.style.display='none'">
+            </div>
+            <p>访问凭证有效期通常为 24 小时</p>
+        </div>
+    </div>
+    
+    <script>
+        // 获取返回地址
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnUrl = urlParams.get('return') || '/';
+        
+        const tokenInput = document.getElementById('tokenInput');
+        const errorMsg = document.getElementById('errorMsg');
+        
+        // 检查是否包含非 ASCII 字符
+        function hasNonAscii(str) {
+            for (let i = 0; i < str.length; i++) {
+                if (str.charCodeAt(i) > 127) return true;
+            }
+            return false;
+        }
+        
+        // 实时过滤输入
+        tokenInput.addEventListener('input', function() {
+            const value = this.value;
+            if (hasNonAscii(value)) {
+                // 过滤掉非 ASCII 字符
+                this.value = value.replace(/[^\x00-\x7F]/g, '');
+                errorMsg.style.display = 'block';
+                setTimeout(() => { errorMsg.style.display = 'none'; }, 3000);
+            }
+        });
+        
+        // 粘贴时过滤
+        tokenInput.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const paste = (e.clipboardData || window.clipboardData).getData('text');
+            const filtered = paste.replace(/[^\x00-\x7F]/g, '');
+            document.execCommand('insertText', false, filtered);
+            if (filtered.length !== paste.length) {
+                errorMsg.style.display = 'block';
+                setTimeout(() => { errorMsg.style.display = 'none'; }, 3000);
+            }
+        });
+        
+        // 表单提交
+        document.getElementById('authForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const token = tokenInput.value.trim();
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (!token) {
+                alert('请输入 Token');
+                return;
+            }
+            
+            // 再次检查非法字符
+            if (hasNonAscii(token)) {
+                alert('Token 不能包含中文或其他特殊字符，请重新输入');
+                return;
+            }
+            
+            // 禁用按钮防止重复提交
+            submitBtn.disabled = true;
+            submitBtn.textContent = '保存中...';
+            
+            // 保存到 localStorage
+            localStorage.setItem('weiqi_token', token);
+            
+            // 返回原页面
+            window.location.href = decodeURIComponent(returnUrl);
+        });
+        
+        // 页面加载时，如果已有 Token，自动填充
+        window.onload = function() {
+            const existingToken = localStorage.getItem('weiqi_token');
+            if (existingToken) {
+                tokenInput.value = existingToken;
+            }
+        };
+    </script>
+</body>
+</html>

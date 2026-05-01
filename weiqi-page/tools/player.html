@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>棋手查询 - 围棋智能助手</title>
+    <link rel="icon" type="image/x-icon" href="/weiqi-page/assets/favicon/favicon.ico">
+    <script>document.write('<script src="/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 12px;
+            min-height: 100vh;
+        }
+        
+        /* 头部 */
+        header {
+            padding: 12px 10px;
+            color: white;
+            text-align: center;
+        }
+        
+        h1 { 
+            font-size: 1.6em; 
+            margin-bottom: 4px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+        
+        /* 卡片通用样式 */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card h2 {
+            font-size: 1.1em;
+            margin-bottom: 12px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* 输入框 */
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        /* 按钮 */
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            width: 100%;
+            margin-top: 12px;
+        }
+        
+        button:hover {
+            opacity: 0.9;
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 错误提示 */
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .error small {
+            display: block;
+            margin-top: 8px;
+            color: #888;
+        }
+        
+        /* 结果卡片 - 手谈 */
+        .shoutan-card {
+            background: #e3f2fd;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .shoutan-card h3 {
+            color: #1976d2;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+        
+        /* 选手项 */
+        .player-item {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .player-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .player-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .player-name {
+            font-weight: 600;
+            font-size: 1.1em;
+            color: #333;
+        }
+        
+        .player-city {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .player-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-box {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #1976d2;
+        }
+        
+        .stat-label {
+            font-size: 0.75em;
+            color: #888;
+        }
+        
+        .player-link {
+            display: inline-block;
+            color: #1976d2;
+            text-decoration: none;
+            font-size: 0.85em;
+            margin-top: 4px;
+        }
+        
+        /* 结果卡片 - 易查分 */
+        .yichafen-card {
+            background: #e8f5e9;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .yichafen-card h3 {
+            color: #388e3c;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+        
+        .yichafen-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .info-item {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .info-label {
+            font-size: 0.75em;
+            color: #888;
+            margin-bottom: 4px;
+        }
+        
+        .info-value {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .notes-box {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .notes-box strong {
+            color: #333;
+        }
+        
+        /* 未找到提示 */
+        .not-found {
+            text-align: center;
+            padding: 24px;
+            color: #888;
+        }
+        
+        .not-found-icon {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+        
+        /* 查询时间 */
+        .query-time {
+            text-align: center;
+            color: #888;
+            font-size: 0.8em;
+            margin-top: 8px;
+        }
+        
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>👤 棋手查询</h1>
+            <p class="subtitle">查询手谈等级分与业余段位</p>
+        </header>
+        
+        <!-- 查询输入 -->
+        <div class="card">
+            <h2>🔍 棋手姓名</h2>
+            <input type="text" id="nameInput" placeholder="请输入棋手姓名..." maxlength="20">
+            <button onclick="queryPlayer()" id="queryBtn">开始查询</button>
+        </div>
+        
+        <!-- 结果显示 -->
+        <div id="resultSection" style="display: none;"></div>
+        
+        <footer>
+            <p>围棋智能助手 &copy; 2026</p>
+        </footer>
+    </div>
+    
+    <script>
+        // 查询棋手
+        async function queryPlayer() {
+            const name = document.getElementById('nameInput').value.trim();
+            const queryBtn = document.getElementById('queryBtn');
+            const resultSection = document.getElementById('resultSection');
+            
+            if (!name) {
+                alert('请输入棋手姓名');
+                return;
+            }
+            
+            // 检查 Token（只在查询时判断）
+            if (!hasToken()) {
+                redirectToAuth();
+                return;
+            }
+            
+            // 禁用按钮，显示加载
+            queryBtn.disabled = true;
+            queryBtn.textContent = '查询中...';
+            resultSection.style.display = 'block';
+            resultSection.innerHTML = `
+                <div class="card loading">
+                    <div class="spinner"></div>
+                    <p>正在查询 "${name}"...</p>
+                    <p style="font-size: 0.85em; color: #888; margin-top: 8px;">
+                        手谈查询约 1-3 秒，易查分查询约 5-10 秒
+                    </p>
+                </div>
+            `;
+            
+            try {
+                const response = await fetchWithAuth(
+                    `/api/player?name=${encodeURIComponent(name)}`
+                );
+                
+                // 如果 response 为 null，说明已跳转到认证页
+                if (!response) return;
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error?.message || '查询失败');
+                }
+                
+                // 显示结果
+                displayResult(data);
+                
+            } catch (error) {
+                resultSection.innerHTML = `
+                    <div class="card">
+                        <div class="error">
+                            <strong>查询失败</strong>
+                            <p>${error.message}</p>
+                            <small>如果提示 Token 无效，请重新输入 Token</small>
+                        </div>
+                    </div>
+                `;
+            } finally {
+                queryBtn.disabled = false;
+                queryBtn.textContent = '开始查询';
+            }
+        }
+        
+        // 显示查询结果
+        function displayResult(data) {
+            const resultSection = document.getElementById('resultSection');
+            let html = '';
+            
+            // 手谈结果
+            if (data.shoutan?.found && data.shoutan.data) {
+                const shoutanData = data.shoutan.data;
+                html += '<div class="shoutan-card">';
+                html += `<h3>📊 手谈等级分（${shoutanData.count}位同名选手）</h3>`;
+                
+                if (shoutanData.players && shoutanData.players.length > 0) {
+                    shoutanData.players.forEach(player => {
+                        html += '<div class="player-item">';
+                        html += '<div class="player-header">';
+                        html += `<span class="player-name">${player.name}</span>`;
+                        html += `<span class="player-city">${player.city}</span>`;
+                        html += '</div>';
+                        
+                        html += '<div class="player-stats">';
+                        if (player.level) {
+                            html += `<div class="stat-box"><div class="stat-value">${player.level}</div><div class="stat-label">段位</div></div>`;
+                        }
+                        if (player.rating) {
+                            html += `<div class="stat-box"><div class="stat-value">${player.rating}</div><div class="stat-label">等级分</div></div>`;
+                        }
+                        if (player.rank) {
+                            html += `<div class="stat-box"><div class="stat-value">${player.rank}</div><div class="stat-label">全国排名</div></div>`;
+                        }
+                        if (player.games) {
+                            html += `<div class="stat-box"><div class="stat-value">${player.games}</div><div class="stat-label">对局</div></div>`;
+                        }
+                        html += '</div>';
+                        
+                        if (player.detail_url) {
+                            html += `<a href="${player.detail_url}" target="_blank" class="player-link">查看详细记录 →</a>`;
+                        }
+                        html += '</div>';
+                    });
+                }
+                
+                if (shoutanData.performance) {
+                    html += `<div class="query-time">⏱️ 查询耗时: ${shoutanData.performance.total}秒</div>`;
+                }
+                html += '</div>';
+            } else {
+                html += '<div class="shoutan-card">';
+                html += '<h3>📊 手谈等级分</h3>';
+                html += '<div class="not-found"><div class="not-found-icon">🔍</div>未找到手谈等级分信息</div>';
+                html += '</div>';
+            }
+            
+            // 易查分结果
+            if (data.yichafen?.found && data.yichafen.data) {
+                const ycData = data.yichafen.data;
+                html += '<div class="yichafen-card">';
+                html += '<h3>🏆 易查分业余段位</h3>';
+                
+                html += '<div class="yichafen-info">';
+                if (ycData.level) {
+                    html += `<div class="info-item"><div class="info-label">段位</div><div class="info-value">${ycData.level}</div></div>`;
+                }
+                if (ycData.rating) {
+                    html += `<div class="info-item"><div class="info-label">等级分</div><div class="info-value">${ycData.rating}</div></div>`;
+                }
+                if (ycData.total_rank) {
+                    html += `<div class="info-item"><div class="info-label">总排名</div><div class="info-value">${ycData.total_rank}</div></div>`;
+                }
+                if (ycData.province_rank) {
+                    html += `<div class="info-item"><div class="info-label">省区排名</div><div class="info-value">${ycData.province_rank}</div></div>`;
+                }
+                if (ycData.city_rank) {
+                    html += `<div class="info-item"><div class="info-label">市排名</div><div class="info-value">${ycData.city_rank}</div></div>`;
+                }
+                if (ycData.province || ycData.city) {
+                    const location = [ycData.province, ycData.city].filter(Boolean).join(' ');
+                    html += `<div class="info-item"><div class="info-label">地区</div><div class="info-value">${location}</div></div>`;
+                }
+                if (ycData.gender) {
+                    html += `<div class="info-item"><div class="info-label">性别</div><div class="info-value">${ycData.gender}</div></div>`;
+                }
+                if (ycData.birth_year) {
+                    html += `<div class="info-item"><div class="info-label">出生年份</div><div class="info-value">${ycData.birth_year}</div></div>`;
+                }
+                html += '</div>';
+                
+                if (ycData.notes) {
+                    html += `<div class="notes-box"><strong>📋 备注:</strong><br>${ycData.notes}</div>`;
+                }
+                
+                if (ycData.query_time) {
+                    html += `<div class="query-time">⏱️ 查询耗时: ${ycData.query_time}秒</div>`;
+                }
+                html += '</div>';
+            } else {
+                html += '<div class="yichafen-card">';
+                html += '<h3>🏆 易查分业余段位</h3>';
+                html += '<div class="not-found"><div class="not-found-icon">🔍</div>未查询到业余段位信息</div>';
+                html += '</div>';
+            }
+            
+            resultSection.innerHTML = html;
+        }
+        
+        // 回车键查询
+        document.getElementById('nameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                queryPlayer();
+            }
+        });
+    </script>
+</body>
+</html>

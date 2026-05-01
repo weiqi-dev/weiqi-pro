@@ -1,0 +1,110 @@
+[
+  {
+    "id": "202604290943400001",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-28/野狐/game_202604290943400001.json",
+    "black": "김주형",
+    "white": "崔精",
+    "black_rank": "P1段",
+    "white_rank": "P9段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第31届LG杯世界棋王战韩国预选<绝艺讲解>"
+  },
+  {
+    "id": "202604290943400002",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-28/野狐/game_202604290943400002.json",
+    "black": "최광호",
+    "white": "李宰成",
+    "black_rank": "P7段",
+    "white_rank": "P6段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第31届LG杯世界棋王战韩国预选<绝艺讲解>"
+  },
+  {
+    "id": "202604290943400003",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-28/野狐/game_202604290943400003.json",
+    "black": "张一淼",
+    "white": "邹梓阳",
+    "black_rank": "P2段",
+    "white_rank": "P2段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第3届晋城杯全国职业公开赛预选3轮<绝艺讲解>"
+  },
+  {
+    "id": "202604290943400004",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-28/野狐/game_202604290943400004.json",
+    "black": "金恩持",
+    "white": "尹畯相",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "B+0.50",
+    "result_cn": "黑胜0.50目",
+    "event": "第6届韩国最佳棋士战16强<绝艺讲解>"
+  },
+  {
+    "id": "202604290943400005",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-28/野狐/game_202604290943400005.json",
+    "black": "許家元",
+    "white": "芝野虎丸",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第64期日本十段战挑战赛决胜局<绝艺讲解>"
+  },
+  {
+    "id": "202604290943400006",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-28/野狐/game_202604290943400006.json",
+    "black": "李思璇",
+    "white": "於之莹",
+    "black_rank": "P6段",
+    "white_rank": "P8段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第3届晋城杯全国职业公开赛预选3轮<绝艺讲解>"
+  },
+  {
+    "id": "202604290943400007",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-28/野狐/game_202604290943400007.json",
+    "black": "芮乃伟",
+    "white": "周逵",
+    "black_rank": "P9段",
+    "white_rank": "P4段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第3届晋城杯全国职业公开赛预选3轮<绝艺讲解>"
+  },
+  {
+    "id": "202604290943400008",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-28/野狐/game_202604290943400008.json",
+    "black": "尹成志",
+    "white": "涂季康",
+    "black_rank": "P5段",
+    "white_rank": "P5段",
+    "result": "B+0.75",
+    "result_cn": "黑胜0.75目",
+    "event": "第3届晋城杯全国职业公开赛预选3轮<绝艺讲解>"
+  },
+  {
+    "id": "202604290943410009",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-28/野狐/game_202604290943410009.json",
+    "black": "韩一洲",
+    "white": "许育豪",
+    "black_rank": "P8段",
+    "white_rank": "P1段",
+    "result": "B+2.75",
+    "result_cn": "黑胜2.75目",
+    "event": "第3届晋城杯全国职业公开赛预选3轮<绝艺讲解>"
+  }
+]

@@ -1,0 +1,132 @@
+{
+  "game_name": "实战左下角标准化定式（7手）",
+  "black": "黑棋",
+  "white": "白棋",
+  "black_rank": "",
+  "white_rank": "",
+  "board_size": 19,
+  "handicap": 0,
+  "handicap_stones": [],
+  "result": "",
+  "tree": {
+    "color": null,
+    "coord": null,
+    "children": [
+      {
+        "color": "B",
+        "coord": "pc",
+        "children": [
+          {
+            "color": "W",
+            "coord": "tt",
+            "children": [
+              {
+                "color": "B",
+                "coord": "qf",
+                "children": [
+                  {
+                    "color": "W",
+                    "coord": "tt",
+                    "children": [
+                      {
+                        "color": "B",
+                        "coord": "qi",
+                        "children": [
+                          {
+                            "color": "W",
+                            "coord": "pe",
+                            "children": [
+                              {
+                                "color": "B",
+                                "coord": "qe",
+                                "children": [
+                                  {
+                                    "color": "W",
+                                    "coord": "tt",
+                                    "children": [
+                                      {
+                                        "color": "B",
+                                        "coord": "qk",
+                                        "children": [
+                                          {
+                                            "color": "W",
+                                            "coord": "pi",
+                                            "children": [
+                                              {
+                                                "color": "B",
+                                                "coord": "qj",
+                                                "children": [
+                                                  {
+                                                    "color": "W",
+                                                    "coord": "li",
+                                                    "children": [
+                                                      {
+                                                        "color": "B",
+                                                        "coord": "tt",
+                                                        "children": [
+                                                          {
+                                                            "color": "W",
+                                                            "coord": "ih",
+                                                            "children": [
+                                                              {
+                                                                "color": "B",
+                                                                "coord": "tt",
+                                                                "children": [
+                                                                  {
+                                                                    "color": "W",
+                                                                    "coord": "ig",
+                                                                    "children": [
+                                                                      {
+                                                                        "color": "B",
+                                                                        "coord": "tt",
+                                                                        "children": [
+                                                                          {
+                                                                            "color": "W",
+                                                                            "coord": "if",
+                                                                            "children": [
+                                                                              {
+                                                                                "color": "B",
+                                                                                "coord": "ie"
+                                                                              }
+                                                                            ]
+                                                                          }
+                                                                        ]
+                                                                      }
+                                                                    ]
+                                                                  }
+                                                                ]
+                                                              }
+                                                            ]
+                                                          }
+                                                        ]
+                                                      }
+                                                    ]
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "download_filename": "joseki_033.sgf",
+  "default_move": 7,
+  "max_moves": 19
+}

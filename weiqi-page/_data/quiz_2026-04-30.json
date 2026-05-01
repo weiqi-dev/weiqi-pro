@@ -1,0 +1,44 @@
+[
+  {
+    "id": "202605010722090004",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-30/野狐/quiz_202605010722090004.json",
+    "game_path": "/weiqi-page/games/2026-04-30/野狐/game_202605010722090004.html",
+    "black": "姜東潤",
+    "white": "朴河旼",
+    "event": "第31届LG杯世界棋王战韩国预选<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605010722090005",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-30/野狐/quiz_202605010722090005.json",
+    "game_path": "/weiqi-page/games/2026-04-30/野狐/game_202605010722090005.html",
+    "black": "安成浚",
+    "white": "韩昇周",
+    "event": "第31届LG杯世界棋王战韩国预选<绝艺讲解>",
+    "result": "白胜0.50目",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "白胜0.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 1
+      }
+    }
+  }
+]

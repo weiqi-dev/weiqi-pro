@@ -1,0 +1,86 @@
+[
+  {
+    "id": "202604170839400001",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-16/野狐/game_202604170839400001.json",
+    "black": "朝日悠俊",
+    "white": "栁原咲輝",
+    "black_rank": "P1段",
+    "white_rank": "P2段",
+    "result": "B+8.50",
+    "result_cn": "黑胜8.50目",
+    "event": "第11期世界u22新锐战日本预选1轮<绝艺讲解>"
+  },
+  {
+    "id": "202604170839400002",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-16/野狐/game_202604170839400002.json",
+    "black": "陈一纯",
+    "white": "刘云程",
+    "black_rank": "P7段",
+    "white_rank": "P5段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "衢州葛道职业训练赛<绝艺讲解>"
+  },
+  {
+    "id": "202604170839400003",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-16/野狐/game_202604170839400003.json",
+    "black": "依田纪基",
+    "white": "梅泽由香里",
+    "black_rank": "P9段",
+    "white_rank": "P6段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第53期日本天元战预选<绝艺讲解>"
+  },
+  {
+    "id": "202604170839400004",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-16/野狐/game_202604170839400004.json",
+    "black": "梁钟灿",
+    "white": "金贤硕",
+    "black_rank": "P2段",
+    "white_rank": "9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "韩国冲岩循环赛<绝艺讲解>"
+  },
+  {
+    "id": "202604170839400005",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-16/野狐/game_202604170839400005.json",
+    "black": "河野臨",
+    "white": "本木克弥",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第52期日本天元战本赛<绝艺讲解>"
+  },
+  {
+    "id": "202604170839400006",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-16/野狐/game_202604170839400006.json",
+    "black": "許家元",
+    "white": "佐田篤史",
+    "black_rank": "P9段",
+    "white_rank": "P7段",
+    "result": "W+0.50",
+    "result_cn": "白胜0.50目",
+    "event": "第51期日本碁圣战本赛半决赛<绝艺讲解>"
+  },
+  {
+    "id": "202604170839400007",
+    "source": "野狐",
+    "path": "/weiqi-page/replay.html?data=/weiqi-page/games/2026-04-16/野狐/game_202604170839400007.json",
+    "black": "余正麒",
+    "white": "芝野虎丸",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第51期日本名人战循环圈<绝艺讲解>"
+  }
+]

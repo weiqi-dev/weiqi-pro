@@ -1,0 +1,44 @@
+[
+  {
+    "id": "202603251116410001",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-24/野狐/quiz_202603251116410001.json",
+    "game_path": "/weiqi-page/games/2026-03-24/野狐/game_202603251116410001.html",
+    "black": "许皓鋐",
+    "white": "陈祈睿",
+    "event": "第25屆中環天元賽挑戰賽五番第4局<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 4,
+    "stats": {
+      "total": 4,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202603251116410003",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-03-24/野狐/quiz_202603251116410003.json",
+    "game_path": "/weiqi-page/games/2026-03-24/野狐/game_202603251116410003.html",
+    "black": "卞相壹",
+    "white": "朴廷桓",
+    "event": "第27届韩国麦馨杯九段战决赛1/3<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 5,
+    "stats": {
+      "total": 5,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 5,
+        "endgame": 0
+      }
+    }
+  }
+]

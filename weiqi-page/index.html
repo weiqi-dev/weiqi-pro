@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>围棋智能助手</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="128x128" href="/assets/favicon/favicon.png">
+    <link rel="apple-touch-icon" sizes="64x64" href="/assets/favicon/apple-touch-icon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 12px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            padding: 12px 10px 8px;
+            color: white;
+        }
+        .header-top {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        h1 { 
+            font-size: 1.8em; 
+            margin-bottom: 4px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .header-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 4px;
+        }
+        .date-display {
+            font-size: 0.75em;
+            padding: 2px 10px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+        }
+        .tools-btn {
+            background: transparent;
+            border: none;
+            padding: 4px;
+            font-size: 1.4em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+        .tools-btn:hover {
+            transform: scale(1.1);
+        }
+        .cards {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 12px;
+            flex: 1;
+            justify-content: flex-start;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        .card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .card-icon {
+            font-size: 1.5em;
+            flex-shrink: 0;
+        }
+        .card h2 {
+            color: #333;
+            font-size: 1.2em;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        /* 统一三列统计区 */
+        .triple-stats {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .stat-item {
+            flex: 1;
+            text-align: center;
+            padding: 20px 4px;
+            border-radius: 10px;
+        }
+        .stat-item .emoji { 
+            font-size: 1.8em; 
+            display: block; 
+            margin-bottom: 6px; 
+        }
+        .stat-item .count { 
+            font-size: 2em; 
+            font-weight: 700; 
+            color: #333; 
+            line-height: 1;
+            margin: 6px 0;
+        }
+        .stat-item .name { 
+            font-size: 0.8em; 
+            color: #666; 
+            margin-top: 4px;
+        }
+        
+        /* 棋谱卡片配色 */
+        .stat-item.games { background: #e3f2fd; }
+        .stat-item.events { background: #f3e5f5; }
+        .stat-item.sources { background: #e8f5e9; }
+        
+        /* 选点卡片配色 */
+        .stat-item.layout { background: #e3f2fd; }
+        .stat-item.middle { background: #e8f5e9; }
+        .stat-item.endgame { background: #fff3e0; }
+        
+        /* 等级分布标签 - 三级 */
+        .level-row {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 0;
+            font-size: 0.8em;
+            flex-wrap: wrap;
+        }
+        .level-tag {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+        }
+        .level-tag.pro { background: #E57373; }   /* 原困难色 */
+        .level-tag.high { background: #FFB74D; }  /* 原中等色 */
+        .level-tag.normal { background: #81C784; } /* 原简单色 */
+        
+        /* 定式卡片配色 */
+        .stat-item.hot { background: #ffebee; }
+        .stat-item.hit { background: #e8f5e9; }
+        .stat-item.complex { background: #e3f2fd; }
+        
+        
+        footer {
+            text-align: center;
+            padding: 10px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7em;
+            margin-top: auto;
+        }
+        
+        /* 工具面板遮罩 */
+        .tools-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+        .tools-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+        
+        /* 工具面板 */
+        .tools-panel {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            border-radius: 16px 16px 0 0;
+            padding: 16px 20px 24px;
+            transform: translateY(100%);
+            pointer-events: none;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        .tools-panel.active {
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        
+        /* PC端居中显示 */
+        @media (min-width: 768px) {
+            .tools-panel {
+                left: 50%;
+                right: auto;
+                top: 50%;
+                bottom: auto;
+                transform: translate(-50%, -40%) scale(0.9);
+                opacity: 0;
+                pointer-events: none;
+                border-radius: 16px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                max-height: 80vh;
+                overflow-y: auto;
+                transition: all 0.3s ease;
+            }
+            .tools-panel.active {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+                pointer-events: auto;
+            }
+        }
+        
+        .tools-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        .tools-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #333;
+        }
+        .tools-close {
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f5f5f5;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1em;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tools-close:hover {
+            background: #e0e0e0;
+        }
+        
+        /* 工具网格 */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .tool-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            padding: 12px 8px;
+            border-radius: 12px;
+            transition: background 0.2s;
+        }
+        .tool-item:hover {
+            background: #f5f5f5;
+        }
+        .tool-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        .tool-icon.recorder {
+            background: linear-gradient(135deg, #E57373 0%, #FF8A65 100%);
+            box-shadow: 0 4px 12px rgba(229, 115, 115, 0.3);
+        }
+        .tool-icon.player {
+            background: linear-gradient(135deg, #42A5F5 0%, #66BB6A 100%);
+            box-shadow: 0 4px 12px rgba(66, 165, 245, 0.3);
+        }
+        .tool-icon.opponent {
+            background: linear-gradient(135deg, #AB47BC 0%, #EC407A 100%);
+            box-shadow: 0 4px 12px rgba(171, 71, 188, 0.3);
+        }
+        .tool-icon.yunbisai {
+            background: linear-gradient(135deg, #FF8F00 0%, #FFB300 100%);
+            box-shadow: 0 4px 12px rgba(255, 143, 0, 0.3);
+        }
+        .tool-icon.fetcher {
+            background: linear-gradient(135deg, #00BCD4 0%, #00E5FF 100%);
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+        }
+        .tool-name {
+            font-size: 0.85em;
+            color: #555;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <h1>围棋智能助手</h1>
+            </div>
+            <div class="header-bottom">
+                <div class="date-display">2026-04-30</div>
+                <button class="tools-btn" onclick="openToolsPanel()" title="工具">🧰</button>
+            </div>
+        </header>
+        
+        <div class="cards">
+            <!-- 棋谱卡片 -->
+            <a href="/weiqi-page/games/" class="card-link">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📥</div>
+                        <h2>实战棋谱</h2>
+                    </div>
+                    <div class="triple-stats">
+                        <div class="stat-item games">
+                            <span class="emoji">📋</span>
+                            <span class="count">10</span>
+                            <span class="name">最近新增</span>
+                        </div>
+                        <div class="stat-item events">
+                            <span class="emoji">🏆</span>
+                            <span class="count">6</span>
+                            <span class="name">个赛事</span>
+                        </div>
+                        <div class="stat-item sources">
+                            <span class="emoji">🌐</span>
+                            <span class="count">1</span>
+                            <span class="name">个来源</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- 选点题卡片 -->
+            <a href="/weiqi-page/quiz/" class="card-link">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">🎯</div>
+                        <h2>实战选点</h2>
+                    </div>
+                    <div class="triple-stats">
+                        <div class="stat-item layout">
+                            <span class="emoji">🌅</span>
+                            <span class="count">1</span>
+                            <span class="name">布局</span>
+                        </div>
+                        <div class="stat-item middle">
+                            <span class="emoji">⚔️</span>
+                            <span class="count">4</span>
+                            <span class="name">中盘</span>
+                        </div>
+                        <div class="stat-item endgame">
+                            <span class="emoji">🔚</span>
+                            <span class="count">1</span>
+                            <span class="name">官子</span>
+                        </div>
+                    </div>
+                    <div class="level-row">
+                        <span class="level-tag pro">职业6</span>
+                        <span class="level-tag high">高段0</span>
+                        <span class="level-tag normal">普通0</span>
+                    </div>
+                </div>
+            </a>
+            
+            <!-- 定式卡片 -->
+            <a href="/weiqi-page/joseki/" class="card-link">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-icon">📚</div>
+                        <h2>定式发现</h2>
+                    </div>
+                    <div class="triple-stats">
+                        <div class="stat-item hot">
+                            <span class="emoji">🔥</span>
+                            <span class="count">3</span>
+                            <span class="name">热门</span>
+                        </div>
+                        <div class="stat-item hit">
+                            <span class="emoji">🎯</span>
+                            <span class="count">2</span>
+                            <span class="name">命中</span>
+                        </div>
+                        <div class="stat-item complex">
+                            <span class="emoji">🧩</span>
+                            <span class="count">7</span>
+                            <span class="name">复杂</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        
+        <footer>
+            <p>围棋智能助手 &copy; 2026 | AI驱动 · 每日更新</p>
+        </footer>
+    </div>
+    
+    <!-- 工具面板遮罩 -->
+    <div id="toolsBackdrop" class="tools-backdrop" onclick="closeToolsPanel()"></div>
+    
+    <!-- 工具面板 -->
+    <div id="toolsPanel" class="tools-panel">
+        <div class="tools-header">
+            <span class="tools-title">工具箱</span>
+            <button class="tools-close" onclick="closeToolsPanel()">✕</button>
+        </div>
+        <div class="tools-grid">
+            <a href="/weiqi-page/tools/recorder.html" class="tool-item" onclick="closeToolsPanel()">
+                <div class="tool-icon recorder">📝</div>
+                <span class="tool-name">记谱</span>
+            </a>
+            <a href="/weiqi-page/tools/player.html" class="tool-item" onclick="closeToolsPanel()">
+                <div class="tool-icon player">👤</div>
+                <span class="tool-name">棋手查询</span>
+            </a>
+            <a href="/weiqi-page/tools/opponent/" class="tool-item" onclick="closeToolsPanel()">
+                <div class="tool-icon opponent">📊</div>
+                <span class="tool-name">对手分析</span>
+            </a>
+            <a href="/weiqi-page/tools/yunbisai/" class="tool-item" onclick="closeToolsPanel()">
+                <div class="tool-icon yunbisai">🏆</div>
+                <span class="tool-name">云比赛</span>
+            </a>
+            <a href="/weiqi-page/tools/fetcher.html" class="tool-item" onclick="closeToolsPanel()">
+                <div class="tool-icon fetcher">📥</div>
+                <span class="tool-name">取谱</span>
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // 工具面板控制
+        function openToolsPanel() {
+            document.getElementById('toolsBackdrop').classList.add('active');
+            document.getElementById('toolsPanel').classList.add('active');
+        }
+        
+        function closeToolsPanel() {
+            document.getElementById('toolsBackdrop').classList.remove('active');
+            document.getElementById('toolsPanel').classList.remove('active');
+        }
+        
+        // ESC 键关闭
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeToolsPanel();
+        });
+        
+        // 触摸滑动关闭（移动端）
+        let touchStartY = 0;
+        const toolsPanel = document.getElementById('toolsPanel');
+        if (toolsPanel) {
+            toolsPanel.addEventListener('touchstart', function(e) {
+                touchStartY = e.changedTouches[0].screenY;
+            }, { passive: true });
+            
+            toolsPanel.addEventListener('touchend', function(e) {
+                const touchEndY = e.changedTouches[0].screenY;
+                const deltaY = touchEndY - touchStartY;
+                // 向下滑动超过 80px 关闭
+                if (deltaY > 80) {
+                    closeToolsPanel();
+                }
+            }, { passive: true });
+        }
+    </script>
+    </body>
+</html>

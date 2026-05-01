@@ -1,0 +1,86 @@
+[
+  {
+    "id": "202604232222480002",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-22/野狐/quiz_202604232222480002.json",
+    "game_path": "/weiqi-page/games/2026-04-22/野狐/game_202604232222480002.html",
+    "black": "朴珉奎",
+    "white": "申真谞",
+    "event": "第31届韩国GS加德士杯败者组<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 0,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604232222480003",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-22/野狐/quiz_202604232222480003.json",
+    "game_path": "/weiqi-page/games/2026-04-22/野狐/game_202604232222480003.html",
+    "black": "洪性志",
+    "white": "元晟溱",
+    "event": "第31届韩国GS加德士杯败者组<绝艺讲解>",
+    "result": "黑胜0.50目",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑胜0.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 2
+      }
+    }
+  },
+  {
+    "id": "202604232222480004",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-22/野狐/quiz_202604232222480004.json",
+    "game_path": "/weiqi-page/games/2026-04-22/野狐/game_202604232222480004.html",
+    "black": "金炯佑",
+    "white": "李昌锡",
+    "event": "第6届韩国最佳棋士战16强<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 4,
+    "stats": {
+      "total": 4,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 4,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604232222480006",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-22/野狐/quiz_202604232222480006.json",
+    "game_path": "/weiqi-page/games/2026-04-22/野狐/game_202604232222480006.html",
+    "black": "金荣三",
+    "white": "李昌镐",
+    "event": "第20届韩国GG杯绅士淑女擂台赛预选<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  }
+]

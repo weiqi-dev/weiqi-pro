@@ -1,0 +1,107 @@
+[
+  {
+    "id": "202604281035330001",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-27/野狐/quiz_202604281035330001.json",
+    "game_path": "/weiqi-page/games/2026-04-27/野狐/game_202604281035330001.html",
+    "black": "藤沢里菜",
+    "white": "矢代久美子",
+    "event": "第11届日本扇兴杯本赛<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604281035330002",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-27/野狐/quiz_202604281035330002.json",
+    "game_path": "/weiqi-page/games/2026-04-27/野狐/game_202604281035330002.html",
+    "black": "藤井浩贵",
+    "white": "伊田笃史",
+    "event": "第52期日本天元战本赛<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604281035330004",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-27/野狐/quiz_202604281035330004.json",
+    "game_path": "/weiqi-page/games/2026-04-27/野狐/game_202604281035330004.html",
+    "black": "卞相壹",
+    "white": "高根台",
+    "event": "第6届韩国最佳棋士战16强<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604281035340006",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-27/野狐/quiz_202604281035340006.json",
+    "game_path": "/weiqi-page/games/2026-04-27/野狐/game_202604281035340006.html",
+    "black": "스미레",
+    "white": "박소율",
+    "event": "第31届LG杯世界棋王战韩国预选<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604281035340009",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-27/野狐/quiz_202604281035340009.json",
+    "game_path": "/weiqi-page/games/2026-04-27/野狐/game_202604281035340009.html",
+    "black": "陈家瑞",
+    "white": "尹成志",
+    "event": "第3届晋城杯全国职业公开赛预选2轮<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  }
+]

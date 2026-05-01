@@ -1,0 +1,149 @@
+[
+  {
+    "id": "202604091053290002",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-08/野狐/quiz_202604091053290002.json",
+    "game_path": "/weiqi-page/games/2026-04-08/野狐/game_202604091053290002.html",
+    "black": "谢梓萌",
+    "white": "이나현",
+    "event": "第4届烂柯杯世界公开赛综合预选<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 0,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604091053300003",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-08/野狐/quiz_202604091053300003.json",
+    "game_path": "/weiqi-page/games/2026-04-08/野狐/game_202604091053300003.html",
+    "black": "施洲",
+    "white": "芮乃伟",
+    "event": "第4届烂柯杯世界公开赛综合预选<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 0,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604091053300008",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-08/野狐/quiz_202604091053300008.json",
+    "game_path": "/weiqi-page/games/2026-04-08/野狐/game_202604091053300008.html",
+    "black": "陈镱夫",
+    "white": "安成浚",
+    "event": "第4届烂柯杯世界公开赛综合预选<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202604091053300009",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-08/野狐/quiz_202604091053300009.json",
+    "game_path": "/weiqi-page/games/2026-04-08/野狐/game_202604091053300009.html",
+    "black": "金基伯",
+    "white": "吴俊毅",
+    "event": "第4届烂柯杯世界公开赛综合预选<绝艺讲解>",
+    "result": "黑胜0.75目",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑胜0.75目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 1
+      }
+    }
+  },
+  {
+    "id": "202604091053300010",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-08/野狐/quiz_202604091053300010.json",
+    "game_path": "/weiqi-page/games/2026-04-08/野狐/game_202604091053300010.html",
+    "black": "赖均辅",
+    "white": "时越",
+    "event": "第4届烂柯杯世界公开赛综合预选<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 1,
+        "endgame": 1
+      }
+    }
+  },
+  {
+    "id": "202604091053310012",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-08/野狐/quiz_202604091053310012.json",
+    "game_path": "/weiqi-page/games/2026-04-08/野狐/game_202604091053310012.html",
+    "black": "王泽宇",
+    "white": "伊了",
+    "event": "第4届烂柯杯世界公开赛综合预选<绝艺讲解>",
+    "result": "黑胜0.75目",
+    "count": 4,
+    "stats": {
+      "total": 4,
+      "result": "黑胜0.75目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 3
+      }
+    }
+  },
+  {
+    "id": "202604091053310013",
+    "source": "野狐",
+    "path": "/weiqi-page/quiz.html?data=/weiqi-page/quiz/2026-04-08/野狐/quiz_202604091053310013.json",
+    "game_path": "/weiqi-page/games/2026-04-08/野狐/game_202604091053310013.html",
+    "black": "徐文燕",
+    "white": "杭小童",
+    "event": "第4届烂柯杯世界公开赛综合预选<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  }
+]
