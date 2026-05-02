@@ -285,7 +285,7 @@
                 opponentData = JSON.parse(stored);
                 displayJoseki();
 
-                // 恢复滚动位置和已查看状态
+                // 首次加载时恢复滚动位置和高亮
                 restoreScrollAndHighlights();
 
             } catch (error) {
@@ -298,15 +298,26 @@
             }
         }
 
+        // 监听 pageshow 事件，处理 bfcache 恢复
+        window.addEventListener('pageshow', function(event) {
+            // 每次页面显示时都恢复滚动位置和高亮（包括从 bfcache 恢复）
+            if (opponentData) {
+                restoreScrollAndHighlights();
+            }
+        });
+
         // 恢复滚动位置和高亮已查看条目
         function restoreScrollAndHighlights() {
             // 恢复滚动位置
             const savedScroll = sessionStorage.getItem(SCROLL_KEY);
             if (savedScroll) {
-                setTimeout(() => {
-                    window.scrollTo(0, parseInt(savedScroll));
-                    sessionStorage.removeItem(SCROLL_KEY);
-                }, 100);
+                const scrollY = parseInt(savedScroll);
+                // 多次尝试确保滚动成功（微信浏览器兼容）
+                window.scrollTo(0, scrollY);
+                setTimeout(() => window.scrollTo(0, scrollY), 50);
+                setTimeout(() => window.scrollTo(0, scrollY), 100);
+                setTimeout(() => window.scrollTo(0, scrollY), 200);
+                sessionStorage.removeItem(SCROLL_KEY);
             }
 
             // 高亮已查看的条目
