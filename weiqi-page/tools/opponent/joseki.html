@@ -66,9 +66,7 @@
         }
         .joseki-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
         .joseki-card.hidden { display: none; }
-        .joseki-card.viewed { border: 2px solid #667eea; background: linear-gradient(135deg, rgba(102,126,234,0.05) 0%, rgba(118,75,162,0.05) 100%); }
-        .joseki-card.viewed::after { content: '✓ 已查看'; position: absolute; top: 8px; right: 8px; font-size: 0.7em; color: #667eea; background: rgba(102,126,234,0.1); padding: 2px 6px; border-radius: 8px; }
-        .joseki-card { position: relative; }
+        .joseki-card.viewed { opacity: 0.6; }
         .joseki-header {
             padding: 12px 15px 8px;
             display: flex;
@@ -230,7 +228,7 @@
     <div class="container">
         <header>
             <h1>📚 定式发现</h1>
-
+            <button class="icon-btn" onclick="clearVisited()" title="清除访问记录">👁️</button>
         </header>
 
         <div id="content">
@@ -347,6 +345,14 @@
                 viewed.push(index);
                 sessionStorage.setItem(VIEWED_KEY, JSON.stringify(viewed));
             }
+        }
+
+        // 清除访问记录
+        function clearVisited() {
+            sessionStorage.removeItem(VIEWED_KEY);
+            document.querySelectorAll('.joseki-card.viewed').forEach(card => {
+                card.classList.remove('viewed');
+            });
         }
 
         // 判断定式标签类型
