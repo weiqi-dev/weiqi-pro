@@ -2,11 +2,11 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>实战选点 | 围棋智能助手</title>
-    <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico">
-    <link rel="icon" type="image/png" sizes="128x128" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.png">
-    <link rel="apple-touch-icon" sizes="64x64" href="/weiqi-pro/weiqi-page/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
+    <link rel="icon" type="image/png" sizes="128x128" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.png?v=20260502">
+    <link rel="apple-touch-icon" sizes="64x64" href="/weiqi-pro/weiqi-page/assets/favicon/apple-touch-icon.png?v=20260502">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
@@ -127,12 +127,12 @@
         <header>
             <div class="header-left"><h1>🎯 实战选点</h1></div>
             <div class="header-actions">
-                <button id="calendarBtn" class="calendar-btn" onclick="openCalendar()">📅 <span id="selectedDateText">2026-05-01</span></button>
+                <button id="calendarBtn" class="calendar-btn" onclick="openCalendar()">📅 <span id="selectedDateText">2026-05-02</span></button>
                 <button class="icon-btn" onclick="clearVisited()" title="清除本日访问记录">👁️</button>
             </div>
         </header>
         <select id="dateFilter" style="display:none" onchange="filterByDate()">
-            <option value="2026-05-01" selected>2026-05-01</option><option value="2026-04-30" >2026-04-30</option><option value="2026-04-29" >2026-04-29</option><option value="2026-04-28" >2026-04-28</option><option value="2026-04-27" >2026-04-27</option><option value="2026-04-26" >2026-04-26</option><option value="2026-04-25" >2026-04-25</option><option value="2026-04-24" >2026-04-24</option><option value="2026-04-23" >2026-04-23</option><option value="2026-04-22" >2026-04-22</option><option value="2026-04-21" >2026-04-21</option><option value="2026-04-20" >2026-04-20</option><option value="2026-04-19" >2026-04-19</option><option value="2026-04-18" >2026-04-18</option><option value="2026-04-17" >2026-04-17</option><option value="2026-04-16" >2026-04-16</option><option value="2026-04-15" >2026-04-15</option><option value="2026-04-14" >2026-04-14</option><option value="2026-04-13" >2026-04-13</option><option value="2026-04-12" >2026-04-12</option><option value="2026-04-11" >2026-04-11</option><option value="2026-04-10" >2026-04-10</option><option value="2026-04-09" >2026-04-09</option><option value="2026-04-08" >2026-04-08</option><option value="2026-04-07" >2026-04-07</option><option value="2026-04-06" >2026-04-06</option><option value="2026-04-04" >2026-04-04</option><option value="2026-04-03" >2026-04-03</option><option value="2026-04-02" >2026-04-02</option><option value="2026-04-01" >2026-04-01</option><option value="2026-03-31" >2026-03-31</option><option value="2026-03-30" >2026-03-30</option><option value="2026-03-29" >2026-03-29</option><option value="2026-03-28" >2026-03-28</option><option value="2026-03-27" >2026-03-27</option><option value="2026-03-26" >2026-03-26</option><option value="2026-03-25" >2026-03-25</option><option value="2026-03-24" >2026-03-24</option><option value="2026-03-23" >2026-03-23</option><option value="2026-03-22" >2026-03-22</option>
+            <option value="2026-05-02" selected>2026-05-02</option><option value="2026-05-01" >2026-05-01</option><option value="2026-04-30" >2026-04-30</option><option value="2026-04-29" >2026-04-29</option><option value="2026-04-28" >2026-04-28</option><option value="2026-04-27" >2026-04-27</option><option value="2026-04-26" >2026-04-26</option><option value="2026-04-25" >2026-04-25</option><option value="2026-04-24" >2026-04-24</option><option value="2026-04-23" >2026-04-23</option><option value="2026-04-22" >2026-04-22</option><option value="2026-04-21" >2026-04-21</option><option value="2026-04-20" >2026-04-20</option><option value="2026-04-19" >2026-04-19</option><option value="2026-04-18" >2026-04-18</option><option value="2026-04-17" >2026-04-17</option><option value="2026-04-16" >2026-04-16</option><option value="2026-04-15" >2026-04-15</option><option value="2026-04-14" >2026-04-14</option><option value="2026-04-13" >2026-04-13</option><option value="2026-04-12" >2026-04-12</option><option value="2026-04-11" >2026-04-11</option><option value="2026-04-10" >2026-04-10</option><option value="2026-04-09" >2026-04-09</option><option value="2026-04-08" >2026-04-08</option><option value="2026-04-07" >2026-04-07</option><option value="2026-04-06" >2026-04-06</option><option value="2026-04-04" >2026-04-04</option><option value="2026-04-03" >2026-04-03</option><option value="2026-04-02" >2026-04-02</option><option value="2026-04-01" >2026-04-01</option><option value="2026-03-31" >2026-03-31</option><option value="2026-03-30" >2026-03-30</option><option value="2026-03-29" >2026-03-29</option><option value="2026-03-28" >2026-03-28</option><option value="2026-03-27" >2026-03-27</option><option value="2026-03-26" >2026-03-26</option><option value="2026-03-25" >2026-03-25</option><option value="2026-03-24" >2026-03-24</option><option value="2026-03-23" >2026-03-23</option><option value="2026-03-22" >2026-03-22</option>
         </select>
         <div id="content">
             
@@ -5300,6 +5300,180 @@
                 
             </div>
             
+            <div class="date-section" data-date="2026-05-02">
+                
+                <div class="source-group">
+                    <div class="source-header" onclick="toggleSource(this)">
+                        <span>🏷️ 野狐 (8份, 22题)</span>
+                        <span class="source-toggle">▼</span>
+                    </div>
+                    <div class="quiz-list">
+                        
+                        <div class="quiz-card-wrapper" data-path="/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739020003.json" data-quiz-id="202605030739020003"><div class="quiz-card">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>伊田笃史<span style="color:#999;font-weight:normal;">vs</span><span class="stone-icon stone-white"></span>福冈航太朗
+                                </span>
+                            </div>
+                            <div class="event">日本国家队研究会大循环<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">1题</span>
+                                
+                                <span class="phase">官子1</span>
+                                <span class="level" data-level="职业">职业</span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                <span class="result">黑中盘胜</span>
+                                <span class="game-btn" data-game-path="/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739020003.html">📖 棋谱</span>
+                            </div>
+                        </div></div>
+                        
+                        <div class="quiz-card-wrapper" data-path="/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739020004.json" data-quiz-id="202605030739020004"><div class="quiz-card">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>陈扬<span style="color:#999;font-weight:normal;">vs</span><span class="stone-icon stone-white"></span>王子华
+                                </span>
+                            </div>
+                            <div class="event">第15届陈毅杯预选<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">6题</span>
+                                
+                                <span class="phase">中盘2官子4</span>
+                                <span class="level" data-level="高段">高段</span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                <span class="result">黑胜0.75目</span>
+                                <span class="game-btn" data-game-path="/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739020004.html">📖 棋谱</span>
+                            </div>
+                        </div></div>
+                        
+                        <div class="quiz-card-wrapper" data-path="/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739020005.json" data-quiz-id="202605030739020005"><div class="quiz-card">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>马天放<span style="color:#999;font-weight:normal;">vs</span><span class="stone-icon stone-white"></span>赵炎
+                                </span>
+                            </div>
+                            <div class="event">第15届陈毅杯预选赛<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">1题</span>
+                                
+                                <span class="phase">布局1</span>
+                                <span class="level" data-level="高段">高段</span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                <span class="result">白胜0.25目</span>
+                                <span class="game-btn" data-game-path="/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739020005.html">📖 棋谱</span>
+                            </div>
+                        </div></div>
+                        
+                        <div class="quiz-card-wrapper" data-path="/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739020006.json" data-quiz-id="202605030739020006"><div class="quiz-card">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>余正麒<span style="color:#999;font-weight:normal;">vs</span><span class="stone-icon stone-white"></span>藤沢里菜
+                                </span>
+                            </div>
+                            <div class="event">日本国家队研究会大循环<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">1题</span>
+                                
+                                <span class="phase">中盘1</span>
+                                <span class="level" data-level="职业">职业</span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                <span class="result">黑中盘胜</span>
+                                <span class="game-btn" data-game-path="/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739020006.html">📖 棋谱</span>
+                            </div>
+                        </div></div>
+                        
+                        <div class="quiz-card-wrapper" data-path="/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739030007.json" data-quiz-id="202605030739030007"><div class="quiz-card">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>金恩持<span style="color:#999;font-weight:normal;">vs</span><span class="stone-icon stone-white"></span>尹畯相
+                                </span>
+                            </div>
+                            <div class="event">第6届韩国最佳棋士战16强<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">3题</span>
+                                
+                                <span class="phase">中盘3</span>
+                                <span class="level" data-level="职业">职业</span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                <span class="result">白中盘胜</span>
+                                <span class="game-btn" data-game-path="/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739030007.html">📖 棋谱</span>
+                            </div>
+                        </div></div>
+                        
+                        <div class="quiz-card-wrapper" data-path="/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739030008.json" data-quiz-id="202605030739030008"><div class="quiz-card">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>大竹优<span style="color:#999;font-weight:normal;">vs</span><span class="stone-icon stone-white"></span>吉田透真
+                                </span>
+                            </div>
+                            <div class="event">日本国家队研究会大循环<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">1题</span>
+                                
+                                <span class="phase">中盘1</span>
+                                <span class="level" data-level="职业">职业</span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                <span class="result">黑中盘胜</span>
+                                <span class="game-btn" data-game-path="/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739030008.html">📖 棋谱</span>
+                            </div>
+                        </div></div>
+                        
+                        <div class="quiz-card-wrapper" data-path="/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739030012.json" data-quiz-id="202605030739030012"><div class="quiz-card">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>徐文燕<span style="color:#999;font-weight:normal;">vs</span><span class="stone-icon stone-white"></span>辻华
+                                </span>
+                            </div>
+                            <div class="event">第2届日本女子围棋联赛三将战<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">7题</span>
+                                
+                                <span class="phase">布局1中盘6</span>
+                                <span class="level" data-level="职业">职业</span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                <span class="result">黑中盘胜</span>
+                                <span class="game-btn" data-game-path="/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739030012.html">📖 棋谱</span>
+                            </div>
+                        </div></div>
+                        
+                        <div class="quiz-card-wrapper" data-path="/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739030014.json" data-quiz-id="202605030739030014"><div class="quiz-card">
+                            <div class="quiz-header">
+                                <span class="players">
+                                    <span class="stone-icon stone-black"></span>崔精<span style="color:#999;font-weight:normal;">vs</span><span class="stone-icon stone-white"></span>唐嘉雯
+                                </span>
+                            </div>
+                            <div class="event">2026中韩女子五强对抗赛第1场<绝艺讲解></div>
+                            <div class="stats">
+                                <span class="count">2题</span>
+                                
+                                <span class="phase">中盘2</span>
+                                <span class="level" data-level="职业">职业</span>
+                                
+                            </div>
+                            <div class="quiz-footer">
+                                <span class="result">黑中盘胜</span>
+                                <span class="game-btn" data-game-path="/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739030014.html">📖 棋谱</span>
+                            </div>
+                        </div></div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+            
             <div class="date-section" data-date="2026-04-30">
                 
                 <div class="source-group">
@@ -5526,8 +5700,8 @@
     </div>
     <script>
         // ========== 日历选择器功能 ==========
-        const availableDates = ["2026-05-01", "2026-04-30", "2026-04-29", "2026-04-28", "2026-04-27", "2026-04-26", "2026-04-25", "2026-04-24", "2026-04-23", "2026-04-22", "2026-04-21", "2026-04-20", "2026-04-19", "2026-04-18", "2026-04-17", "2026-04-16", "2026-04-15", "2026-04-14", "2026-04-13", "2026-04-12", "2026-04-11", "2026-04-10", "2026-04-09", "2026-04-08", "2026-04-07", "2026-04-06", "2026-04-04", "2026-04-03", "2026-04-02", "2026-04-01", "2026-03-31", "2026-03-30", "2026-03-29", "2026-03-28", "2026-03-27", "2026-03-26", "2026-03-25", "2026-03-24", "2026-03-23", "2026-03-22"];
-        let selectedDate = availableDates.length > 0 ? availableDates[0] : '2026-05-01';
+        const availableDates = ["2026-05-02", "2026-05-01", "2026-04-30", "2026-04-29", "2026-04-28", "2026-04-27", "2026-04-26", "2026-04-25", "2026-04-24", "2026-04-23", "2026-04-22", "2026-04-21", "2026-04-20", "2026-04-19", "2026-04-18", "2026-04-17", "2026-04-16", "2026-04-15", "2026-04-14", "2026-04-13", "2026-04-12", "2026-04-11", "2026-04-10", "2026-04-09", "2026-04-08", "2026-04-07", "2026-04-06", "2026-04-04", "2026-04-03", "2026-04-02", "2026-04-01", "2026-03-31", "2026-03-30", "2026-03-29", "2026-03-28", "2026-03-27", "2026-03-26", "2026-03-25", "2026-03-24", "2026-03-23", "2026-03-22"];
+        let selectedDate = availableDates.length > 0 ? availableDates[0] : '2026-05-02';
         let currentMonth = new Date(selectedDate + 'T00:00:00');
 
         function openCalendar() {

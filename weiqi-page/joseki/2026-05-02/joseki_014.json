@@ -1,0 +1,90 @@
+{
+  "game_name": "实战左下角标准化定式（10手）",
+  "black": "黑棋",
+  "white": "白棋",
+  "black_rank": "",
+  "white_rank": "",
+  "board_size": 19,
+  "handicap": 0,
+  "handicap_stones": [],
+  "result": "",
+  "tree": {
+    "color": null,
+    "coord": null,
+    "children": [
+      {
+        "color": "B",
+        "coord": "pc",
+        "children": [
+          {
+            "color": "W",
+            "coord": "qe",
+            "children": [
+              {
+                "color": "B",
+                "coord": "tt",
+                "children": [
+                  {
+                    "color": "W",
+                    "coord": "od",
+                    "children": [
+                      {
+                        "color": "B",
+                        "coord": "oc",
+                        "children": [
+                          {
+                            "color": "W",
+                            "coord": "nd",
+                            "children": [
+                              {
+                                "color": "B",
+                                "coord": "nc",
+                                "children": [
+                                  {
+                                    "color": "W",
+                                    "coord": "md",
+                                    "children": [
+                                      {
+                                        "color": "B",
+                                        "coord": "lc",
+                                        "children": [
+                                          {
+                                            "color": "W",
+                                            "coord": "qh",
+                                            "children": [
+                                              {
+                                                "color": "B",
+                                                "coord": "oj",
+                                                "children": [
+                                                  {
+                                                    "color": "W",
+                                                    "coord": "jc"
+                                                  }
+                                                ]
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "download_filename": "joseki_014.sgf",
+  "default_move": 10,
+  "max_moves": 12
+}

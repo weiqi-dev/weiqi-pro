@@ -1,0 +1,170 @@
+[
+  {
+    "id": "202605030739020003",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739020003.json",
+    "game_path": "/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739020003.html",
+    "black": "伊田笃史",
+    "white": "福冈航太朗",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 0,
+        "endgame": 1
+      }
+    }
+  },
+  {
+    "id": "202605030739020004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739020004.json",
+    "game_path": "/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739020004.html",
+    "black": "陈扬",
+    "white": "王子华",
+    "event": "第15届陈毅杯预选<绝艺讲解>",
+    "result": "黑胜0.75目",
+    "count": 6,
+    "stats": {
+      "total": 6,
+      "result": "黑胜0.75目",
+      "game_level": "高段",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 4
+      }
+    }
+  },
+  {
+    "id": "202605030739020005",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739020005.json",
+    "game_path": "/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739020005.html",
+    "black": "马天放",
+    "white": "赵炎",
+    "event": "第15届陈毅杯预选赛<绝艺讲解>",
+    "result": "白胜0.25目",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白胜0.25目",
+      "game_level": "高段",
+      "phase": {
+        "layout": 1,
+        "middle": 0,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605030739020006",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739020006.json",
+    "game_path": "/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739020006.html",
+    "black": "余正麒",
+    "white": "藤沢里菜",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605030739030007",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739030007.json",
+    "game_path": "/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739030007.html",
+    "black": "金恩持",
+    "white": "尹畯相",
+    "event": "第6届韩国最佳棋士战16强<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605030739030008",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739030008.json",
+    "game_path": "/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739030008.html",
+    "black": "大竹优",
+    "white": "吉田透真",
+    "event": "日本国家队研究会大循环<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605030739030012",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739030012.json",
+    "game_path": "/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739030012.html",
+    "black": "徐文燕",
+    "white": "辻华",
+    "event": "第2届日本女子围棋联赛三将战<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 7,
+    "stats": {
+      "total": 7,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 6,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605030739030014",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-02/野狐/quiz_202605030739030014.json",
+    "game_path": "/weiqi-pro/weiqi-page/games/2026-05-02/野狐/game_202605030739030014.html",
+    "black": "崔精",
+    "white": "唐嘉雯",
+    "event": "2026中韩女子五强对抗赛第1场<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  }
+]
