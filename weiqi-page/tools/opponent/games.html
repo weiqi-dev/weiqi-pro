@@ -68,6 +68,7 @@
             background: #fafafa;
             transform: translateY(-1px);
         }
+        .game-card.viewed { opacity: 0.6; }
         .stone-icon { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; display: inline-block; margin-right: 4px; vertical-align: middle; }
         .stone-black { background: radial-gradient(circle at 30% 30%, #666, #000); box-shadow: 1px 1px 3px rgba(0,0,0,0.3); }
         .stone-white { background: radial-gradient(circle at 30% 30%, #fff, #ddd); border: 1px solid #ccc; box-shadow: 1px 1px 3px rgba(0,0,0,0.2); }
@@ -145,7 +146,7 @@
             <div class="header-left">
                 <h1>📋 棋谱列表</h1>
             </div>
-
+            <button class="icon-btn" onclick="clearVisited()" title="清除访问记录">👁️</button>
         </header>
         
         <div id="content">
@@ -165,24 +166,29 @@
     
     <script>
         let opponentData = null;
-        
+        const SCROLL_KEY = 'games_scroll_pos';
+        const VIEWED_KEY = 'games_viewed_items';
+
         // 加载数据
         async function loadData() {
             if (!hasToken()) {
                 redirectToAuth();
                 return;
             }
-            
+
             try {
                 const stored = sessionStorage.getItem('opponent_data');
                 if (!stored) {
                     location.href = 'index.html';
                     return;
                 }
-                
+
                 opponentData = JSON.parse(stored);
                 displayGames();
-                
+
+                // 首次加载时恢复滚动位置和高亮
+                restoreScrollAndHighlights();
+
             } catch (error) {
                 document.getElementById('content').innerHTML = `
                     <div class="empty-state">
@@ -191,6 +197,61 @@
                     </div>
                 `;
             }
+        }
+
+        // 监听 pageshow 事件，处理 bfcache 恢复
+        window.addEventListener('pageshow', function(event) {
+            if (opponentData) {
+                restoreScrollAndHighlights();
+            }
+        });
+
+        // 恢复滚动位置和高亮已查看条目
+        function restoreScrollAndHighlights() {
+            const savedScroll = sessionStorage.getItem(SCROLL_KEY);
+            if (savedScroll) {
+                const scrollY = parseInt(savedScroll);
+                window.scrollTo(0, scrollY);
+                setTimeout(() => window.scrollTo(0, scrollY), 50);
+                setTimeout(() => window.scrollTo(0, scrollY), 100);
+                setTimeout(() => window.scrollTo(0, scrollY), 200);
+                sessionStorage.removeItem(SCROLL_KEY);
+            }
+
+            const viewedStr = sessionStorage.getItem(VIEWED_KEY);
+            if (viewedStr) {
+                try {
+                    const viewed = JSON.parse(viewedStr);
+                    viewed.forEach(index => {
+                        const card = document.querySelector(`.game-card[data-index="${index}"]`);
+                        if (card) card.classList.add('viewed');
+                    });
+                } catch (e) {}
+            }
+        }
+
+        // 保存滚动位置和查看记录
+        function saveScrollAndMarkViewed(index) {
+            sessionStorage.setItem(SCROLL_KEY, window.scrollY.toString());
+
+            let viewed = [];
+            try {
+                const viewedStr = sessionStorage.getItem(VIEWED_KEY);
+                if (viewedStr) viewed = JSON.parse(viewedStr);
+            } catch (e) {}
+
+            if (!viewed.includes(index)) {
+                viewed.push(index);
+                sessionStorage.setItem(VIEWED_KEY, JSON.stringify(viewed));
+            }
+        }
+
+        // 清除访问记录
+        function clearVisited() {
+            sessionStorage.removeItem(VIEWED_KEY);
+            document.querySelectorAll('.game-card.viewed').forEach(card => {
+                card.classList.remove('viewed');
+            });
         }
         
         // 显示棋谱列表
@@ -229,7 +290,7 @@
                 const dateTime = game.date + (game.time ? ' ' + game.time : '');
                 
                 html += `
-                    <div class="game-card" data-index="${index}" onclick="viewGameByIndex(${index})">
+                    <div class="game-card" data-index="${index}" onclick="saveScrollAndMarkViewed(${index}); viewGameByIndex(${index})">
                         <div class="game-header">
                             <div class="game-players">
                                 <span class="${isBlack ? 'player-self' : ''}"><span class="stone-icon stone-black"></span>${game.black || '黑棋'}</span>
