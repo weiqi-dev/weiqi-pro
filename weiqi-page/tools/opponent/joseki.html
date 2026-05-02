@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>定式发现 | 对手分析</title>
-    <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
     <script>const BASE_PATH = '/weiqi-pro/weiqi-page';</script>
     <script>document.write('<script src="/weiqi-pro/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
     <style>
@@ -66,6 +66,9 @@
         }
         .joseki-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
         .joseki-card.hidden { display: none; }
+        .joseki-card.viewed { border: 2px solid #667eea; background: linear-gradient(135deg, rgba(102,126,234,0.05) 0%, rgba(118,75,162,0.05) 100%); }
+        .joseki-card.viewed::after { content: '✓ 已查看'; position: absolute; top: 8px; right: 8px; font-size: 0.7em; color: #667eea; background: rgba(102,126,234,0.1); padding: 2px 6px; border-radius: 8px; }
+        .joseki-card { position: relative; }
         .joseki-header {
             padding: 12px 15px 8px;
             display: flex;
@@ -262,6 +265,8 @@
         let opponentData = null;
         let allResults = [];
         let currentFilter = 'all';
+        const SCROLL_KEY = 'joseki_scroll_pos';
+        const VIEWED_KEY = 'joseki_viewed_items';
 
         // 加载数据
         async function loadData() {
@@ -280,6 +285,9 @@
                 opponentData = JSON.parse(stored);
                 displayJoseki();
 
+                // 恢复滚动位置和已查看状态
+                restoreScrollAndHighlights();
+
             } catch (error) {
                 document.getElementById('content').innerHTML = `
                     <div class="empty-state">
@@ -287,6 +295,46 @@
                         <button onclick="location.href='index.html'" style="margin-top:12px;padding:8px 16px;background:#667eea;color:white;border:none;border-radius:6px;">返回</button>
                     </div>
                 `;
+            }
+        }
+
+        // 恢复滚动位置和高亮已查看条目
+        function restoreScrollAndHighlights() {
+            // 恢复滚动位置
+            const savedScroll = sessionStorage.getItem(SCROLL_KEY);
+            if (savedScroll) {
+                setTimeout(() => {
+                    window.scrollTo(0, parseInt(savedScroll));
+                    sessionStorage.removeItem(SCROLL_KEY);
+                }, 100);
+            }
+
+            // 高亮已查看的条目
+            const viewedStr = sessionStorage.getItem(VIEWED_KEY);
+            if (viewedStr) {
+                try {
+                    const viewed = JSON.parse(viewedStr);
+                    viewed.forEach(index => {
+                        const card = document.querySelector(`.joseki-card[data-index="${index}"]`);
+                        if (card) card.classList.add('viewed');
+                    });
+                } catch (e) {}
+            }
+        }
+
+        // 保存滚动位置和查看记录
+        function saveScrollAndMarkViewed(index) {
+            sessionStorage.setItem(SCROLL_KEY, window.scrollY.toString());
+
+            let viewed = [];
+            try {
+                const viewedStr = sessionStorage.getItem(VIEWED_KEY);
+                if (viewedStr) viewed = JSON.parse(viewedStr);
+            } catch (e) {}
+
+            if (!viewed.includes(index)) {
+                viewed.push(index);
+                sessionStorage.setItem(VIEWED_KEY, JSON.stringify(viewed));
             }
         }
 
@@ -379,7 +427,7 @@
                 const dataTags = tags.join(' ');
 
                 html += `
-                    <div class="joseki-card" data-tags="${dataTags}" onclick="viewJosekiMoves(${index})">
+                    <div class="joseki-card" data-index="${index}" data-tags="${dataTags}" onclick="saveScrollAndMarkViewed(${index}); viewJosekiMoves(${index})">
                         <div class="joseki-header">
                             <span><span class="stone-icon stone-black"></span>${gameInfo.black || '?'}</span>
                             <span class="joseki-vs">vs</span>
@@ -406,7 +454,7 @@
                         </div>
                         <div class="joseki-footer">
                             <div class="joseki-tags">${tagsHtml}</div>
-                            <button class="joseki-btn" onclick="event.stopPropagation(); viewJosekiGame(${index})">📖 棋谱</button>
+                            <button class="joseki-btn" onclick="event.stopPropagation(); saveScrollAndMarkViewed(${index}); viewJosekiGame(${index})">📖 棋谱</button>
                         </div>
                     </div>
                 `;
