@@ -102,6 +102,18 @@
             gap: 8px;
         }
 
+        .icon-btn {
+            background: #f0f0f0;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .icon-btn:hover {
+            background: #e0e0e0;
+        }
+
         /* 输入框 */
         input[type="text"] {
             width: 100%;
@@ -430,7 +442,7 @@
         <!-- 最近面板 -->
         <div id="recentPanel" class="tab-content">
             <div class="card">
-                <h2>📋 最近查询</h2>
+                <h2>📋 最近查询 <button class="icon-btn" onclick="clearHistory()" title="清除所有记录" style="width:auto;padding:4px 8px;font-size:0.85em;margin-left:auto;">🗑️ 清除</button></h2>
                 <div id="historyList" class="history-list">
                     <!-- 历史列表将在这里渲染 -->
                 </div>
@@ -588,6 +600,14 @@
             switchTab('query');
             document.getElementById('nameInput').value = name;
             displayResult(item.data);
+        }
+
+        // 清除所有历史记录
+        function clearHistory() {
+            if (!confirm('确定要清除所有查询记录吗？')) return;
+            localStorage.removeItem(CACHE_KEY);
+            localStorage.removeItem(RECENT_KEY);
+            renderHistoryList();
         }
 
         // ========== 查询棋手 ==========
