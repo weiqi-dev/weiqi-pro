@@ -9,47 +9,122 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f5f5f5; min-height: 100vh; color: #333; }
-        .container { max-width: 480px; margin: 0 auto; padding: 12px; min-height: 100vh; }
-        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 15px; margin-bottom: 12px; border-radius: 8px; text-align: center; }
-        h1 { font-size: 1.3em; margin: 0; }
-        .filter-tabs { display: flex; gap: 8px; margin-bottom: 12px; overflow-x: auto; }
-        .filter-tab { padding: 8px 16px; background: white; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; font-size: 0.9em; white-space: nowrap; }
-        .filter-tab.active { background: #667eea; color: white; border-color: #667eea; }
-        .event-card { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); cursor: pointer; transition: transform 0.2s; }
-        .event-card:hover { transform: translateY(-2px); }
-        .event-title { font-weight: 600; font-size: 1.1em; color: #333; margin-bottom: 8px; }
-        .event-meta { display: flex; gap: 16px; color: #666; font-size: 0.9em; }
-        .event-status { font-size: 0.75em; padding: 2px 8px; border-radius: 10px; margin-left: 8px; }
-        .event-status.ended { background: #e8f5e9; color: #4caf50; }
-        .event-status.ongoing { background: #fff3e0; color: #ff9800; }
-        .loading { text-align: center; padding: 40px 20px; }
-        .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 16px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .query-time { text-align: center; color: #888; font-size: 0.8em; margin-top: 8px; }
+        .container { max-width: 480px; margin: 0 auto; padding: 12px; }
+        
+        /* 头部 */
+        header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; margin-bottom: 12px; border-radius: 8px; }
+        h1 { font-size: 1.3em; margin-bottom: 4px; }
+        .subtitle { font-size: 0.85em; opacity: 0.9; }
+        
+        /* 标签切换 */
+        .tabs { display: flex; background: white; border-radius: 8px; padding: 4px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .tab { flex: 1; padding: 10px; text-align: center; color: #666; cursor: pointer; border-radius: 6px; font-size: 14px; transition: all 0.2s; }
+        .tab:hover { background: #f5f5f5; }
+        .tab.active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: 500; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* 城市分组 - 参考 games_list 的 source-group 风格 */
+        .city-group { background: white; border-radius: 8px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; }
+        .city-header { background: #f8f9fa; padding: 12px 15px; font-weight: bold; color: #555; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .city-header:hover { background: #f0f0f0; }
+        .city-toggle { font-size: 0.8em; color: #999; transition: transform 0.2s; }
+        .city-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* 比赛列表 */
+        .event-list { padding: 8px 12px; display: flex; flex-direction: column; gap: 8px; }
+        .event-list.collapsed { display: none; }
+        
+        /* 比赛卡片 - 参考 games_list 的 game-card 风格 */
+        .event-card { padding: 12px 14px; background: #fff; border: 1px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
+        .event-card:hover { background: #fafafa; border-color: #ddd; transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.08); }
+        .event-title { font-weight: 600; font-size: 0.95em; color: #333; line-height: 1.4; margin-bottom: 4px; }
+        .event-date { font-size: 0.85em; color: #888; }
+        
+        /* 空状态 */
+        .empty-state { text-align: center; padding: 40px 20px; color: #888; background: white; border-radius: 8px; }
+        .empty-state-icon { font-size: 2.5em; margin-bottom: 12px; opacity: 0.5; }
+        
+        /* 返回按钮 */
+        .back-btn { position: fixed; bottom: 20px; right: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 12px 20px; border-radius: 25px; font-size: 14px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 100; }
+        .back-btn:hover { opacity: 0.9; }
+        
         footer { text-align: center; padding: 20px; color: #999; font-size: 0.8em; }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- 头部 -->
         <header>
-            <h1>比赛列表</h1>
+            <h1>🏆 比赛列表</h1>
+            <p class="subtitle" id="querySummary">加载中...</p>
         </header>
         
-        <div class="filter-tabs">
-            <button class="filter-tab active" onclick="filterEvents('all')" id="filterAll">全部</button>
-            <button class="filter-tab" onclick="filterEvents('ongoing')" id="filterOngoing">未结束</button>
-            <button class="filter-tab" onclick="filterEvents('ended')" id="filterEnded">已结束</button>
+        <!-- 标签切换 -->
+        <div class="tabs">
+            <div class="tab active" data-tab="recent" onclick="switchTab('recent')">
+                🔥 最近 <span id="recentCount">0</span>
+            </div>
+            <div class="tab" data-tab="history" onclick="switchTab('history')">
+                📜 历史 <span id="historyCount">0</span>
+            </div>
+            <div class="tab" data-tab="future" onclick="switchTab('future')">
+                📅 未来 <span id="futureCount">0</span>
+            </div>
         </div>
         
-        <div id="eventsList"></div>
+        <!-- 最近比赛 -->
+        <div id="recentPanel" class="tab-content active">
+            <div id="recentList"></div>
+        </div>
+        
+        <!-- 历史比赛 -->
+        <div id="historyPanel" class="tab-content">
+            <div id="historyList"></div>
+        </div>
+        
+        <!-- 未来比赛 -->
+        <div id="futurePanel" class="tab-content">
+            <div id="futureList"></div>
+        </div>
         
         <footer><p>围棋智能助手 &copy; 2026</p></footer>
     </div>
     
+    <button class="back-btn" onclick="location.href='index.html'">← 返回查询</button>
+    
     <script>
         let events = [];
-        let filter = 'all';
+        let recentEvents = [];
+        let historyEvents = [];
+        let futureEvents = [];
         
+        // ========== 标签切换 ==========
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName + 'Panel').classList.add('active');
+        }
+        
+        // ========== 城市分组折叠 ==========
+        function toggleCity(header) {
+            const list = header.nextElementSibling;
+            const toggle = header.querySelector('.city-toggle');
+            
+            if (list.classList.contains('collapsed')) {
+                list.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                list.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+        
+        // ========== 加载比赛数据 ==========
         function loadEvents() {
             const query = JSON.parse(sessionStorage.getItem('yunbisai_query') || '{}');
             if (!query.data || !query.data.events) {
@@ -57,74 +132,103 @@
                 return;
             }
             
-            // 按日期倒序
-            events = query.data.events.sort((a, b) => {
-                return (b.date || '').localeCompare(a.date || '');
-            });
+            // 显示查询条件摘要
+            const area = query.area || '全国';
+            const month = query.month || '1';
+            document.getElementById('querySummary').textContent = `${area} · 最近${month}个月`;
             
-            renderEvents();
+            // 获取今天的日期字符串
+            const today = new Date();
+            const todayStr = today.toISOString().split('T')[0];
+            
+            // 计算7天前
+            const sevenDaysAgo = new Date(today);
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+            const sevenDaysAgoStr = sevenDaysAgo.toISOString().split('T')[0];
+            
+            events = query.data.events || [];
+            
+            // 按时间分组
+            recentEvents = events.filter(e => e.date && e.date >= sevenDaysAgoStr && e.date <= todayStr);
+            historyEvents = events.filter(e => e.date && e.date < sevenDaysAgoStr);
+            futureEvents = events.filter(e => e.date && e.date > todayStr);
+            
+            // 更新标签计数
+            document.getElementById('recentCount').textContent = recentEvents.length;
+            document.getElementById('historyCount').textContent = historyEvents.length;
+            document.getElementById('futureCount').textContent = futureEvents.length;
+            
+            // 渲染各分组
+            renderEventsByCity('recentList', recentEvents);
+            renderEventsByCity('historyList', historyEvents);
+            renderEventsByCity('futureList', futureEvents);
         }
         
-        function renderEvents() {
-            const container = document.getElementById('eventsList');
-            const today = new Date().toISOString().split('T')[0];
+        // ========== 按城市分组渲染 ==========
+        function renderEventsByCity(containerId, eventList) {
+            const container = document.getElementById(containerId);
             
-            // 计算数量
-            const total = events.length;
-            const ended = events.filter(e => e.date && e.date < today).length;
-            const ongoing = events.filter(e => e.date && e.date >= today).length;
-            
-            document.getElementById('filterAll').textContent = `全部 ${total}`;
-            document.getElementById('filterOngoing').textContent = `未结束 ${ongoing}`;
-            document.getElementById('filterEnded').textContent = `已结束 ${ended}`;
-            
-            // 筛选
-            let filtered = events;
-            if (filter === 'ongoing') filtered = events.filter(e => e.date && e.date >= today);
-            if (filter === 'ended') filtered = events.filter(e => e.date && e.date < today);
-            
-            if (filtered.length === 0) {
-                container.innerHTML = '<div style="text-align:center;padding:40px;color:#888;">没有符合条件的比赛</div>';
+            if (eventList.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <p>暂无比赛</p>
+                    </div>
+                `;
                 return;
             }
             
+            // 按城市分组
+            const cityGroups = {};
+            eventList.forEach(event => {
+                const city = event.city || '未知地区';
+                if (!cityGroups[city]) cityGroups[city] = [];
+                cityGroups[city].push(event);
+            });
+            
+            // 每个城市内按日期排序
+            Object.keys(cityGroups).forEach(city => {
+                cityGroups[city].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+            });
+            
+            // 按比赛数量排序城市
+            const sortedCities = Object.keys(cityGroups).sort((a, b) => cityGroups[b].length - cityGroups[a].length);
+            
             let html = '';
-            filtered.forEach(event => {
-                const isEnded = event.date && event.date < today;
-                const statusTag = isEnded ? 
-                    '<span class="event-status ended">已结束</span>' : 
-                    '<span class="event-status ongoing">未结束</span>';
+            sortedCities.forEach(city => {
+                const events = cityGroups[city];
                 html += `
-                    <div class="event-card" onclick="selectEvent(${event.id}, '${event.title.replace(/'/g, "\\'")}')">
-                        <div class="event-title">${event.title}</div>
-                        <div class="event-meta">
-                            <span>📍 ${event.city || '未知'}</span>
-                            <span>📅 ${event.date || '日期待定'}</span>
-                            <span style="margin-left:auto;">${statusTag}</span>
+                    <div class="city-group">
+                        <div class="city-header" onclick="toggleCity(this)">
+                            <span>📍 ${city} (${events.length}场)</span>
+                            <span class="city-toggle">▼</span>
                         </div>
-                    </div>
+                        <div class="event-list">
                 `;
+                
+                events.forEach(event => {
+                    html += `
+                        <div class="event-card" onclick="selectEvent(${event.id}, '${event.title.replace(/'/g, "\\'")}')">
+                            <div class="event-title">${event.title}</div>
+                            <div class="event-date">📅 ${event.date || '日期待定'}</div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div></div>';
             });
             
             container.innerHTML = html;
         }
         
-        function filterEvents(type) {
-            filter = type;
-            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
-            if (type === 'all') document.getElementById('filterAll').classList.add('active');
-            if (type === 'ongoing') document.getElementById('filterOngoing').classList.add('active');
-            if (type === 'ended') document.getElementById('filterEnded').classList.add('active');
-            renderEvents();
-        }
-        
+        // ========== 选择比赛 ==========
         function selectEvent(eventId, eventTitle) {
             // 记录最近访问
             try {
                 let visited = JSON.parse(localStorage.getItem('yunbisai_visited') || '[]');
                 visited = visited.filter(e => e.id !== eventId);
                 visited.unshift({ id: eventId, title: eventTitle, time: new Date().toISOString() });
-                visited = visited.slice(0, 5);
+                visited = visited.slice(0, 20);
                 localStorage.setItem('yunbisai_visited', JSON.stringify(visited));
             } catch (e) {}
             
