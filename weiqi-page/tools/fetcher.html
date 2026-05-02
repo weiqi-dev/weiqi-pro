@@ -865,8 +865,10 @@
 
                 currentGameData = data.data;
 
-                // 保存到缓存
-                addToCache(url, data.data);
+                // 只有有效数据才保存到缓存
+                if (data.data && (data.data.sgf_base64 || data.data.game_info)) {
+                    addToCache(url, data.data);
+                }
 
                 displayResult(currentGameData);
 

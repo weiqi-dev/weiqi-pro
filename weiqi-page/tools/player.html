@@ -652,8 +652,10 @@
                     throw new Error(data.error?.message || '查询失败');
                 }
 
-                // 保存到缓存
-                addToCache(name, data);
+                // 只有找到有效数据才保存到缓存
+                if (data.shoutan?.found || data.yichafen?.found) {
+                    addToCache(name, data);
+                }
 
                 // 显示结果
                 displayResult(data);

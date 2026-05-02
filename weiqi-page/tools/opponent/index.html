@@ -668,8 +668,10 @@
                     throw new Error(data.error || '分析失败');
                 }
 
-                // 保存到本地缓存
-                addToCache(foxwqId, data);
+                // 只有有有效棋谱数据才保存到缓存
+                if (data.games && data.games.length > 0) {
+                    addToCache(foxwqId, data);
+                }
 
                 // 设置当前数据
                 currentData = {
