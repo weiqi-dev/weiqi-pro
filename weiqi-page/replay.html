@@ -152,6 +152,24 @@
         const canvas = document.getElementById('board');
         const ctx = canvas ? canvas.getContext('2d') : null;
         
+        // 胜负结果翻译函数
+        function translateResult(result) {
+            if (!result) return '';
+            result = result.trim();
+            // 中盘胜 / 认输
+            if (result === 'B+R' || result === 'B+Resign') return '黑中盘胜';
+            if (result === 'W+R' || result === 'W+Resign') return '白中盘胜';
+            // 超时胜
+            if (result === 'B+T' || result === 'B+Time') return '黑超时胜';
+            if (result === 'W+T' || result === 'W+Time') return '白超时胜';
+            // 数目胜
+            const match = result.match(/^B\+(\d+\.?\d*)$/);
+            if (match) return '黑胜' + match[1] + '目';
+            const matchW = result.match(/^W\+(\d+\.?\d*)$/);
+            if (matchW) return '白胜' + matchW[1] + '目';
+            return result;
+        }
+        
         // 清理过期的 localStorage 数据（超过 1 小时）
         (function cleanOldReplayData() {
             const now = Date.now();
@@ -223,7 +241,7 @@
                 document.getElementById('pageTitle').textContent = data.game_name || '围棋棋谱';
                 let infoText = `${data.black || '黑棋'} vs ${data.white || '白棋'}`;
                 if (data.handicap > 0) infoText += ` · 让${data.handicap}子`;
-                if (data.result) infoText += ` · ${data.result}`;
+                if (data.result) infoText += ` · ${translateResult(data.result)}`;
                 document.getElementById('gameInfo').textContent = infoText;
                 document.title = data.game_name || '围棋棋谱';
                 
