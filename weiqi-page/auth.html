@@ -21,99 +21,92 @@
         .auth-card {
             background: white;
             border-radius: 16px;
-            padding: 20px 20px;
+            padding: 30px 25px;
             width: 100%;
-            max-width: 340px;
+            max-width: 360px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }
         
         .auth-icon {
-            font-size: 40px;
+            font-size: 60px;
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         
         h1 {
             text-align: center;
-            font-size: 1.3em;
-            margin-bottom: 4px;
+            font-size: 1.4em;
+            margin-bottom: 8px;
             color: #333;
         }
         
         .subtitle {
             text-align: center;
             color: #666;
-            margin-bottom: 16px;
+            margin-bottom: 25px;
             font-size: 0.85em;
         }
         
-        .form-group {
-            margin-bottom: 14px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #555;
-            font-size: 0.9em;
-        }
-        
-        textarea {
-            width: 100%;
-            padding: 10px 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: border-color 0.3s;
-            resize: vertical;
-            font-family: inherit;
-        }
-        
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-        
-        button {
-            width: 100%;
-            padding: 12px;
+        .apply-code-box {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-        
-        button:hover {
-            opacity: 0.9;
-        }
-        
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        
-        .divider {
-            height: 1px;
-            background: #e0e0e0;
-            margin: 16px 0;
-        }
-        
-        .help-text {
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
             text-align: center;
-            color: #888;
+        }
+        
+        .apply-label {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.85em;
+            margin-bottom: 8px;
+        }
+        
+        .apply-code {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: white;
+            letter-spacing: 8px;
+        }
+        
+        .step {
+            margin-bottom: 20px;
+        }
+        
+        .step-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .step-title {
+            font-weight: 500;
+            color: #333;
+            font-size: 0.95em;
+        }
+        
+        .step-content {
+            color: #666;
             font-size: 0.85em;
             line-height: 1.6;
-        }
-        
-        .help-text strong {
-            color: #555;
+            margin-left: 38px;
         }
         
         .qr-code {
-            margin: 10px 0;
+            margin: 15px 0;
             text-align: center;
         }
         
@@ -122,111 +115,284 @@
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
+        
+        .status {
+            text-align: center;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .status.waiting {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #856404;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
     <div class="auth-card">
         <div class="auth-icon">🔐</div>
         <h1>身份认证</h1>
-        <p class="subtitle">您访问的页面需要验证身份</p>
+        <p class="subtitle">请按以下步骤完成认证</p>
         
-        <form id="authForm">
-            <div class="form-group">
-                <label for="tokenInput">请输入访问凭证</label>
-                <textarea id="tokenInput" placeholder="粘贴您的访问凭证..." rows="3" autocomplete="off" required></textarea>
-<p id="errorMsg" style="color: #c62828; font-size: 0.85em; margin-top: 8px; display: none;">⚠️ 访问凭证只能包含字母、数字和符号，不能包含中文</p>
+        <!-- 申请码 -->
+        <div class="apply-code-box">
+            <div class="apply-label">申请码</div>
+            <div class="apply-code" id="applyCode">----</div>
+        </div>
+        
+        <!-- 步骤1 -->
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <div class="step-title">扫码关注公众号</div>
             </div>
-            
-            <button type="submit" id="submitBtn">✅ 进入</button>
-        </form>
-        
-        <div class="divider"></div>
-        
-        <div class="help-text">
-            <p><strong>还没有访问凭证？</strong></p>
-            <p>请扫码关注公众号获取</p>
-            <div class="qr-code">
-                <img src="/weiqi-pro/weiqi-page/assets/images/public.jpg" alt="公众号二维码" onerror="this.style.display='none'">
+            <div class="step-content">
+                <div class="qr-code">
+                    <img src="/weiqi-pro/weiqi-page/assets/images/public.jpg" alt="公众号二维码" onerror="this.style.display='none'">
+                </div>
             </div>
-            <p>访问凭证有效期通常为 24 小时</p>
+        </div>
+        
+        <!-- 步骤2 -->
+        <div class="step">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <div class="step-title">发送申请码</div>
+            </div>
+            <div class="step-content">
+                在公众号发送：<strong id="applyText">----</strong>
+            </div>
+        </div>
+        
+        <!-- 状态提示 -->
+        <div class="status waiting" id="statusBox">
+            <span class="loading"></span>
+            <span id="statusText">等待审核中...</span>
         </div>
     </div>
     
     <script>
-        // 获取返回地址
-        const urlParams = new URLSearchParams(window.location.search);
-        const returnUrl = urlParams.get('return') || '/';
-        
-        const tokenInput = document.getElementById('tokenInput');
-        const errorMsg = document.getElementById('errorMsg');
-        
-        // 检查是否包含非 ASCII 字符
-        function hasNonAscii(str) {
-            for (let i = 0; i < str.length; i++) {
-                if (str.charCodeAt(i) > 127) return true;
-            }
-            return false;
+        // 动态获取 base_path
+        function getBasePath() {
+            const path = window.location.pathname;
+            const match = path.match(/^(\/[^/]+\/weiqi-page|\/weiqi-page)/);
+            return match ? match[1] : '/weiqi-page';
         }
         
-        // 实时过滤输入
-        tokenInput.addEventListener('input', function() {
-            const value = this.value;
-            if (hasNonAscii(value)) {
-                // 过滤掉非 ASCII 字符
-                this.value = value.replace(/[^\x00-\x7F]/g, '');
-                errorMsg.style.display = 'block';
-                setTimeout(() => { errorMsg.style.display = 'none'; }, 3000);
-            }
-        });
+        // 动态获取 API 域名
+        const DOMAIN_JS_URL = 'https://weiqi-dev.github.io/weiqi-assets/js/domain.js';
+        const DOMAIN_CACHE_KEY = 'weiqi_api_domain';
+        const DOMAIN_CACHE_TIME_KEY = 'weiqi_api_domain_time';
+        const CACHE_MAX_AGE = 10 * 60 * 1000;
         
-        // 粘贴时过滤
-        tokenInput.addEventListener('paste', function(e) {
-            e.preventDefault();
-            const paste = (e.clipboardData || window.clipboardData).getData('text');
-            const filtered = paste.replace(/[^\x00-\x7F]/g, '');
-            document.execCommand('insertText', false, filtered);
-            if (filtered.length !== paste.length) {
-                errorMsg.style.display = 'block';
-                setTimeout(() => { errorMsg.style.display = 'none'; }, 3000);
+        async function getApiBase() {
+            if (window.API_BASE) return window.API_BASE;
+            
+            const cached = localStorage.getItem(DOMAIN_CACHE_KEY);
+            const cachedTime = parseInt(localStorage.getItem(DOMAIN_CACHE_TIME_KEY) || '0');
+            const now = Date.now();
+            
+            if (cached && (now - cachedTime) < CACHE_MAX_AGE) {
+                return cached;
             }
-        });
+            
+            try {
+                await loadScript(DOMAIN_JS_URL + '?v=' + now);
+                if (window.API_BASE) {
+                    localStorage.setItem(DOMAIN_CACHE_KEY, window.API_BASE);
+                    localStorage.setItem(DOMAIN_CACHE_TIME_KEY, now.toString());
+                    return window.API_BASE;
+                }
+            } catch (e) {
+                console.warn('加载域名配置失败:', e);
+            }
+            
+            if (cached) return cached;
+            throw new Error('无法获取 API 域名');
+        }
         
-        // 表单提交
-        document.getElementById('authForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const token = tokenInput.value.trim();
-            const submitBtn = document.getElementById('submitBtn');
-            
-            if (!token) {
-                alert('请输入 Token');
-                return;
-            }
-            
-            // 再次检查非法字符
-            if (hasNonAscii(token)) {
-                alert('Token 不能包含中文或其他特殊字符，请重新输入');
-                return;
-            }
-            
-            // 禁用按钮防止重复提交
-            submitBtn.disabled = true;
-            submitBtn.textContent = '保存中...';
-            
-            // 保存到 localStorage
-            localStorage.setItem('weiqi_token', token);
-            
-            // 返回原页面
-            window.location.href = decodeURIComponent(returnUrl);
-        });
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.crossOrigin = 'anonymous';
+                script.onload = () => resolve();
+                script.onerror = () => reject(new Error('Failed to load: ' + src));
+                document.head.appendChild(script);
+            });
+        }
         
-        // 页面加载时，如果已有 Token，自动填充
-        window.onload = function() {
-            const existingToken = localStorage.getItem('weiqi_token');
-            if (existingToken) {
-                tokenInput.value = existingToken;
+        // 全局变量
+        let applyCode = '';
+        let apiBase = '';
+        let returnUrl = '/';
+        
+        // 页面加载
+        window.onload = async function() {
+            // 获取返回URL
+            const urlParams = new URLSearchParams(window.location.search);
+            returnUrl = urlParams.get('return') || '/';
+            
+            try {
+                // 获取API域名
+                apiBase = await getApiBase();
+                
+                // 创建申请记录
+                const res = await fetch(`${apiBase}/api/auth/apply`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({return_url: returnUrl})
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    applyCode = data.data.code;
+                    
+                    // 显示申请码
+                    document.getElementById('applyCode').textContent = applyCode;
+                    document.getElementById('applyText').textContent = applyCode;
+                    
+                    // 开始轮询状态
+                    pollStatus();
+                } else {
+                    showError('创建申请失败: ' + data.error.message);
+                }
+            } catch (e) {
+                showError('网络错误: ' + e.message);
             }
         };
+        
+        // 轮询状态
+        async function pollStatus() {
+            try {
+                const res = await fetch(`${apiBase}/api/auth/apply/${applyCode}`);
+                const data = await res.json();
+                
+                if (!data.success) {
+                    // 申请码不存在或已过期，自动刷新
+                    const errorMsg = data.error?.message || '申请码已失效';
+                    showRefreshing(errorMsg);
+                    setTimeout(() => refreshApplyCode(), 2000);
+                    return;
+                }
+                
+                const status = data.data.status;
+                
+                if (status === 'approved') {
+                    showSuccess();
+                    return;
+                } else if (status === 'rejected') {
+                    showError('申请被拒绝，请联系管理员');
+                    return;
+                } else if (status === 'expired') {
+                    showRefreshing('申请已过期');
+                    setTimeout(() => refreshApplyCode(), 2000);
+                    return;
+                }
+            } catch (e) {
+                console.error('轮询失败:', e);
+                // 网络错误，继续轮询
+            }
+            
+            // 继续轮询
+            setTimeout(pollStatus, 3000);
+        }
+        
+        // 显示成功
+        function showSuccess() {
+            const statusBox = document.getElementById('statusBox');
+            statusBox.className = 'status success';
+            statusBox.innerHTML = '✅ 认证成功，正在跳转...';
+            
+            // 重新获取完整的申请信息（包含token）
+            fetch(`${apiBase}/api/auth/apply/${applyCode}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.data.token) {
+                        localStorage.setItem('weiqi_token', data.data.token);
+                    }
+                    setTimeout(() => {
+                        window.location.href = decodeURIComponent(returnUrl);
+                    }, 1500);
+                });
+        }
+        
+        // 显示刷新中
+        function showRefreshing(msg) {
+            const statusBox = document.getElementById('statusBox');
+            statusBox.className = 'status waiting';
+            statusBox.innerHTML = `⏳ ${msg}，正在重新申请...`;
+        }
+        
+        // 刷新申请码
+        async function refreshApplyCode() {
+            try {
+                const res = await fetch(`${apiBase}/api/auth/apply`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({return_url: returnUrl})
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    applyCode = data.data.code;
+                    
+                    // 更新页面显示
+                    document.getElementById('applyCode').textContent = applyCode;
+                    document.getElementById('applyText').textContent = applyCode;
+                    
+                    // 恢复等待状态
+                    const statusBox = document.getElementById('statusBox');
+                    statusBox.className = 'status waiting';
+                    statusBox.innerHTML = '<span class="loading"></span><span id="statusText">等待审核中...</span>';
+                    
+                    // 继续轮询
+                    pollStatus();
+                } else {
+                    showError('重新申请失败: ' + data.error.message);
+                }
+            } catch (e) {
+                showError('网络错误: ' + e.message);
+            }
+        }
+        
+        // 显示错误
+        function showError(msg) {
+            const statusBox = document.getElementById('statusBox');
+            statusBox.className = 'status error';
+            statusBox.innerHTML = '❌ ' + msg;
+        }
     </script>
 </body>
 </html>
