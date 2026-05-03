@@ -66,24 +66,30 @@
             border-color: #667eea;
         }
         
-        .btn {
+        select {
             width: 100%;
             padding: 12px;
-            border: none;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
             font-size: 16px;
             cursor: pointer;
             font-weight: 500;
-            transition: opacity 0.2s;
+            transition: all 0.2s;
         }
         
         .btn:hover {
             opacity: 0.9;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            transform: translateY(-1px);
         }
         
         .btn-approve {
@@ -99,28 +105,39 @@
         .btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
         
-        .result-box {
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn-group .btn {
+            flex: 1;
+        }
+        
+        .info-box {
             background: #f5f5f5;
             padding: 15px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-top: 15px;
             display: none;
         }
         
-        .result-box.show {
+        .info-box.show {
             display: block;
         }
         
-        .result-row {
+        .info-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 10px;
             font-size: 0.95em;
         }
         
-        .result-row:last-child {
+        .info-row:last-child {
             margin-bottom: 0;
         }
         
@@ -135,7 +152,7 @@
         
         .status-badge {
             display: inline-block;
-            padding: 4px 10px;
+            padding: 4px 12px;
             border-radius: 12px;
             font-size: 0.85em;
             font-weight: 500;
@@ -156,47 +173,31 @@
             color: #721c24;
         }
         
-        .btn-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .btn-group .btn {
-            flex: 1;
-        }
-        
-        .error-msg {
-            color: #e74c3c;
-            font-size: 0.85em;
-            margin-top: 10px;
+        .message-box {
             text-align: center;
-        }
-        
-        .success-msg {
-            color: #27ae60;
-            font-size: 0.95em;
-            text-align: center;
-            padding: 10px;
-            background: #e8f5e9;
+            padding: 12px;
             border-radius: 8px;
-            margin-top: 10px;
+            margin-top: 15px;
+            font-size: 0.95em;
         }
         
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            margin-top: 10px;
+        .message-success {
+            background: #e8f5e9;
+            color: #27ae60;
         }
         
-        .checkbox-group input[type="checkbox"] {
-            margin-right: 8px;
+        .message-error {
+            background: #ffebee;
+            color: #c62828;
         }
         
-        .checkbox-group label {
-            margin-bottom: 0;
-            font-size: 0.85em;
-            color: #666;
+        .message-info {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -205,24 +206,16 @@
         <div class="icon">🔐</div>
         <h1>审批管理</h1>
         
-        <!-- 查询表单 -->
+        <!-- 申请码输入 -->
         <div class="form-group">
             <label for="applyCode">申请码</label>
-            <input type="text" id="applyCode" placeholder="输入申请码" maxlength="4">
+            <input type="text" id="applyCode" placeholder="输入申请码" maxlength="4" autocomplete="off">
         </div>
         
-        <div class="form-group">
-            <label for="adminPassword">管理员密码</label>
-            <input type="password" id="adminPassword" placeholder="输入管理员密码">
-            <div class="checkbox-group">
-                <input type="checkbox" id="rememberPassword">
-                <label for="rememberPassword">记住密码（30分钟）</label>
-            </div>
-        </div>
-        
+        <!-- Token有效期 -->
         <div class="form-group">
             <label for="expireDays">Token有效期</label>
-            <select id="expireDays" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;">
+            <select id="expireDays">
                 <option value="0.042" selected>1 小时（默认，临时体验）</option>
                 <option value="1">1 天（比赛期间）</option>
                 <option value="3">3 天（比赛期间）</option>
@@ -230,32 +223,36 @@
             </select>
         </div>
         
-        <button class="btn btn-primary" onclick="queryApply()">查询</button>
+        <!-- 密码输入（密码缓存1天，失效时显示） -->
+        <div id="passwordGroup" class="form-group hidden">
+            <label for="adminPassword">管理员密码</label>
+            <input type="password" id="adminPassword" placeholder="输入管理员密码">
+        </div>
         
-        <!-- 查询结果 -->
-        <div class="result-box" id="resultBox">
-            <div class="result-row">
+        <!-- 操作按钮 -->
+        <div class="btn-group">
+            <button class="btn btn-approve" id="approveBtn" onclick="approveApply()">✅ 同意</button>
+            <button class="btn btn-reject" id="rejectBtn" onclick="rejectApply()">❌ 拒绝</button>
+        </div>
+        
+        <!-- 申请信息（点击同意/拒绝后显示） -->
+        <div id="infoBox" class="info-box">
+            <div class="info-row">
                 <span class="label">申请码</span>
-                <span class="value" id="resultCode">-</span>
+                <span class="value" id="infoCode">-</span>
             </div>
-            <div class="result-row">
+            <div class="info-row">
                 <span class="label">提交时间</span>
-                <span class="value" id="resultTime">-</span>
+                <span class="value" id="infoTime">-</span>
             </div>
-            <div class="result-row">
+            <div class="info-row">
                 <span class="label">状态</span>
-                <span class="value" id="resultStatus">-</span>
-            </div>
-            
-            <!-- 审批按钮 -->
-            <div class="btn-group" id="actionButtons" style="display: none;">
-                <button class="btn btn-approve" onclick="approveApply()">✅ 同意</button>
-                <button class="btn btn-reject" onclick="rejectApply()">❌ 拒绝</button>
+                <span class="value" id="infoStatus">-</span>
             </div>
         </div>
         
-        <div id="errorMsg" class="error-msg" style="display: none;"></div>
-        <div id="successMsg" class="success-msg" style="display: none;"></div>
+        <!-- 消息提示 -->
+        <div id="messageBox" class="message-box hidden"></div>
     </div>
     
     <script>
@@ -266,9 +263,11 @@
         const PASSWORD_CACHE_KEY = 'weiqi_admin_password';
         const PASSWORD_CACHE_TIME_KEY = 'weiqi_admin_password_time';
         const CACHE_MAX_AGE = 10 * 60 * 1000;
-        const PASSWORD_CACHE_AGE = 30 * 60 * 1000; // 30分钟
+        const PASSWORD_CACHE_AGE = 24 * 60 * 60 * 1000; // 1天
         
         let apiBase = '';
+        let cachedPassword = '';
+        let needPassword = false; // 是否需要用户输入密码
         
         async function getApiBase() {
             if (window.API_BASE) return window.API_BASE;
@@ -307,80 +306,26 @@
             });
         }
         
-        // 页面加载
-        window.onload = async function() {
-            try {
-                apiBase = await getApiBase();
-                
-                // 恢复缓存的密码
-                const cachedPassword = localStorage.getItem(PASSWORD_CACHE_KEY);
-                const passwordTime = parseInt(localStorage.getItem(PASSWORD_CACHE_TIME_KEY) || '0');
-                const now = Date.now();
-                
-                if (cachedPassword && (now - passwordTime) < PASSWORD_CACHE_AGE) {
-                    document.getElementById('adminPassword').value = cachedPassword;
-                    document.getElementById('rememberPassword').checked = true;
-                }
-            } catch (e) {
-                showError('网络错误: ' + e.message);
-            }
-        };
-        
-        // 查询申请
-        async function queryApply() {
-            const code = document.getElementById('applyCode').value.trim();
-            const password = document.getElementById('adminPassword').value;
-            
-            if (!code) {
-                showError('请输入申请码');
-                return;
-            }
-            
-            if (!password) {
-                showError('请输入管理员密码');
-                return;
-            }
-            
-            // 缓存密码
-            if (document.getElementById('rememberPassword').checked) {
-                localStorage.setItem(PASSWORD_CACHE_KEY, password);
-                localStorage.setItem(PASSWORD_CACHE_TIME_KEY, Date.now().toString());
-            } else {
-                localStorage.removeItem(PASSWORD_CACHE_KEY);
-                localStorage.removeItem(PASSWORD_CACHE_TIME_KEY);
-            }
-            
-            try {
-                const res = await fetch(`${apiBase}/api/auth/apply/${code}`);
-                const data = await res.json();
-                
-                if (data.success) {
-                    showResult(data.data, password);
-                } else {
-                    showError(data.error.message);
-                }
-            } catch (e) {
-                showError('网络错误: ' + e.message);
-            }
+        // 显示消息
+        function showMessage(msg, type) {
+            const box = document.getElementById('messageBox');
+            box.textContent = msg;
+            box.className = `message-box message-${type}`;
         }
         
-        // 显示查询结果
-        function showResult(applyData, password) {
-            const resultBox = document.getElementById('resultBox');
-            const actionButtons = document.getElementById('actionButtons');
+        // 显示申请信息
+        function showInfo(data) {
+            document.getElementById('infoCode').textContent = data.code;
             
-            document.getElementById('resultCode').textContent = applyData.code;
-            
-            const createdAt = new Date(applyData.created_at);
-            document.getElementById('resultTime').textContent = 
+            const createdAt = new Date(data.created_at);
+            document.getElementById('infoTime').textContent = 
                 createdAt.toLocaleTimeString('zh-CN', {hour: '2-digit', minute: '2-digit'});
             
-            // 状态显示
-            const statusEl = document.getElementById('resultStatus');
+            const statusEl = document.getElementById('infoStatus');
             let statusText = '';
             let statusClass = '';
             
-            switch(applyData.status) {
+            switch(data.status) {
                 case 'pending':
                     statusText = '等待审核';
                     statusClass = 'status-pending';
@@ -393,31 +338,93 @@
                     statusText = '已拒绝';
                     statusClass = 'status-rejected';
                     break;
-                case 'expired':
-                    statusText = '已过期';
-                    statusClass = 'status-rejected';
-                    break;
             }
             
             statusEl.innerHTML = `<span class="status-badge ${statusClass}">${statusText}</span>`;
-            
-            // 显示审批按钮（仅pending状态）
-            if (applyData.status === 'pending') {
-                actionButtons.style.display = 'flex';
-            } else {
-                actionButtons.style.display = 'none';
-            }
-            
-            resultBox.classList.add('show');
-            hideMessages();
+            document.getElementById('infoBox').classList.add('show');
         }
         
-        // 批准申请
+        // 获取密码
+        function getPassword() {
+            // 如果已经标记需要密码，从输入框获取
+            if (needPassword) {
+                return document.getElementById('adminPassword').value;
+            }
+            
+            // 否则使用缓存密码
+            return cachedPassword;
+        }
+        
+        // 缓存密码
+        function cachePassword(password) {
+            localStorage.setItem(PASSWORD_CACHE_KEY, password);
+            localStorage.setItem(PASSWORD_CACHE_TIME_KEY, Date.now().toString());
+            cachedPassword = password;
+            needPassword = false;
+        }
+        
+        // 清除密码缓存
+        function clearPasswordCache() {
+            localStorage.removeItem(PASSWORD_CACHE_KEY);
+            localStorage.removeItem(PASSWORD_CACHE_TIME_KEY);
+            cachedPassword = '';
+            needPassword = true;
+            document.getElementById('passwordGroup').classList.remove('hidden');
+            document.getElementById('adminPassword').focus();
+        }
+        
+        // 页面加载
+        window.onload = async function() {
+            try {
+                apiBase = await getApiBase();
+                
+                // 检查密码缓存
+                const cached = localStorage.getItem(PASSWORD_CACHE_KEY);
+                const cachedTime = parseInt(localStorage.getItem(PASSWORD_CACHE_TIME_KEY) || '0');
+                const now = Date.now();
+                
+                if (cached && (now - cachedTime) < PASSWORD_CACHE_AGE) {
+                    // 密码缓存有效，记住密码
+                    cachedPassword = cached;
+                    needPassword = false;
+                    // 不显示密码输入框
+                    document.getElementById('passwordGroup').classList.add('hidden');
+                } else {
+                    // 密码缓存失效，清空
+                    localStorage.removeItem(PASSWORD_CACHE_KEY);
+                    localStorage.removeItem(PASSWORD_CACHE_TIME_KEY);
+                    cachedPassword = '';
+                    needPassword = true;
+                    // 显示密码输入框
+                    document.getElementById('passwordGroup').classList.remove('hidden');
+                }
+            } catch (e) {
+                showMessage('网络错误: ' + e.message, 'error');
+            }
+        };
+        
+        // 同意申请
         async function approveApply() {
             const code = document.getElementById('applyCode').value.trim();
-            const password = document.getElementById('adminPassword').value;
-            const expireDaysStr = document.getElementById('expireDays').value;
-            const expireDays = parseFloat(expireDaysStr);  // 转换为数字
+            
+            if (!code) {
+                showMessage('请输入申请码', 'error');
+                return;
+            }
+            
+            const password = getPassword();
+            
+            if (!password) {
+                showMessage('请输入管理员密码', 'error');
+                clearPasswordCache();
+                return;
+            }
+            
+            const expireDays = parseFloat(document.getElementById('expireDays').value);
+            
+            // 禁用按钮
+            document.getElementById('approveBtn').disabled = true;
+            document.getElementById('rejectBtn').disabled = true;
             
             try {
                 const res = await fetch(`${apiBase}/api/admin/apply/approve`, {
@@ -429,24 +436,57 @@
                 const data = await res.json();
                 
                 if (data.success) {
-                    showSuccess('✅ 已批准，用户可正常访问');
-                    document.getElementById('actionButtons').style.display = 'none';
-                    document.getElementById('resultStatus').innerHTML = 
-                        '<span class="status-badge status-approved">已批准</span>';
+                    // 缓存密码
+                    cachePassword(password);
+                    
+                    // 隐藏密码输入框
+                    document.getElementById('passwordGroup').classList.add('hidden');
+                    
+                    // 显示申请信息
+                    showInfo({
+                        code: code,
+                        created_at: new Date().toISOString(),
+                        status: 'approved'
+                    });
+                    
+                    showMessage('✅ 已批准，用户可正常访问', 'success');
                 } else {
-                    showError(data.error.message);
+                    // 密码错误，清除缓存，显示密码输入框
+                    if (data.error.message.includes('密码')) {
+                        clearPasswordCache();
+                    }
+                    
+                    showMessage(data.error.message, 'error');
                 }
             } catch (e) {
-                showError('网络错误: ' + e.message);
+                showMessage('网络错误: ' + e.message, 'error');
+            } finally {
+                // 恢复按钮
+                document.getElementById('approveBtn').disabled = false;
+                document.getElementById('rejectBtn').disabled = false;
             }
         }
         
         // 拒绝申请
         async function rejectApply() {
-            if (!confirm('确定拒绝该申请？')) return;
-            
             const code = document.getElementById('applyCode').value.trim();
-            const password = document.getElementById('adminPassword').value;
+            
+            if (!code) {
+                showMessage('请输入申请码', 'error');
+                return;
+            }
+            
+            const password = getPassword();
+            
+            if (!password) {
+                showMessage('请输入管理员密码', 'error');
+                clearPasswordCache();
+                return;
+            }
+            
+            // 禁用按钮
+            document.getElementById('approveBtn').disabled = true;
+            document.getElementById('rejectBtn').disabled = true;
             
             try {
                 const res = await fetch(`${apiBase}/api/admin/apply/reject`, {
@@ -458,35 +498,35 @@
                 const data = await res.json();
                 
                 if (data.success) {
-                    showSuccess('已拒绝');
-                    document.getElementById('actionButtons').style.display = 'none';
-                    document.getElementById('resultStatus').innerHTML = 
-                        '<span class="status-badge status-rejected">已拒绝</span>';
+                    // 缓存密码
+                    cachePassword(password);
+                    
+                    // 隐藏密码输入框
+                    document.getElementById('passwordGroup').classList.add('hidden');
+                    
+                    // 显示申请信息
+                    showInfo({
+                        code: code,
+                        created_at: new Date().toISOString(),
+                        status: 'rejected'
+                    });
+                    
+                    showMessage('已拒绝', 'info');
                 } else {
-                    showError(data.error.message);
+                    // 密码错误，清除缓存，显示密码输入框
+                    if (data.error.message.includes('密码')) {
+                        clearPasswordCache();
+                    }
+                    
+                    showMessage(data.error.message, 'error');
                 }
             } catch (e) {
-                showError('网络错误: ' + e.message);
+                showMessage('网络错误: ' + e.message, 'error');
+            } finally {
+                // 恢复按钮
+                document.getElementById('approveBtn').disabled = false;
+                document.getElementById('rejectBtn').disabled = false;
             }
-        }
-        
-        function showError(msg) {
-            const errorEl = document.getElementById('errorMsg');
-            errorEl.textContent = msg;
-            errorEl.style.display = 'block';
-            document.getElementById('successMsg').style.display = 'none';
-        }
-        
-        function showSuccess(msg) {
-            const successEl = document.getElementById('successMsg');
-            successEl.textContent = msg;
-            successEl.style.display = 'block';
-            document.getElementById('errorMsg').style.display = 'none';
-        }
-        
-        function hideMessages() {
-            document.getElementById('errorMsg').style.display = 'none';
-            document.getElementById('successMsg').style.display = 'none';
         }
     </script>
 </body>
