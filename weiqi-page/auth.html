@@ -107,11 +107,11 @@
         
         .qr-code {
             margin: 15px 0;
-            text-align: center;
+            text-align: left;
         }
         
         .qr-code img {
-            max-width: 140px;
+            max-width: 120px;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
@@ -266,6 +266,32 @@
                 // 获取API域名
                 apiBase = await getApiBase();
                 
+                // 检查是否已有有效 token
+                const cachedToken = localStorage.getItem('weiqi_token');
+                if (cachedToken) {
+                    // 验证 token 是否有效
+                    try {
+                        const verifyRes = await fetch(`${apiBase}/api/auth/verify`, {
+                            method: 'POST',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({token: cachedToken})
+                        });
+                        const verifyData = await verifyRes.json();
+                        
+                        if (verifyData.success && verifyData.data.valid) {
+                            // Token 有效，直接跳转
+                            window.location.replace(decodeURIComponent(returnUrl));
+                            return; // 不继续执行后续代码
+                        } else {
+                            // Token 无效，清除缓存
+                            localStorage.removeItem('weiqi_token');
+                        }
+                    } catch (e) {
+                        // 验证失败，继续走申请流程
+                        console.warn('Token验证失败:', e);
+                    }
+                }
+                
                 // 创建申请记录
                 const res = await fetch(`${apiBase}/api/auth/apply`, {
                     method: 'POST',
@@ -342,7 +368,8 @@
                         localStorage.setItem('weiqi_token', data.data.token);
                     }
                     setTimeout(() => {
-                        window.location.href = decodeURIComponent(returnUrl);
+                        // 使用 replace 跳转，不留历史记录
+                        window.location.replace(decodeURIComponent(returnUrl));
                     }, 1500);
                 });
         }
