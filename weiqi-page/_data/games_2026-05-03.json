@@ -1,0 +1,62 @@
+[
+  {
+    "id": "202605032154300001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-03/野狐/game_202605032154300001.json",
+    "black": "白宝祥",
+    "white": "唐崇哲",
+    "black_rank": "9段",
+    "white_rank": "9段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第十五届陈毅杯本赛<绝艺讲解>"
+  },
+  {
+    "id": "202605032154310002",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-03/野狐/game_202605032154310002.json",
+    "black": "张嘉睿",
+    "white": "周振宇",
+    "black_rank": "9段",
+    "white_rank": "9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第十五届陈毅杯本赛<绝艺讲解>"
+  },
+  {
+    "id": "202605032154310003",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-03/野狐/game_202605032154310003.json",
+    "black": "金恩持",
+    "white": "周泓余",
+    "black_rank": "P9段",
+    "white_rank": "P7段",
+    "result": "B+4.50",
+    "result_cn": "黑胜4.50目",
+    "event": "2026中韩女子五强对抗赛第2场<绝艺讲解>"
+  },
+  {
+    "id": "202605032154310004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-03/野狐/game_202605032154310004.json",
+    "black": "白宝祥",
+    "white": "潘文君",
+    "black_rank": "9段",
+    "white_rank": "9段",
+    "result": "B+1.00",
+    "result_cn": "黑胜1.00目",
+    "event": "第十五届陈毅杯第二轮<绝艺讲解>"
+  },
+  {
+    "id": "202605032154310005",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-03/野狐/game_202605032154310005.json",
+    "black": "伍贤喆",
+    "white": "邱启航",
+    "black_rank": "9段",
+    "white_rank": "P2段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第十五届陈毅杯第二轮<绝艺讲解>"
+  }
+]

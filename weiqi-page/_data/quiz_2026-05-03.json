@@ -1,0 +1,86 @@
+[
+  {
+    "id": "202605032154300001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-03/野狐/quiz_202605032154300001.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-03/野狐/game_202605032154300001.json",
+    "black": "白宝祥",
+    "white": "唐崇哲",
+    "event": "第十五届陈毅杯本赛<绝艺讲解>",
+    "result": "黑胜1.00目",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑胜1.00目",
+      "game_level": "高段",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605032154310002",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-03/野狐/quiz_202605032154310002.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-03/野狐/game_202605032154310002.json",
+    "black": "张嘉睿",
+    "white": "周振宇",
+    "event": "第十五届陈毅杯本赛<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 6,
+    "stats": {
+      "total": 6,
+      "result": "白中盘胜",
+      "game_level": "高段",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 4
+      }
+    }
+  },
+  {
+    "id": "202605032154310003",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-03/野狐/quiz_202605032154310003.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-03/野狐/game_202605032154310003.json",
+    "black": "金恩持",
+    "white": "周泓余",
+    "event": "2026中韩女子五强对抗赛第2场<绝艺讲解>",
+    "result": "黑胜4.50目",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑胜4.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605032154310004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-03/野狐/quiz_202605032154310004.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-03/野狐/game_202605032154310004.json",
+    "black": "白宝祥",
+    "white": "潘文君",
+    "event": "第十五届陈毅杯第二轮<绝艺讲解>",
+    "result": "黑胜1.00目",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑胜1.00目",
+      "game_level": "高段",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  }
+]
