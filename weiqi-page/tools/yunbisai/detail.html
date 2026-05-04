@@ -46,6 +46,40 @@
         .spinner { border: 3px solid #f3f3f3; border-top: 3px solid #667eea; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 16px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         footer { text-align: center; padding: 20px; color: #999; font-size: 0.8em; }
+        
+        /* 对手分可点击样式 */
+        .opponent-score { cursor: pointer; color: #667eea; text-decoration: underline; transition: all 0.2s; }
+        .opponent-score:hover { color: #764ba2; background: #f0f0ff; border-radius: 4px; }
+        
+        /* 棋手名字链接样式 */
+        .player-link { color: #667eea; text-decoration: none; cursor: pointer; transition: color 0.2s; }
+        .player-link:hover { color: #764ba2; text-decoration: underline; }
+        
+        /* 模态框样式 */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 12px; }
+        .modal-overlay.show { display: flex; }
+        .modal-box { background: white; border-radius: 16px; width: 100%; max-width: 420px; max-height: 85vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .modal-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h2 { font-size: 1.1em; margin: 0; }
+        .modal-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1.2em; line-height: 1; }
+        .modal-close:hover { background: rgba(255,255,255,0.3); }
+        .modal-body { padding: 0; overflow-y: auto; flex: 1; }
+        .opponent-list { display: flex; flex-direction: column; }
+        .opponent-item { padding: 12px 16px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; }
+        .opponent-item:last-child { border-bottom: none; }
+        .opponent-item:hover { background: #fafafa; }
+        .opponent-info { flex: 1; }
+        .opponent-round { font-size: 0.75em; color: #999; margin-bottom: 2px; }
+        .opponent-name { font-weight: 600; color: #333; }
+        .opponent-rank { font-size: 0.8em; color: #888; margin-top: 2px; }
+        .game-result { display: flex; align-items: center; gap: 8px; }
+        .game-color { font-size: 0.9em; }
+        .result-badge { padding: 4px 10px; border-radius: 12px; font-size: 0.85em; font-weight: 600; }
+        .result-badge.win { background: #e8f5e9; color: #2e7d32; }
+        .result-badge.lose { background: #ffebee; color: #c62828; }
+        .result-badge.draw { background: #fff3e0; color: #e65100; }
+        .result-badge.pending { background: #f5f5f5; color: #999; }
+        .modal-footer { padding: 12px 16px; background: #f9f9f9; border-top: 1px solid #eee; text-align: center; font-size: 0.85em; color: #888; }
     </style>
 </head>
 <body>
@@ -78,9 +112,168 @@
         
         <footer><p>围棋智能助手 &copy; 2026</p></footer>
     </div>
+    
+    <!-- 对手详情模态框 -->
+    <div class="modal-overlay" id="opponentModal" onclick="if(event.target===this)closeModal()">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 id="modalTitle">对手列表</h2>
+                <button class="modal-close" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="opponent-list" id="opponentList"></div>
+            </div>
+            <div class="modal-footer" id="modalSummary">加载中...</div>
+        </div>
+    </div>
     <script>
         let event = null, groups = [], selectedGroup = null, totalRounds = 1, currentRound = 1, rankingsMap = {};
-        const LAST_GROUP_KEY = 'yunbisai_last_group';
+        
+        // ========== 名字处理工具函数 ==========
+        /**
+         * 清理棋手名字：移除ID、竖线等后缀
+         * 常见格式：张三|12345、张三[12345]、张三(12345)、张三_ID:12345、张三-男-12345
+         */
+        function cleanPlayerName(name) {
+            if (!name) return '';
+            // 方法1：尝试提取中文姓名（2-4个连续中文字符）
+            const chineseMatch = name.match(/[\u4e00-\u9fa5]{2,4}/);
+            if (chineseMatch) {
+                return chineseMatch[0];
+            }
+            // 方法2：移除常见后缀格式
+            return name
+                .replace(/\|[\d\w:_-]+$/, '')      // 移除 |12345 或 |ID:12345
+                .replace(/\[[\d\w:_-]+\]$/, '')   // 移除 [12345] 或 [ID:12345]
+                .replace(/\([\d\w:_-]+\)$/, '')   // 移除 (12345) 或 (ID:12345)
+                .replace(/_[\d\w:_-]+$/, '')       // 移除 _12345 或 _ID:12345
+                .replace(/-[\d\w:_-]+$/, '')       // 移除 -12345 或 -男-12345
+                .trim();
+        }
+        
+        /**
+ * 检测列表中是否有同名棋手
+         * 返回一个Map，记录每个清理后名字是否需要保留原始名字
+         */
+        function detectDuplicateNames(nameList) {
+            const cleanedCount = {};
+            const cleanedToOriginals = {};
+            
+            nameList.forEach(name => {
+                const cleaned = cleanPlayerName(name);
+                cleanedCount[cleaned] = (cleanedCount[cleaned] || 0) + 1;
+                if (!cleanedToOriginals[cleaned]) cleanedToOriginals[cleaned] = [];
+                cleanedToOriginals[cleaned].push(name);
+            });
+            
+            // 如果清理后的名字有重复，需要保留原始名字
+            const needsOriginal = new Set();
+            Object.entries(cleanedCount).forEach(([cleaned, count]) => {
+                if (count > 1) {
+                    cleanedToOriginals[cleaned].forEach(name => needsOriginal.add(name));
+                }
+            });
+            
+            return needsOriginal;
+        }
+        
+        /**
+         * 获取显示用的名字（清理或保留原始）
+         */
+        function getDisplayName(name, needsOriginal) {
+            if (!name) return '';
+            return needsOriginal.has(name) ? name : cleanPlayerName(name);
+        }
+        
+        /**
+         * 生成棋手查询链接
+         * 查询使用清理后的名字，显示也使用清理后的名字
+         */
+        function playerLink(name, needsOriginal) {
+            const displayName = getDisplayName(name, needsOriginal);
+            const queryName = encodeURIComponent(displayName); // 查询也用清理后的名字
+            return `<a href="../player.html?name=${queryName}" class="player-link">${displayName}</a>`;
+        }
+        
+        // ========== 分组优先级排序 ==========
+        /**
+         * 计算分组优先级分数（越高越靠前）
+         * 优先级：公开 > 精英 > 中学 > 少年 > 儿童
+         * 段级位：5段 > 4段 > ... > 1级 > 2级 > ...
+         */
+        function getGroupPriority(groupName) {
+            if (!groupName) return 0;
+            const name = groupName.toLowerCase();
+            
+            // 组别优先级（权重10000）
+            const groupTypes = {
+                '公开': 50000, 'open': 50000,
+                '精英': 40000, 'elite': 40000,
+                '中学': 30000, 'middle': 30000, '高中': 30000,
+                '少年': 20000, 'youth': 20000, '青少年': 20000,
+                '儿童': 10000, 'child': 10000, '少儿': 10000, '幼儿': 5000
+            };
+            
+            // 段位优先级（权重100）
+            const danLevels = {
+                '9段': 990, '8段': 890, '7段': 790, '6段': 690,
+                '5段': 590, '五段': 590, '业余5段': 590,
+                '4段': 490, '四段': 490, '业余4段': 490,
+                '3段': 390, '三段': 390, '业余3段': 390,
+                '2段': 290, '二段': 290, '业余2段': 290,
+                '1段': 190, '初段': 190, '业余1段': 190,
+                '定段': 150, '定段组': 150
+            };
+            
+            // 计算优先级分数
+            let score = 0;
+            
+            // 匹配组别类型
+            for (const [key, value] of Object.entries(groupTypes)) {
+                if (name.includes(key)) {
+                    score = Math.max(score, value);
+                }
+            }
+            
+            // 匹配段位
+            for (const [key, value] of Object.entries(danLevels)) {
+                if (name.includes(key)) {
+                    score += value;
+                }
+            }
+            
+            // 匹配级位（动态匹配任意数字+级）
+            // 数字越大优先级越低：1级=99, 25级=75, 无级=0
+            const kyuMatch = name.match(/(\d+)级/);
+            if (kyuMatch) {
+                const kyuNum = parseInt(kyuMatch[1]);
+                score += Math.max(1, 100 - kyuNum); // 1级=99, 25级=75, 保证>0
+            } else if (name.includes('无级')) {
+                // 无级排在所有级位之后
+                score += 0;
+            }
+            
+            // 如果没有匹配到任何类型，排在最后
+            if (score === 0) {
+                score = -1;
+            }
+            
+            return score;
+        }
+        
+        /**
+         * 按优先级排序分组列表
+         */
+        function sortGroupsByPriority(groupsList) {
+            return groupsList.slice().sort((a, b) => {
+                const priorityA = getGroupPriority(a.name);
+                const priorityB = getGroupPriority(b.name);
+                // 优先级高的排前面（降序）
+                return priorityB - priorityA;
+            });
+        }
+        
+        // ========== 页面初始化 ==========
         
         async function init() {
             event = JSON.parse(sessionStorage.getItem('yunbisai_event') || '{}');
@@ -99,10 +292,19 @@
                 const data = await response.json();
                 if (!data.success) throw new Error(data.error?.message);
                 groups = data.data.groups || [];
+                
+                // 按优先级排序
+                groups = sortGroupsByPriority(groups);
+                
                 renderGroupSelect();
                 
-                // 尝试恢复最近访问的分组
-                restoreLastGroup();
+                // 尝试恢复该比赛最近访问的分组
+                const restored = restoreLastGroup();
+                
+                // 如果没有恢复，则默认选中最高优先级的分组
+                if (!restored && groups.length > 0) {
+                    selectGroup(groups[0]);
+                }
             } catch (error) {
                 document.getElementById('groupSelect').innerHTML = `<option>${error.message}</option>`;
             }
@@ -111,6 +313,7 @@
         function renderGroupSelect() {
             const select = document.getElementById('groupSelect');
             let html = '<option value="">选择分组</option>';
+            // groups 已按优先级排序
             groups.forEach(g => {
                 const playerCount = g.players ?? g.playernum ?? g.participant_count;
                 const label = playerCount !== undefined ? `${g.name} (${playerCount}人)` : g.name;
@@ -119,41 +322,59 @@
             select.innerHTML = html;
         }
         
+        // ========== 本地存储（按比赛分开） ==========
+        const LAST_GROUPS_KEY = 'yunbisai_last_groups'; // 存储所有比赛的最后分组
+        
+        // 获取所有比赛的最后分组记录
+        function getLastGroupsMap() {
+            try {
+                const data = localStorage.getItem(LAST_GROUPS_KEY);
+                return data ? JSON.parse(data) : {};
+            } catch (e) {
+                return {};
+            }
+        }
+        
         // 保存最近访问的分组到 localStorage
         function saveLastGroup(group) {
             if (!group || !event) return;
-            const data = {
-                eventId: event.id,
+            const map = getLastGroupsMap();
+            map[event.id] = {
                 groupId: group.id,
                 groupName: group.name,
                 timestamp: Date.now()
             };
-            localStorage.setItem(LAST_GROUP_KEY, JSON.stringify(data));
+            localStorage.setItem(LAST_GROUPS_KEY, JSON.stringify(map));
         }
         
         // 从 localStorage 恢复最近访问的分组
+        // 返回 true 表示成功恢复，false 表示没有记录
         function restoreLastGroup() {
             try {
-                const saved = localStorage.getItem(LAST_GROUP_KEY);
-                if (!saved) return;
-                
-                const data = JSON.parse(saved);
-                // 检查是否是当前比赛的分组
-                if (data.eventId !== event.id) return;
+                const map = getLastGroupsMap();
+                const record = map[event.id];
+                if (!record) return false;
                 
                 // 检查该分组是否存在于当前分组列表中
-                const group = groups.find(g => g.id == data.groupId);
-                if (!group) return;
+                const group = groups.find(g => g.id == record.groupId);
+                if (!group) return false;
                 
                 // 自动选择该分组
-                document.getElementById('groupSelect').value = data.groupId;
-                selectedGroup = group;
-                
-                // 加载数据
-                loadGroupData();
+                selectGroup(group);
+                return true;
             } catch (e) {
                 console.error('恢复分组失败:', e);
+                return false;
             }
+        }
+        
+        // 选择分组并更新界面
+        function selectGroup(group) {
+            if (!group) return;
+            selectedGroup = group;
+            document.getElementById('groupSelect').value = group.id;
+            saveLastGroup(group);
+            loadGroupData();
         }
         
         // 加载分组数据（排名和对阵）
@@ -172,13 +393,10 @@
                 selectedGroup = null;
                 return;
             }
-            selectedGroup = groups.find(g => g.id == groupId);
-            if (!selectedGroup) return;
+            const group = groups.find(g => g.id == groupId);
+            if (!group) return;
             
-            // 保存到 localStorage
-            saveLastGroup(selectedGroup);
-            
-            await loadGroupData();
+            selectGroup(group);
         }
         
         async function loadRanking() {
@@ -213,13 +431,18 @@
                 document.getElementById('rankingList').innerHTML = '<div style="text-align:center;padding:40px;">暂无排名</div>';
                 return;
             }
+            
+            // 检测同名棋手
+            const allNames = data.rankings.map(p => p.name);
+            const needsOriginal = detectDuplicateNames(allNames);
+            
             const isFinal = data.completed_rounds >= data.total_rounds;
             let html = '<table class="ranking-table"><thead><tr><th>排名</th><th>姓名</th><th>积分</th><th>对手分</th>';
             if (isFinal) html += '<th>累进分</th><th>逆减</th>';
             html += '</tr></thead><tbody>';
             data.rankings.forEach((player, index) => {
                 const rankClass = index < 3 ? 'top3' : '';
-                html += `<tr><td class="rank-num ${rankClass}">${player.rank}</td><td class="rank-name">${player.name}</td><td class="rank-score">${player.score}</td><td>${player.opponent_score || 0}</td>`;
+                html += `<tr><td class="rank-num ${rankClass}">${player.rank}</td><td class="rank-name">${playerLink(player.name, needsOriginal)}</td><td class="rank-score">${player.score}</td><td class="opponent-score" onclick="showOpponents('${player.name.replace(/'/g, "\\'")}', ${index})">${player.opponent_score || 0}</td>`;
                 if (isFinal) html += `<td>${player.progressive_score || 0}</td><td>${player.opponent_score_reverse_minus || '-'}</td>`;
                 html += '</tr>';
             });
@@ -281,13 +504,25 @@
                 document.getElementById('matchesList').innerHTML = '<div style="text-align:center;padding:40px;">暂无对阵</div>';
                 return;
             }
+            
+            // 收集所有棋手名字，检测同名
+            const allNames = [];
+            data.matches.forEach(match => {
+                if (match.black && match.black !== '轮空') allNames.push(match.black);
+                if (match.white && match.white !== '轮空') allNames.push(match.white);
+            });
+            const needsOriginal = detectDuplicateNames(allNames);
+            
             let html = '';
             data.matches.forEach(match => {
                 const result = match.result ? `<div class="match-result">${match.result}</div>` : '';
                 // 显示选手积分（black_integral 和 white_integral）
                 const blackIntegral = match.black_integral !== undefined ? `<div class="player-integral">积分: ${match.black_integral}</div>` : '';
                 const whiteIntegral = match.white_integral !== undefined ? `<div class="player-integral">积分: ${match.white_integral}</div>` : '';
-                html += `<div class="match-card"><div class="match-round">台号 ${match.table}</div><div class="match-players"><div class="match-player black"><div class="player-name">${match.black}</div>${blackIntegral}</div><div class="match-vs">VS${result}</div><div class="match-player white"><div class="player-name">${match.white}</div>${whiteIntegral}</div></div></div>`;
+                // 棋手名字链接
+                const blackName = match.black === '轮空' ? '轮空' : playerLink(match.black, needsOriginal);
+                const whiteName = match.white === '轮空' ? '轮空' : playerLink(match.white, needsOriginal);
+                html += `<div class="match-card"><div class="match-round">台号 ${match.table}</div><div class="match-players"><div class="match-player black"><div class="player-name">${blackName}</div>${blackIntegral}</div><div class="match-vs">VS${result}</div><div class="match-player white"><div class="player-name">${whiteName}</div>${whiteIntegral}</div></div></div>`;
             });
             document.getElementById('matchesList').innerHTML = html;
         }
@@ -312,6 +547,127 @@
             document.getElementById('matchesContent').style.display = tab === 'matches' ? 'block' : 'none';
             if (tab === 'matches') loadMatches(currentRound);
         }
+        
+        // ========== 对手详情模态框 ==========
+        let currentRankingData = null;
+        
+        function showOpponents(playerName, playerIndex) {
+            if (!currentRankingData || !currentRankingData.rankings) {
+                alert('排名数据未加载');
+                return;
+            }
+            
+            const player = currentRankingData.rankings.find(p => p.name === playerName);
+            if (!player) {
+                alert('未找到该棋手数据');
+                return;
+            }
+            
+            // 构建对手信息映射（用于显示对手排名）
+            const rankMap = {};
+            currentRankingData.rankings.forEach((p, idx) => {
+                rankMap[p.name] = { rank: idx + 1, score: p.score };
+            });
+            
+            // 收集所有对手名字，检测同名
+            const opponentNames = player.games ? player.games.map(g => g.opponent).filter(n => n && n !== '轮空') : [];
+            const needsOriginal = detectDuplicateNames(opponentNames);
+            
+            // 渲染模态框内容
+            const modal = document.getElementById('opponentModal');
+            const title = document.getElementById('modalTitle');
+            const list = document.getElementById('opponentList');
+            const summary = document.getElementById('modalSummary');
+            
+            // 标题显示清理后的名字
+            const displayPlayerName = cleanPlayerName(playerName);
+            title.textContent = `🎯 ${displayPlayerName} 的对手`;
+            
+            // 统计胜负
+            let wins = 0, losses = 0, draws = 0;
+            
+            if (!player.games || player.games.length === 0) {
+                list.innerHTML = '<div style="text-align:center;padding:30px;color:#888;">暂无对局数据</div>';
+                summary.textContent = '暂无对局数据';
+            } else {
+                let html = '';
+                player.games.forEach(game => {
+                    const opponent = game.opponent || '轮空';
+                    const result = game.result || '';
+                    const round = game.round || '?';
+                    const opponentInfo = rankMap[opponent] || {};
+                    
+                    // 解析结果
+                    let resultClass = 'pending';
+                    let resultText = '待定';
+                    let colorText = '';
+                    
+                    if (result.includes('胜') || result.includes('赢')) {
+                        resultClass = 'win';
+                        resultText = '胜';
+                        wins++;
+                    } else if (result.includes('负') || result.includes('输')) {
+                        resultClass = 'lose';
+                        resultText = '负';
+                        losses++;
+                    } else if (result.includes('和') || result.includes('平')) {
+                        resultClass = 'draw';
+                        resultText = '和';
+                        draws++;
+                    } else if (opponent === '轮空') {
+                        resultClass = 'win';
+                        resultText = '轮空胜';
+                        wins++;
+                    }
+                    
+                    // 推断执黑执白（从对阵数据中获取）
+                    const colorIcon = colorText || (round % 2 === 0 ? '⚫' : '⚪');
+                    
+                    // 对手名字（清理或链接）
+                    const opponentDisplay = opponent === '轮空' 
+                        ? '轮空' 
+                        : playerLink(opponent, needsOriginal);
+                    
+                    html += `
+                        <div class="opponent-item">
+                            <div class="opponent-info">
+                                <div class="opponent-round">第${round}轮</div>
+                                <div class="opponent-name">${opponentDisplay}</div>
+                                <div class="opponent-rank">排名: ${opponentInfo.rank || '-'} · 积分: ${opponentInfo.score !== undefined ? opponentInfo.score : '-'}</div>
+                            </div>
+                            <div class="game-result">
+                                <span class="game-color">${colorIcon}</span>
+                                <span class="result-badge ${resultClass}">${resultText}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                list.innerHTML = html;
+                summary.textContent = `${wins}胜 ${losses}负${draws > 0 ? ' ' + draws + '和' : ''} · 对手分: ${player.opponent_score || 0}`;
+            }
+            
+            // 显示模态框
+            modal.classList.add('show');
+        }
+        
+        function closeModal() {
+            document.getElementById('opponentModal').classList.remove('show');
+        }
+        
+        // 点击模态框背景关闭
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                closeModal();
+            }
+        });
+        
+        // 修改 renderRanking 保存数据引用
+        const originalRenderRanking = renderRanking;
+        renderRanking = function(data) {
+            currentRankingData = data;
+            originalRenderRanking(data);
+        };
         
         init();
     </script>

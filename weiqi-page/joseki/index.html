@@ -46,10 +46,12 @@
         .tag-hit { background: #e8f5e9; color: #2e7d32; }
         .tag-complex { background: #e3f2fd; color: #1565c0; }
         .joseki-body { padding: 12px 15px; }
-        .metrics-row { display: flex; gap: 15px; margin-bottom: 10px; }
-        .metric { flex: 1; text-align: center; }
-        .metric-value { font-size: 1.3em; font-weight: 600; color: #667eea; }
-        .metric-label { font-size: 0.8em; color: #888; margin-top: 2px; }
+        .metrics-row { display: flex; gap: 24px; align-items: flex-start; }
+        .joseki-thumbnail { width: 200px; height: 200px; flex-shrink: 0; border-radius: 8px; background: #DCB35C; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .metrics-info { flex: 1; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; justify-content: flex-start; }
+        .metric-col { display: flex; flex-direction: column; gap: 2px; }
+        .metric-value { font-size: 1.1em; font-weight: 600; color: #667eea; }
+        .metric-label { font-size: 0.75em; color: #888; }
         .joseki-footer { padding: 10px 15px; background: #fafafa; border-top: 1px solid #f5f5f5; display: flex; justify-content: space-between; align-items: center; }
         .joseki-tags { display: flex; gap: 6px; }
         .joseki-meta { font-size: 0.85em; color: #888; }
@@ -983,7 +985,17 @@
                 } else {
                     probDisplay = '0%';
                 }
-                return '<div class="joseki-card-link" data-joseki-id="' + (joseki.id || joseki.path) + '" data-path="' + joseki.path + '"><div class="joseki-card ' + visitedClass + '"><div class="joseki-header"><div class="joseki-players"><span class="stone-icon stone-black"></span>' + joseki.black + '<span class="joseki-vs">vs</span><span class="stone-icon stone-white"></span>' + joseki.white + '</div></div><div class="joseki-tags-row"><div class="joseki-meta">' + (joseki.event || '') + '</div></div><div class="joseki-body"><div class="metrics-row"><div class="metric"><div class="metric-value">' + joseki.matched_prefix_len + '/' + joseki.move_count + '</div><div class="metric-label">匹配/总手数</div></div><div class="metric"><div class="metric-value">' + (joseki.frequency || 0) + '</div><div class="metric-label">库出现次数</div></div><div class="metric"><div class="metric-value">' + probDisplay + '</div><div class="metric-label">库出现概率</div></div></div></div><div class="joseki-footer"><div class="joseki-tags">' + tags.join('') + '</div>' + (joseki.game_path ? '<button class="game-btn" data-game-path="' + joseki.game_path + '">📖 棋谱</button>' : '') + '</div></div></div>';
+                // 准备缩略图数据：moves 可能是数组或 SGF 字符串
+                let movesStr = '';
+                if (joseki.moves) {
+                    if (Array.isArray(joseki.moves)) {
+                        movesStr = joseki.moves.join(' ');
+                    } else if (typeof joseki.moves === 'string') {
+                        // SGF 格式，直接传递给缩略图解析
+                        movesStr = joseki.moves;
+                    }
+                }
+                return '<div class="joseki-card-link" data-joseki-id="' + (joseki.id || joseki.path) + '" data-path="' + joseki.path + '"><div class="joseki-card ' + visitedClass + '"><div class="joseki-header"><div class="joseki-players"><span class="stone-icon stone-black"></span>' + joseki.black + '<span class="joseki-vs">vs</span><span class="stone-icon stone-white"></span>' + joseki.white + '</div></div><div class="joseki-tags-row"><div class="joseki-meta">' + (joseki.event || '') + '</div></div><div class="joseki-body"><div class="metrics-row"><canvas class="joseki-thumbnail" width="200" height="200" data-moves="' + movesStr + '" data-prefix-len="' + joseki.matched_prefix_len + '"></canvas><div class="metrics-info"><div class="metric-col"><span class="metric-value">' + joseki.matched_prefix_len + '/' + joseki.move_count + '</span><span class="metric-label">匹配/总手数</span></div><div class="metric-col"><span class="metric-value">' + (joseki.frequency || 0) + '</span><span class="metric-label">库出现次数</span></div><div class="metric-col"><span class="metric-value">' + probDisplay + '</span><span class="metric-label">库出现概率</span></div></div></div></div><div class="joseki-footer"><div class="joseki-tags">' + tags.join('') + '</div>' + (joseki.game_path ? '<button class="game-btn" data-game-path="' + joseki.game_path + '">📖 棋谱</button>' : '') + '</div></div></div>';
             }).join('');
             restoreScrollPosition();
         }
@@ -1269,6 +1281,24 @@
         document.addEventListener('visibilitychange', function() { if (document.visibilityState === 'hidden') saveScrollPosition(); });
         window.addEventListener('beforeunload', saveScrollPosition);
         window.addEventListener('pagehide', saveScrollPosition);
+    </script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/board-thumbnail.js?v=20260504"></script>
+    <script>
+        // 在 renderJoseki 后调用缩略图渲染
+        const originalRenderJoseki = renderJoseki;
+        renderJoseki = function(date) {
+            originalRenderJoseki(date);
+            // 使用 setTimeout 确保 DOM 完全渲染后再绘制
+            setTimeout(function() {
+                BoardThumbnail.renderAll('.joseki-thumbnail');
+            }, 50);
+        };
+        // 页面加载完成后也要渲染
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                BoardThumbnail.renderAll('.joseki-thumbnail');
+            }, 100);
+        });
     </script>
 </body>
 </html>

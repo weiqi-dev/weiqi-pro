@@ -787,6 +787,15 @@
                 queryPlayer();
             }
         });
+        
+        // ========== URL参数自动查询 ==========
+        const urlParams = new URLSearchParams(window.location.search);
+        const queryName = urlParams.get('name');
+        if (queryName) {
+            document.getElementById('nameInput').value = queryName;
+            // 延迟触发查询，确保页面加载完成
+            setTimeout(() => queryPlayer(), 100);
+        }
     </script>
 </body>
 </html>

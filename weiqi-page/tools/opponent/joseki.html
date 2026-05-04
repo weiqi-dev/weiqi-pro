@@ -90,33 +90,14 @@
         .joseki-body {
             padding: 12px 15px;
         }
-        .metrics-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
-        .metric {
-            flex: 1;
-            text-align: center;
-        }
-        .metric-value {
-            font-size: 1.3em;
-            font-weight: 600;
-            color: #667eea;
-        }
-        .metric-label {
-            font-size: 0.8em;
-            color: #888;
-            margin-top: 2px;
-        }
-        .joseki-footer {
-            padding: 10px 15px;
-            background: #fafafa;
-            border-top: 1px solid #f5f5f5;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .metrics-row { display: flex; gap: 24px; align-items: flex-start; }
+        .joseki-thumbnail { width: 200px; height: 200px; flex-shrink: 0; border-radius: 8px; background: #DCB35C; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .metrics-info { flex: 1; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; justify-content: flex-start; }
+        .metric-col { display: flex; flex-direction: column; gap: 2px; }
+        .metric-value { font-size: 1.1em; font-weight: 600; color: #667eea; }
+        .metric-label { font-size: 0.75em; color: #888; }
+        .joseki-footer { padding: 10px 15px; background: #fafafa; border-top: 1px solid #f5f5f5; display: flex; justify-content: space-between; align-items: center; }
+        .joseki-tags { display: flex; gap: 6px; }
         .joseki-meta { font-size: 0.85em; color: #888; }
         .joseki-btn {
             padding: 5px 12px;
@@ -443,6 +424,8 @@
                 // 数据属性用于过滤
                 const dataTags = tags.join(' ');
 
+                // 准备缩略图数据
+                const movesStr = prefix || '';
                 html += `
                     <div class="joseki-card" data-index="${index}" data-tags="${dataTags}" onclick="saveScrollAndMarkViewed(${index}); viewJosekiMoves(${index})">
                         <div class="joseki-header">
@@ -455,17 +438,11 @@
                         </div>
                         <div class="joseki-body">
                             <div class="metrics-row">
-                                <div class="metric">
-                                    <div class="metric-value">${prefixLen}/${totalMoves}</div>
-                                    <div class="metric-label">匹配/总手数</div>
-                                </div>
-                                <div class="metric">
-                                    <div class="metric-value">${frequency}</div>
-                                    <div class="metric-label">库出现次数</div>
-                                </div>
-                                <div class="metric">
-                                    <div class="metric-value">${probDisplay}</div>
-                                    <div class="metric-label">库出现概率</div>
+                                <canvas class="joseki-thumbnail" width="200" height="200" data-moves="${movesStr}" data-prefix-len="${prefixLen}"></canvas>
+                                <div class="metrics-info">
+                                    <div class="metric-col"><span class="metric-value">${prefixLen}/${totalMoves}</span><span class="metric-label">匹配/总手数</span></div>
+                                    <div class="metric-col"><span class="metric-value">${frequency}</span><span class="metric-label">库出现次数</span></div>
+                                    <div class="metric-col"><span class="metric-value">${probDisplay}</span><span class="metric-label">库出现概率</span></div>
                                 </div>
                             </div>
                         </div>
@@ -620,6 +597,36 @@
             }
         }
 
+        // loadData() 移到下面的脚本中调用
+    </script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/board-thumbnail.js?v=20260504"></script>
+    <script>
+        // 首次渲染（页面已加载完成）
+        setTimeout(function() {
+            console.log('[joseki.html] 首次渲染缩略图');
+            BoardThumbnail.renderAll('.joseki-thumbnail');
+        }, 100);
+        
+        // 在 displayJoseki 后调用缩略图渲染
+        const originalDisplayJoseki = displayJoseki;
+        displayJoseki = function() {
+            originalDisplayJoseki();
+            setTimeout(function() {
+                console.log('[joseki.html] displayJoseki 后渲染缩略图');
+                BoardThumbnail.renderAll('.joseki-thumbnail');
+            }, 50);
+        };
+        // 监听 setFilter 后重新渲染
+        const originalSetFilter = setFilter;
+        setFilter = function(filter) {
+            originalSetFilter(filter);
+            setTimeout(function() {
+                console.log('[joseki.html] setFilter 后渲染缩略图');
+                BoardThumbnail.renderAll('.joseki-thumbnail');
+            }, 50);
+        };
+        
+        // 现在调用 loadData，displayJoseki 已被覆盖
         loadData();
     </script>
 </body>
