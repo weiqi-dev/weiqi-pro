@@ -1,0 +1,128 @@
+[
+  {
+    "id": "202605051311290001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-04/野狐/quiz_202605051311290001.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-04/野狐/game_202605051311290001.json",
+    "black": "元齐焄",
+    "white": "姜升旼",
+    "event": "韩国冲岩道循环赛<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605051311290002",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-04/野狐/quiz_202605051311290002.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-04/野狐/game_202605051311290002.json",
+    "black": "謝依旻",
+    "white": "上野梨紗",
+    "event": "第11届日本扇兴杯本赛<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605051311290003",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-04/野狐/quiz_202605051311290003.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-04/野狐/game_202605051311290003.json",
+    "black": "呉侑珍",
+    "white": "於之莹",
+    "event": "2026中韩女子五强对抗赛第3场<绝艺讲解>",
+    "result": "白胜0.50目",
+    "count": 4,
+    "stats": {
+      "total": 4,
+      "result": "白胜0.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 3
+      }
+    }
+  },
+  {
+    "id": "202605051311300005",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-04/野狐/quiz_202605051311300005.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-04/野狐/game_202605051311300005.json",
+    "black": "姜升旼",
+    "white": "金桢玹",
+    "event": "韩国冲岩道场循环赛<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605051311300006",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-04/野狐/quiz_202605051311300006.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-04/野狐/game_202605051311300006.json",
+    "black": "村本涉",
+    "white": "芝野虎丸",
+    "event": "第52期日本天元战本赛<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605051311300007",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-04/野狐/quiz_202605051311300007.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-04/野狐/game_202605051311300007.json",
+    "black": "许家元",
+    "white": "福冈航太朗",
+    "event": "第51期日本名人战循环圈<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  }
+]

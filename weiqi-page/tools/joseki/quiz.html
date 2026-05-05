@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>定式挑战 - 围棋定式工具</title>
+    <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
+    <link rel="stylesheet" href="/weiqi-pro/weiqi-page/assets/css/joseki.css?v=20260505b">
+    <script src="/weiqi-pro/weiqi-page/assets/js/board-thumbnail.js?v=20260504"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/joseki-board.js?v=20260504"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .mode-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+        .mode-badge.explore { background: #4CAF50; color: white; }
+        .mode-badge.challenge { background: #f44336; color: white; }
+        
+        /* 挑战按钮就绪状态 */
+        .challenge-ready:not(:disabled) {
+            background: linear-gradient(135deg, #f44336, #ff9800) !important;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* 脱先提示覆盖层 */
+        .pass-overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 152, 0, 0.9);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <div class="joseki-container">
+        <header class="joseki-header">
+            <h1>🏆 定式挑战 <span id="modeBadge" class="mode-badge explore">探索</span></h1>
+        </header>
+
+        <div class="joseki-card">
+            <!-- 标签页 -->
+            <div class="joseki-tabs">
+                <button class="joseki-tab active" data-tab="challenge">挑战</button>
+                <button class="joseki-tab" data-tab="history">历史</button>
+            </div>
+
+            <!-- 挑战标签 -->
+            <div id="challengeTab" class="joseki-tab-content active">
+            <!-- 难度选择 -->
+            <div class="joseki-difficulty">
+                <select id="difficultySelect">
+                    <option value="easy">初级 (≤10手)</option>
+                    <option value="medium">中级 (11-20手)</option>
+                    <option value="hard">高级 (>20手)</option>
+                </select>
+            </div>
+
+            <!-- 进度条 -->
+            <div class="joseki-progress">
+                <div class="joseki-progress-bar" id="progressBar" style="width: 0%"></div>
+            </div>
+
+            <!-- 棋盘 -->
+            <div class="joseki-board-wrapper" style="position: relative;">
+                <canvas id="quizBoard" class="joseki-board"></canvas>
+                <div id="passOverlay" class="pass-overlay" style="display: none;">脱先</div>
+            </div>
+
+            <!-- 指标数据 -->
+            <div class="joseki-stats" id="quizStats">
+                <div class="stat">
+                    <span class="stat-value" id="statMoves">0</span>
+                    <span class="stat-label">手数</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="statFreq">-</span>
+                    <span class="stat-label">出现次数</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value" id="statProb">-</span>
+                    <span class="stat-label">出现概率</span>
+                </div>
+            </div>
+
+            <!-- 功能按钮 -->
+            <div class="joseki-controls" id="quizControls">
+                <button class="joseki-btn" id="undoBtn" disabled title="撤销">↩</button>
+                <button class="joseki-btn secondary" id="passBtn" style="display:none" title="脱先">⊘</button>
+                <button class="joseki-btn challenge-ready" id="challengeBtn" disabled title="开始挑战">⚔</button>
+                <button class="joseki-btn secondary" id="nextBtn" title="下一题">⏭</button>
+            </div>
+            </div>
+
+            <!-- 历史标签 -->
+            <div id="historyTab" class="joseki-tab-content" style="display:none;">
+                <div class="joseki-controls" style="justify-content:flex-end; margin-bottom:12px;">
+                    <button class="joseki-btn secondary" id="importHistoryBtn" title="导入">📥</button>
+                    <button class="joseki-btn secondary" id="exportHistoryBtn" title="导出">📤</button>
+                    <button class="joseki-btn secondary danger" id="clearHistoryBtn" title="清空">🗑</button>
+                </div>
+
+                <div id="historyCount" style="text-align:center; color:#666; margin-bottom:12px;">
+                    已完成: <strong>0</strong> 个定式
+                </div>
+
+                <div id="historyGrid" class="joseki-grid"></div>
+
+                <div id="historyPagination" class="joseki-pagination" style="display:none;">
+                    <button class="joseki-btn secondary" id="historyPrevPage">◀</button>
+                    <span id="historyPageInfo">1/1</span>
+                    <button class="joseki-btn secondary" id="historyNextPage">▶</button>
+                </div>
+
+                <div id="historyEmpty" class="joseki-empty">
+                    <div class="icon">📭</div>
+                    <p>暂无记录</p>
+                    <p style="font-size:0.85em;">完成定式挑战后会自动记录</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 选择执黑执白弹框 -->
+    <div id="colorModal" class="joseki-modal">
+        <div class="joseki-modal-content">
+            <h3>选择执黑或执白</h3>
+            <p style="margin-bottom:16px; color:#666;">挑战模式：你需要记住定式路径，正确完成挑战！</p>
+            <div class="joseki-modal-buttons">
+                <button class="joseki-btn" id="selectBlack">⚫ 执黑先</button>
+                <button class="joseki-btn" id="selectWhite">⚪ 执白后</button>
+            </div>
+            <button class="joseki-btn secondary" style="margin-top:12px; width:100%;" id="cancelChallenge">取消</button>
+        </div>
+    </div>
+
+    <!-- 挑战失败弹框 -->
+    <div id="failModal" class="joseki-modal">
+        <div class="joseki-modal-content">
+            <h3>❌ 挑战失败</h3>
+            <p style="margin-bottom:16px; color:#666;" id="failMessage">位置错误！</p>
+            <div class="joseki-modal-buttons">
+                <button class="joseki-btn secondary" id="backToExplore">返回探索学习</button>
+                <button class="joseki-btn" id="retryChallenge">重新挑战</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 挑战成功弹框 -->
+    <div id="successModal" class="joseki-modal">
+        <div class="joseki-modal-content">
+            <h3>✅ 挑战成功！</h3>
+            <p style="margin-bottom:16px; color:#666;">恭喜你完成了这个定式！</p>
+            <div class="joseki-modal-buttons">
+                <button class="joseki-btn" id="nextQuiz">下一题</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 导入历史弹框 -->
+    <div id="importHistoryModal" class="joseki-modal">
+        <div class="joseki-modal-content">
+            <h3>导入历史</h3>
+            <p style="margin-bottom:16px; color:#666;">粘贴导出的JSON数据</p>
+            <textarea id="importHistoryData" style="width:100%; height:120px; border:2px solid #e0e0e0; border-radius:8px; padding:8px; font-size:12px;"></textarea>
+            <div class="joseki-modal-buttons">
+                <button class="joseki-btn secondary" id="importHistoryCancel" title="取消">✕</button>
+                <button class="joseki-btn" id="importHistoryConfirm" title="导入">✓</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== 状态变量 ==========
+        const DATA_PATH = '/weiqi-pro/weiqi-page/assets/data/joseki';
+        
+        let quizData = { easy: [], medium: [], hard: [] };
+        let currentDifficulty = 'easy';
+        let currentQuiz = null;
+        let targetMoves = [];      // 目标定式完整着法
+        let currentIndex = 0;      // 当前走到第几手（从0开始）
+        let userMoves = [];        // 已下的着法
+        let board = null;
+
+        // 模式：'explore' 或 'challenge'
+        let mode = 'explore';
+        let userColor = null;      // 'black' 或 'white'
+
+        // ========== 数据加载 ==========
+        async function loadQuizData() {
+            try {
+                for (const diff of ['easy', 'medium', 'hard']) {
+                    const url = `${DATA_PATH}/quiz-${diff}.json.gz`;
+                    const response = await fetch(url);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    
+                    const compressed = await response.arrayBuffer();
+                    const decompressed = pako.ungzip(compressed, { to: 'string' });
+                    quizData[diff] = JSON.parse(decompressed).leaves || [];
+                }
+                loadNextQuiz();
+            } catch (e) {
+                console.error('[JosekiQuiz] 加载失败:', e);
+            }
+        }
+
+        // 加载下一题
+        function loadNextQuiz() {
+            mode = 'explore';
+            updateModeBadge();
+            document.getElementById('passBtn').style.display = 'none';  // 探索模式隐藏脱先按钮
+
+            const list = quizData[currentDifficulty];
+            if (!list || list.length === 0) {
+                return;
+            }
+
+            const idx = Math.floor(Math.random() * list.length);
+            currentQuiz = list[idx];
+
+            // 解析目标着法
+            const pathParts = currentQuiz.path.split('-');
+            targetMoves = [];
+            for (let i = 0; i < pathParts.length; i++) {
+                const coordData = JosekiUtils.sgfToCoord(pathParts[i]);
+                if (coordData) {
+                    targetMoves.push({
+                        x: coordData.x,
+                        y: coordData.y,
+                        isPass: coordData.isPass,
+                        color: i % 2 === 0 ? 'black' : 'white',
+                        num: i + 1
+                    });
+                }
+            }
+
+            currentIndex = 0;
+            userMoves = [];
+
+            showExploreState();
+            updateStats();
+            updateProgress();
+        }
+
+        // ========== 探索模式 ==========
+        function showExploreState() {
+            board.setMoves(userMoves, userMoves.length);
+
+            if (currentIndex >= targetMoves.length) {
+                // 探索完成
+                board.setBranches([]);
+                document.getElementById('challengeBtn').disabled = false;
+                return;
+            }
+
+            // 检查当前是否是脱先
+            const target = targetMoves[currentIndex];
+            if (target.isPass) {
+                // AI自动下脱先，显示 overlay 提示
+                currentIndex++;
+                updateProgress();
+                board.setMoves(userMoves, userMoves.length);
+                
+                // 显示脱先提示
+                const overlay = document.getElementById('passOverlay');
+                overlay.textContent = `${target.color === 'black' ? '黑' : '白'}方脱先`;
+                overlay.style.display = 'block';
+                
+                // 800ms后隐藏，继续
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                    showExploreState();
+                }, 800);
+                return;
+            }
+
+            // 显示下一个目标选点
+            const sgf = String.fromCharCode(97 + target.x, 97 + target.y);
+            board.setBranches([{
+                x: target.x,
+                y: target.y,
+                color: target.color,
+                sgf: sgf
+            }]);
+
+            document.getElementById('undoBtn').disabled = currentIndex <= 0;
+            document.getElementById('challengeBtn').disabled = currentIndex < targetMoves.length;
+        }
+
+        function handleExploreClick(coord) {
+            const target = targetMoves[currentIndex];
+            if (!target) return;
+
+            if (target.isPass) {
+                // 正确答案是脱先，用户点击棋盘是错
+                return;
+            }
+
+            if (coord.x === target.x && coord.y === target.y) {
+                // 正确！
+                userMoves.push(target);
+                currentIndex++;
+                updateProgress();
+                showExploreState();
+            }
+        }
+
+        // ========== 挑战模式 ==========
+        function startChallenge(color) {
+            mode = 'challenge';
+            userColor = color;
+            currentIndex = 0;
+            userMoves = [];
+
+            updateModeBadge();
+            document.getElementById('colorModal').classList.remove('show');
+            document.getElementById('passBtn').style.display = 'block';  // 挑战模式显示脱先按钮
+
+            showChallengeState();
+        }
+
+        function showChallengeState() {
+            board.setMoves(userMoves, userMoves.length);
+            board.setBranches([]);  // 挑战模式没有选点提示
+
+            if (currentIndex >= targetMoves.length) {
+                // 挑战成功
+                challengeSuccess();
+                return;
+            }
+
+            const target = targetMoves[currentIndex];
+            const isUserTurn = (target.color === userColor);
+
+            if (isUserTurn) {
+                // 用户回合
+            } else {
+
+                setTimeout(() => {
+                    // 如果是脱先，显示 overlay 提示
+                    if (target.isPass) {
+                        const overlay = document.getElementById('passOverlay');
+                        overlay.textContent = `${target.color === 'black' ? '黑' : '白'}方脱先`;
+                        overlay.style.display = 'block';
+                        setTimeout(() => overlay.style.display = 'none', 600);
+                    } else {
+                        // 实际落子，存入 userMoves
+                        userMoves.push(target);
+                    }
+                    
+                    currentIndex++;
+                    board.setMoves(userMoves, userMoves.length);
+                    updateProgress();
+                    
+                    setTimeout(() => showChallengeState(), target.isPass ? 600 : 0);
+                }, 500);
+            }
+
+            document.getElementById('undoBtn').disabled = true;  // 挑战模式不支持撤销
+            document.getElementById('challengeBtn').disabled = true;
+        }
+
+        function handleChallengeClick(coord) {
+            const target = targetMoves[currentIndex];
+            if (!target) return;
+
+            // 检查是否轮到用户
+            if (target.color !== userColor) return;
+
+            // 检查是否正确
+            if (target.isPass) {
+                // 正确答案是脱先
+                showChallengeFail('正确答案是脱先！');
+                return;
+            }
+
+            if (coord.x === target.x && coord.y === target.y) {
+                // 正确！存入实际落子
+                userMoves.push(target);
+                currentIndex++;
+                updateProgress();
+                showChallengeState();
+            } else {
+                // 错误！
+                showChallengeFail('位置错误！');
+            }
+        }
+
+        function handleChallengePass() {
+            const target = targetMoves[currentIndex];
+            if (!target || target.color !== userColor) return;
+
+            if (target.isPass) {
+                // 正确！显示脱先 overlay
+                const overlay = document.getElementById('passOverlay');
+                overlay.textContent = '脱先';
+                overlay.style.display = 'block';
+                setTimeout(() => overlay.style.display = 'none', 600);
+                
+                currentIndex++;
+                updateProgress();
+                
+                setTimeout(() => showChallengeState(), 600);
+            } else {
+                // 错误！
+                showChallengeFail('正确答案不是脱先！');
+            }
+        }
+
+        function showChallengeFail(message) {
+            // 显示正确位置
+            const target = targetMoves[currentIndex];
+            if (!target.isPass) {
+                board.setMarks([{ x: target.x, y: target.y, type: 'correct' }]);
+            }
+
+            document.getElementById('failMessage').textContent = message;
+            document.getElementById('failModal').classList.add('show');
+        }
+
+        function challengeSuccess() {
+            document.getElementById('successModal').classList.add('show');
+            
+            // 记录历史
+            historyList.push({
+                path: currentQuiz.path,
+                moves: currentQuiz.moves,
+                freq: currentQuiz.freq,
+                prob: currentQuiz.prob,
+                difficulty: currentDifficulty,
+                color: userColor,
+                date: new Date().toISOString()
+            });
+            saveHistory();
+        }
+
+        // ========== 历史记录 ==========
+        let historyList = [];
+        let historyPage = 0;
+        const HISTORY_PER_PAGE = 12;
+
+        function loadHistory() {
+            try {
+                const saved = localStorage.getItem('joseki_quiz_history');
+                historyList = saved ? JSON.parse(saved) : [];
+            } catch (e) {
+                historyList = [];
+            }
+            renderHistory();
+        }
+
+        function saveHistory() {
+            localStorage.setItem('joseki_quiz_history', JSON.stringify(historyList));
+            renderHistory();
+        }
+
+        function renderHistory() {
+            const count = historyList.length;
+            document.getElementById('historyCount').innerHTML = `已完成: <strong>${count}</strong> 个定式`;
+
+            if (count === 0) {
+                document.getElementById('historyGrid').innerHTML = '';
+                document.getElementById('historyEmpty').style.display = 'block';
+                document.getElementById('historyPagination').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('historyEmpty').style.display = 'none';
+
+            const totalPages = Math.ceil(count / HISTORY_PER_PAGE);
+            historyPage = Math.min(historyPage, totalPages - 1);
+
+            const start = historyPage * HISTORY_PER_PAGE;
+            const items = historyList.slice(start, start + HISTORY_PER_PAGE);
+
+            const grid = document.getElementById('historyGrid');
+            grid.innerHTML = '';
+
+            items.forEach((item, idx) => {
+                const div = document.createElement('div');
+                div.className = 'joseki-item';
+                div.innerHTML = `
+                    <canvas width="100" height="100"></canvas>
+                    <div class="item-info">
+                        <div class="item-moves">${item.moves}手</div>
+                        <div>${item.color === 'black' ? '执黑' : '执白'}</div>
+                    </div>
+                `;
+
+                const canvas = div.querySelector('canvas');
+                const moves = JosekiUtils.parseMoves(item.path.split('-')).filter(m => m.x !== undefined && m.y !== undefined);
+                BoardThumbnail.render(canvas, moves);
+
+                // 点击回到探索学习
+                div.addEventListener('click', () => {
+                    // 切换到挑战标签
+                    document.querySelectorAll('.joseki-tab').forEach(t => t.classList.remove('active'));
+                    document.querySelector('[data-tab="challenge"]').classList.add('active');
+                    document.getElementById('challengeTab').style.display = 'block';
+                    document.getElementById('historyTab').style.display = 'none';
+
+                    // 加载这个定式进行探索学习
+                    loadQuizByPath(item.path, item.moves, item.freq);
+                });
+
+                grid.appendChild(div);
+            });
+
+            if (totalPages > 1) {
+                document.getElementById('historyPagination').style.display = 'flex';
+                document.getElementById('historyPageInfo').textContent = `${historyPage + 1}/${totalPages}`;
+                document.getElementById('historyPrevPage').disabled = historyPage === 0;
+                document.getElementById('historyNextPage').disabled = historyPage >= totalPages - 1;
+            } else {
+                document.getElementById('historyPagination').style.display = 'none';
+            }
+        }
+
+        function loadQuizByPath(path, moves, freq) {
+            // 解析目标着法
+            const pathParts = path.split('-');
+            targetMoves = [];
+            for (let i = 0; i < pathParts.length; i++) {
+                const coordData = JosekiUtils.sgfToCoord(pathParts[i]);
+                if (coordData) {
+                    targetMoves.push({
+                        x: coordData.x,
+                        y: coordData.y,
+                        isPass: coordData.isPass,
+                        color: i % 2 === 0 ? 'black' : 'white',
+                        num: i + 1
+                    });
+                }
+            }
+
+            currentIndex = 0;
+            userMoves = [];
+            mode = 'explore';
+            updateModeBadge();
+            document.getElementById('passBtn').style.display = 'none';
+
+            currentQuiz = { path, moves, freq };
+            updateStats();
+            updateProgress();
+            showExploreState();
+        }
+
+        function exportHistory() {
+            const data = JSON.stringify(historyList, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `joseki-quiz-history-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function clearHistory() {
+            if (confirm('确定清空所有历史记录？')) {
+                historyList = [];
+                saveHistory();
+            }
+        }
+
+        function importHistory() {
+            const data = document.getElementById('importHistoryData').value;
+            try {
+                const imported = JSON.parse(data);
+                if (Array.isArray(imported)) {
+                    historyList = [...historyList, ...imported];
+                    saveHistory();
+                    renderHistory();
+                    document.getElementById('importHistoryModal').classList.remove('show');
+                    document.getElementById('importHistoryData').value = '';
+                    alert('导入成功！');
+                } else {
+                    alert('导入失败：数据格式错误');
+                }
+            } catch (e) {
+                alert('导入失败：JSON 解析错误');
+            }
+        }
+
+        // ========== 标签切换 ==========
+        function switchTab(tabName) {
+            document.querySelectorAll('.joseki-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+            document.getElementById('challengeTab').style.display = tabName === 'challenge' ? 'block' : 'none';
+            document.getElementById('historyTab').style.display = tabName === 'history' ? 'block' : 'none';
+
+            if (tabName === 'history') {
+                renderHistory();
+            }
+        }
+
+        // ========== 事件处理 ==========
+        function handleBoardClick(e) {
+            e.preventDefault();
+            const rect = e.target.getBoundingClientRect();
+            let clientX, clientY;
+
+            if (e.type === 'touchend') {
+                const touch = e.changedTouches[0];
+                clientX = touch.clientX;
+                clientY = touch.clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+
+            const canvasX = (clientX - rect.left) * (e.target.width / rect.width);
+            const canvasY = (clientY - rect.top) * (e.target.height / rect.height);
+            const coord = board.canvasToSgf(canvasX, canvasY);
+            if (!coord) return;
+
+            if (mode === 'explore') {
+                handleExploreClick(coord);
+            } else {
+                handleChallengeClick(coord);
+            }
+        }
+
+        function undo() {
+            if (mode !== 'explore' || currentIndex <= 0) return;
+
+            // 撤销一步
+            currentIndex--;
+            userMoves.pop();
+            
+            // 跳过脱先手（脱先不存入 userMoves，只增加 currentIndex）
+            while (currentIndex > 0 && targetMoves[currentIndex] && targetMoves[currentIndex].isPass) {
+                currentIndex--;
+            }
+
+            updateProgress();
+            showExploreState();
+        }
+
+        function updateModeBadge() {
+            const badge = document.getElementById('modeBadge');
+            if (mode === 'explore') {
+                badge.textContent = '探索';
+                badge.className = 'mode-badge explore';
+            } else {
+                badge.textContent = '挑战';
+                badge.className = 'mode-badge challenge';
+            }
+        }
+
+        // ========== UI更新 ==========
+        function updateProgress() {
+            const percent = targetMoves.length > 0 ? (currentIndex / targetMoves.length * 100) : 0;
+            document.getElementById('progressBar').style.width = `${percent}%`;
+        }
+
+        function updateStats() {
+            document.getElementById('statMoves').textContent = currentQuiz.moves;
+            document.getElementById('statFreq').textContent = JosekiUtils.formatFreq(currentQuiz.freq);
+            document.getElementById('statProb').textContent = JosekiUtils.formatProb(currentQuiz.prob);
+        }
+
+        // ========== 棋盘初始化 ==========
+        function initBoard() {
+            const canvas = document.getElementById('quizBoard');
+            const container = canvas.parentElement;
+            const displaySize = Math.min(container.clientWidth, 400);
+
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            canvas.width = displaySize * dpr;
+            canvas.height = displaySize * dpr;
+            canvas.style.width = displaySize + 'px';
+            canvas.style.height = displaySize + 'px';
+
+            if (!board) {
+                board = new JosekiBoard(canvas, { dpr });
+                canvas.addEventListener('click', handleBoardClick);
+                canvas.addEventListener('touchend', handleBoardClick);
+            } else {
+                board.resize(canvas, dpr);
+            }
+        }
+
+        window.addEventListener('resize', initBoard);
+
+        // ========== 事件绑定 ==========
+        document.getElementById('difficultySelect').addEventListener('change', (e) => {
+            currentDifficulty = e.target.value;
+            loadNextQuiz();
+        });
+
+        document.getElementById('undoBtn').addEventListener('click', undo);
+        document.getElementById('passBtn').addEventListener('click', () => {
+            if (mode === 'challenge') {
+                handleChallengePass();
+            }
+        });
+        document.getElementById('nextBtn').addEventListener('click', loadNextQuiz);
+        document.getElementById('challengeBtn').addEventListener('click', () => {
+            document.getElementById('colorModal').classList.add('show');
+        });
+
+        // 选择颜色
+        document.getElementById('selectBlack').addEventListener('click', () => startChallenge('black'));
+        document.getElementById('selectWhite').addEventListener('click', () => startChallenge('white'));
+        document.getElementById('cancelChallenge').addEventListener('click', () => {
+            document.getElementById('colorModal').classList.remove('show');
+        });
+
+        // 挑战失败
+        document.getElementById('backToExplore').addEventListener('click', () => {
+            document.getElementById('failModal').classList.remove('show');
+            board.setMarks([]);
+            mode = 'explore';
+            currentIndex = 0;
+            userMoves = [];
+            updateModeBadge();
+            showExploreState();
+        });
+        document.getElementById('retryChallenge').addEventListener('click', () => {
+            document.getElementById('failModal').classList.remove('show');
+            board.setMarks([]);
+            startChallenge(userColor);
+        });
+
+        // 挑战成功
+        document.getElementById('nextQuiz').addEventListener('click', () => {
+            document.getElementById('successModal').classList.remove('show');
+            loadNextQuiz();
+        });
+
+        // 标签切换
+        document.querySelectorAll('.joseki-tab').forEach(tab => {
+            tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+        });
+
+        // 历史记录
+        document.getElementById('historyPrevPage').addEventListener('click', () => { historyPage--; renderHistory(); });
+        document.getElementById('historyNextPage').addEventListener('click', () => { historyPage++; renderHistory(); });
+        document.getElementById('importHistoryBtn').addEventListener('click', () => {
+            document.getElementById('importHistoryModal').classList.add('show');
+        });
+        document.getElementById('importHistoryCancel').addEventListener('click', () => {
+            document.getElementById('importHistoryModal').classList.remove('show');
+        });
+        document.getElementById('importHistoryConfirm').addEventListener('click', importHistory);
+        document.getElementById('exportHistoryBtn').addEventListener('click', exportHistory);
+        document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
+
+        // ========== 初始化 ==========
+        function init() {
+            initBoard();
+            loadHistory();
+            loadQuizData();
+        }
+
+        // 加载 pako
+        if (!window.pako) {
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js';
+            script.onload = init;
+            document.head.appendChild(script);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>

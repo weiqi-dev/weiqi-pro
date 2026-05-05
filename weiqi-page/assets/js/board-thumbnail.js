@@ -88,7 +88,8 @@
         
         // 逐着模拟，处理提子
         for (const move of moves) {
-            if (move.isPass) continue;  // 跳过脱先
+            if (!move || move.isPass) continue;  // 跳过无效和脱先
+            if (move.x === undefined || move.y === undefined) continue;
             if (move.x < 0 || move.x >= BOARD_SIZE || move.y < 0 || move.y >= BOARD_SIZE) continue;
             
             board[move.y][move.x] = move.color;

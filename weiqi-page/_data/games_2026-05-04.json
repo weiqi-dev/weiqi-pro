@@ -1,0 +1,86 @@
+[
+  {
+    "id": "202605051311290001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-04/野狐/game_202605051311290001.json",
+    "black": "元齐焄",
+    "white": "姜升旼",
+    "black_rank": "P5段",
+    "white_rank": "P9段",
+    "result": "W+2.50",
+    "result_cn": "白胜2.50目",
+    "event": "韩国冲岩道循环赛<绝艺讲解>"
+  },
+  {
+    "id": "202605051311290002",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-04/野狐/game_202605051311290002.json",
+    "black": "謝依旻",
+    "white": "上野梨紗",
+    "black_rank": "P7段",
+    "white_rank": "P4段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第11届日本扇兴杯本赛<绝艺讲解>"
+  },
+  {
+    "id": "202605051311290003",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-04/野狐/game_202605051311290003.json",
+    "black": "呉侑珍",
+    "white": "於之莹",
+    "black_rank": "P9段",
+    "white_rank": "P8段",
+    "result": "W+0.50",
+    "result_cn": "白胜0.50目",
+    "event": "2026中韩女子五强对抗赛第3场<绝艺讲解>"
+  },
+  {
+    "id": "202605051311300004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-04/野狐/game_202605051311300004.json",
+    "black": "최민서F",
+    "white": "金多瑛",
+    "black_rank": "P1段",
+    "white_rank": "P5段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第6届韩国MOA女子最佳棋士战8强<绝艺讲解>"
+  },
+  {
+    "id": "202605051311300005",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-04/野狐/game_202605051311300005.json",
+    "black": "姜升旼",
+    "white": "金桢玹",
+    "black_rank": "P9段",
+    "white_rank": "P2段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "韩国冲岩道场循环赛<绝艺讲解>"
+  },
+  {
+    "id": "202605051311300006",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-04/野狐/game_202605051311300006.json",
+    "black": "村本涉",
+    "white": "芝野虎丸",
+    "black_rank": "P5段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第52期日本天元战本赛<绝艺讲解>"
+  },
+  {
+    "id": "202605051311300007",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-04/野狐/game_202605051311300007.json",
+    "black": "许家元",
+    "white": "福冈航太朗",
+    "black_rank": "P9段",
+    "white_rank": "P7段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第51期日本名人战循环圈<绝艺讲解>"
+  }
+]
