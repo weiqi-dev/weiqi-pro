@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>定式挑战 - 围棋定式工具</title>
+    <title>定式挑战 - 围棋定式</title>
     <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
-    <link rel="stylesheet" href="/weiqi-pro/weiqi-page/assets/css/joseki.css?v=20260505b">
+    <link rel="stylesheet" href="/weiqi-pro/weiqi-page/assets/css/joseki.css?v=20260505c">
     <script src="/weiqi-pro/weiqi-page/assets/js/board-thumbnail.js?v=20260504"></script>
-    <script src="/weiqi-pro/weiqi-page/assets/js/joseki-board.js?v=20260504"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/joseki-board.js?v=20260505d"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -70,9 +70,9 @@
             <!-- 难度选择 -->
             <div class="joseki-difficulty">
                 <select id="difficultySelect">
-                    <option value="easy">初级 (≤10手)</option>
-                    <option value="medium">中级 (11-20手)</option>
-                    <option value="hard">高级 (>20手)</option>
+                    <option value="easy">初级</option>
+                    <option value="medium">中级</option>
+                    <option value="hard">高级</option>
                 </select>
             </div>
 
@@ -114,14 +114,13 @@
 
             <!-- 历史标签 -->
             <div id="historyTab" class="joseki-tab-content" style="display:none;">
-                <div class="joseki-controls" style="justify-content:flex-end; margin-bottom:12px;">
-                    <button class="joseki-btn secondary" id="importHistoryBtn" title="导入">📥</button>
-                    <button class="joseki-btn secondary" id="exportHistoryBtn" title="导出">📤</button>
-                    <button class="joseki-btn secondary danger" id="clearHistoryBtn" title="清空">🗑</button>
-                </div>
-
-                <div id="historyCount" style="text-align:center; color:#666; margin-bottom:12px;">
-                    已完成: <strong>0</strong> 个定式
+                <div class="joseki-controls fav-toolbar">
+                    <span id="historyCount" class="fav-count">已完成 0 个</span>
+                    <div class="fav-actions">
+                        <button class="joseki-btn secondary" id="importHistoryBtn" title="导入">📥</button>
+                        <button class="joseki-btn secondary" id="exportHistoryBtn" title="导出">📤</button>
+                        <button class="joseki-btn secondary" id="clearHistoryBtn" title="清空">🧹</button>
+                    </div>
                 </div>
 
                 <div id="historyGrid" class="joseki-grid"></div>
@@ -181,8 +180,8 @@
     <div id="importHistoryModal" class="joseki-modal">
         <div class="joseki-modal-content">
             <h3>导入历史</h3>
-            <p style="margin-bottom:16px; color:#666;">粘贴导出的JSON数据</p>
-            <textarea id="importHistoryData" style="width:100%; height:120px; border:2px solid #e0e0e0; border-radius:8px; padding:8px; font-size:12px;"></textarea>
+            <p style="margin-bottom:16px; color:#666;">选择导出的 JSON 文件</p>
+            <input type="file" id="importHistoryFile" accept=".json" style="width:100%; margin-bottom:12px;">
             <div class="joseki-modal-buttons">
                 <button class="joseki-btn secondary" id="importHistoryCancel" title="取消">✕</button>
                 <button class="joseki-btn" id="importHistoryConfirm" title="导入">✓</button>
@@ -218,25 +217,55 @@
                     const decompressed = pako.ungzip(compressed, { to: 'string' });
                     quizData[diff] = JSON.parse(decompressed).leaves || [];
                 }
+                // 恢复上次选择的难度
+                const savedDiff = localStorage.getItem('joseki_quiz_difficulty');
+                if (savedDiff && quizData[savedDiff] && quizData[savedDiff].length > 0) {
+                    currentDifficulty = savedDiff;
+                    document.getElementById('difficultySelect').value = savedDiff;
+                }
                 loadNextQuiz();
             } catch (e) {
                 console.error('[JosekiQuiz] 加载失败:', e);
             }
         }
 
-        // 加载下一题
+        // 加载下一题（智能选题：优先高频定式，避免重复）
         function loadNextQuiz() {
             mode = 'explore';
             updateModeBadge();
-            document.getElementById('passBtn').style.display = 'none';  // 探索模式隐藏脱先按钮
+            document.getElementById('passBtn').style.display = 'none';
 
             const list = quizData[currentDifficulty];
             if (!list || list.length === 0) {
                 return;
             }
 
-            const idx = Math.floor(Math.random() * list.length);
-            currentQuiz = list[idx];
+            // 获取已挑战过的定式路径集合
+            const challengedPaths = new Set(historyList.map(h => h.path));
+            // 筛选未挑战过的定式
+            const unchallenged = list.filter(q => !challengedPaths.has(q.path));
+            // 如果全部都挑战过，则从全部中选
+            const candidatePool = unchallenged.length > 0 ? unchallenged : list;
+
+            // 按出现次数加权选择（freq越高，选中概率越大）
+            const weightedPool = candidatePool.filter(q => q.freq && q.freq > 0);
+            currentQuiz = null;
+            
+            if (weightedPool.length > 0) {
+                const totalWeight = weightedPool.reduce((sum, q) => sum + q.freq, 0);
+                let random = Math.random() * totalWeight;
+                for (const q of weightedPool) {
+                    random -= q.freq;
+                    if (random <= 0) {
+                        currentQuiz = q;
+                        break;
+                    }
+                }
+                if (!currentQuiz) currentQuiz = weightedPool[0];
+            } else {
+                const idx = Math.floor(Math.random() * candidatePool.length);
+                currentQuiz = candidatePool[idx];
+            }
 
             // 解析目标着法
             const pathParts = currentQuiz.path.split('-');
@@ -441,12 +470,10 @@
         function challengeSuccess() {
             document.getElementById('successModal').classList.add('show');
             
-            // 记录历史
+            // 记录历史（不保存 freq/prob，这些随定式库更新）
             historyList.push({
                 path: currentQuiz.path,
                 moves: currentQuiz.moves,
-                freq: currentQuiz.freq,
-                prob: currentQuiz.prob,
                 difficulty: currentDifficulty,
                 color: userColor,
                 date: new Date().toISOString()
@@ -476,7 +503,7 @@
 
         function renderHistory() {
             const count = historyList.length;
-            document.getElementById('historyCount').innerHTML = `已完成: <strong>${count}</strong> 个定式`;
+            document.getElementById('historyCount').textContent = `已完成 ${count} 个`;
 
             if (count === 0) {
                 document.getElementById('historyGrid').innerHTML = '';
@@ -520,7 +547,7 @@
                     document.getElementById('historyTab').style.display = 'none';
 
                     // 加载这个定式进行探索学习
-                    loadQuizByPath(item.path, item.moves, item.freq);
+                    loadQuizByPath(item.path, item.moves);
                 });
 
                 grid.appendChild(div);
@@ -536,7 +563,14 @@
             }
         }
 
-        function loadQuizByPath(path, moves, freq) {
+        function loadQuizByPath(path, moves) {
+            // 从 quizData 中查找 freq/prob（动态获取最新数据）
+            const found = quizData.easy.concat(quizData.medium, quizData.hard).find(q => q.path === path);
+            const freq = found?.freq || 0;
+            const prob = found?.prob || 0;
+            
+            currentQuiz = { path, moves, freq, prob };
+            
             // 解析目标着法
             const pathParts = path.split('-');
             targetMoves = [];
@@ -559,7 +593,6 @@
             updateModeBadge();
             document.getElementById('passBtn').style.display = 'none';
 
-            currentQuiz = { path, moves, freq };
             updateStats();
             updateProgress();
             showExploreState();
@@ -584,22 +617,32 @@
         }
 
         function importHistory() {
-            const data = document.getElementById('importHistoryData').value;
-            try {
-                const imported = JSON.parse(data);
-                if (Array.isArray(imported)) {
-                    historyList = [...historyList, ...imported];
-                    saveHistory();
-                    renderHistory();
-                    document.getElementById('importHistoryModal').classList.remove('show');
-                    document.getElementById('importHistoryData').value = '';
-                    alert('导入成功！');
-                } else {
-                    alert('导入失败：数据格式错误');
-                }
-            } catch (e) {
-                alert('导入失败：JSON 解析错误');
+            const fileInput = document.getElementById('importHistoryFile');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('请选择文件');
+                return;
             }
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (Array.isArray(imported)) {
+                        historyList = [...historyList, ...imported];
+                        saveHistory();
+                        renderHistory();
+                        document.getElementById('importHistoryModal').classList.remove('show');
+                        fileInput.value = '';
+                        alert('导入成功！');
+                    } else {
+                        alert('导入失败：数据格式错误');
+                    }
+                } catch (err) {
+                    alert('导入失败：JSON 解析错误');
+                }
+            };
+            reader.readAsText(file);
         }
 
         // ========== 标签切换 ==========
@@ -707,6 +750,7 @@
         // ========== 事件绑定 ==========
         document.getElementById('difficultySelect').addEventListener('change', (e) => {
             currentDifficulty = e.target.value;
+            localStorage.setItem('joseki_quiz_difficulty', currentDifficulty);
             loadNextQuiz();
         });
 

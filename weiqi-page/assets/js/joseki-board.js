@@ -392,7 +392,7 @@
 
     function formatProb(prob) {
         if (prob === undefined || prob === null) return '-';
-        return prob.toFixed(4);
+        return (prob * 100).toFixed(4) + '%';
     }
 
     // ==================== 导出 ====================

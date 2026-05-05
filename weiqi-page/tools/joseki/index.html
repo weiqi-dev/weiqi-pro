@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>围棋定式工具</title>
+    <title>围棋定式</title>
     <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -121,27 +121,44 @@
 <body>
     <div class="container">
         <header>
-            <h1>🎯 围棋定式</h1>
-            <p class="subtitle">从实战中学习的定式库</p>
+            <h1>📚 围棋定式</h1>
+            <p class="subtitle">从AI实战中学习的定式库</p>
         </header>
 
         <div class="main-content">
             <a href="explore.html" class="nav-btn">
-                <div class="icon">📚</div>
+                <div class="icon">🔍</div>
                 <div class="title">定式探索</div>
-                <div class="desc">探索经典定式<br>收藏喜欢的变化</div>
+                <div class="desc">探索AI定式<br>收藏喜欢的变化</div>
             </a>
 
             <a href="quiz.html" class="nav-btn">
                 <div class="icon">🏆</div>
                 <div class="title">定式挑战</div>
-                <div class="desc">挑战学习定式<br>记录学习历史</div>
+                <div class="desc">学习挑战定式<br>记录挑战历史</div>
             </a>
         </div>
 
         <div class="stats-bar">
-            收录 <strong>99,710</strong> 条定式
+            收录 <strong id="josekiCount">--</strong> 条定式
         </div>
     </div>
+
+    <script>
+        // 加载定式数量
+        async function loadStats() {
+            try {
+                const metaUrl = '/weiqi-pro/weiqi-page/assets/data/joseki/trie-meta.json';
+                const response = await fetch(metaUrl);
+                if (response.ok) {
+                    const meta = await response.json();
+                    document.getElementById('josekiCount').textContent = meta.total.toLocaleString();
+                }
+            } catch (e) {
+                console.error('加载定式数量失败:', e);
+            }
+        }
+        loadStats();
+    </script>
 </body>
 </html>
