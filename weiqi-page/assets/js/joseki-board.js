@@ -263,6 +263,7 @@
                     // 脱先：固定在左下角
                     const cx = padding;  // 左边距处
                     const cy = canvasSize - padding;  // 下边距处
+                    const heat = branch.heat || 0;
                     
                     // 根据是否有热度数据决定大小
                     let radius, alpha, lineWidth;
@@ -271,7 +272,6 @@
                         alpha = 0.5;
                         lineWidth = 2;
                     } else {
-                        const heat = branch.heat || 0;
                         const logMin = Math.log(minHeat + 1);
                         const logMax = Math.log(maxHeat + 1);
                         const logHeat = Math.log(heat + 1);
