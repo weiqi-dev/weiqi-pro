@@ -445,9 +445,13 @@
         canvasToSgf(canvasX, canvasY) {
             // 先检查是否点击了脱先标记
             if (this._passMark) {
-                const dx = canvasX - this._passMark.cx;
-                const dy = canvasY - this._passMark.cy;
-                if (Math.sqrt(dx * dx + dy * dy) <= this._passMark.radius) {
+                // canvasX/Y 是实际像素，_passMark.cx/cy 需要转换为实际像素
+                const passCx = this._passMark.cx * (this.dpr || 1);
+                const passCy = this._passMark.cy * (this.dpr || 1);
+                const passRadius = this._passMark.radius * (this.dpr || 1);
+                const dx = canvasX - passCx;
+                const dy = canvasY - passCy;
+                if (Math.sqrt(dx * dx + dy * dy) <= passRadius) {
                     return { isPass: true };
                 }
             }
