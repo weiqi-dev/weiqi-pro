@@ -1,0 +1,44 @@
+[
+  {
+    "id": "202605060932550001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-05/野狐/quiz_202605060932550001.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-05/野狐/game_202605060932550001.json",
+    "black": "谢依旻",
+    "white": "小幡实里",
+    "event": "第2届柳风杯日本女流棋士赛<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605060932560004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-05/野狐/quiz_202605060932560004.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-05/野狐/game_202605060932560004.json",
+    "black": "金彩瑛",
+    "white": "金恩持",
+    "event": "第6届韩国MOA女子最佳棋士战8强<绝艺讲解>",
+    "result": "白胜1.50目",
+    "count": 3,
+    "stats": {
+      "total": 3,
+      "result": "白胜1.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "202605060932550001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-05/野狐/game_202605060932550001.json",
+    "black": "谢依旻",
+    "white": "小幡实里",
+    "black_rank": "P7段",
+    "white_rank": "P1段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第2届柳风杯日本女流棋士赛<绝艺讲解>"
+  },
+  {
+    "id": "202605060932550002",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-05/野狐/game_202605060932550002.json",
+    "black": "安田明夏",
+    "white": "竹下奈那",
+    "black_rank": "P1段",
+    "white_rank": "P1段",
+    "result": "B+1.50",
+    "result_cn": "黑胜1.50目",
+    "event": "第2届柳风杯日本女流棋士赛<绝艺讲解>"
+  },
+  {
+    "id": "202605060932560003",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-05/野狐/game_202605060932560003.json",
+    "black": "陆敏全",
+    "white": "스미레",
+    "black_rank": "P7段",
+    "white_rank": "P6段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "2026中韩女子五强对抗赛第4场<绝艺讲解>"
+  },
+  {
+    "id": "202605060932560004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-05/野狐/game_202605060932560004.json",
+    "black": "金彩瑛",
+    "white": "金恩持",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+1.50",
+    "result_cn": "白胜1.50目",
+    "event": "第6届韩国MOA女子最佳棋士战8强<绝艺讲解>"
+  }
+]

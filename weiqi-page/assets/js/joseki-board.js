@@ -117,6 +117,7 @@
             this.currentIndex = 0;
             this.branches = []; // 可选分支
             this.marks = [];   // 标记（正确/错误）
+            this._passMark = null; // 脱先标记的位置和大小
 
             this.startX = BOARD_SIZE - DISPLAY_SIZE; // 6
             this.startY = 0;
@@ -246,31 +247,127 @@
                 }
             }
 
-            // 可选分支标记
+            // 可选分支标记（按热度区分大小和颜色深浅）
             ctx.save();
+            
+            // 计算热度范围（包括脱先）
+            const allHeats = this.branches.map(b => b.heat || 0);
+            const maxHeat = Math.max(...allHeats, 1);
+            const minHeat = Math.min(...allHeats, 0);
+            
+            // 如果没有热度数据或只有一个选点，使用固定大小
+            const hasHeatData = allHeats.some(h => h > 0);
+            
             for (const branch of this.branches) {
-                if (branch.isPass) continue; // 脱先不在棋盘上标记
+                if (branch.isPass) {
+                    // 脱先：固定在左下角
+                    const cx = padding;  // 左边距处
+                    const cy = canvasSize - padding;  // 下边距处
+                    
+                    // 根据是否有热度数据决定大小
+                    let radius, alpha, lineWidth;
+                    if (!hasHeatData) {
+                        radius = gridSize * 0.35;
+                        alpha = 0.5;
+                        lineWidth = 2;
+                    } else {
+                        const heat = branch.heat || 0;
+                        const logMin = Math.log(minHeat + 1);
+                        const logMax = Math.log(maxHeat + 1);
+                        const logHeat = Math.log(heat + 1);
+                        const ratio = logMax > logMin ? (logHeat - logMin) / (logMax - logMin) : 0.5;
+                        
+                        const minRadius = gridSize * 0.12;
+                        const maxRadius = gridSize * 0.30;
+                        radius = minRadius + ratio * (maxRadius - minRadius);
+                        
+                        const minAlpha = 0.25;
+                        const maxAlpha = 0.65;
+                        alpha = minAlpha + ratio * (maxAlpha - minAlpha);
+                        
+                        const minLineWidth = 1;
+                        const maxLineWidth = 3;
+                        lineWidth = minLineWidth + ratio * (maxLineWidth - minLineWidth);
+                    }
+                    
+                    // 和其他选点一样的颜色（黑方橙色，白方蓝色）
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                    if (branch.color === 'black') {
+                        ctx.fillStyle = `rgba(255, 152, 0, ${alpha})`;
+                        ctx.strokeStyle = '#FF9800';
+                    } else {
+                        ctx.fillStyle = `rgba(33, 150, 243, ${alpha})`;
+                        ctx.strokeStyle = '#2196F3';
+                    }
+                    ctx.fill();
+                    ctx.lineWidth = lineWidth;
+                    ctx.stroke();
+                    
+                    // 显示“⊘”标记（和按钮一致）
+                    ctx.fillStyle = '#fff';
+                    ctx.font = `bold ${radius * 1.2}px sans-serif`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('⊘', cx, cy);
+                    
+                    // 保存脱先标记的位置和大小，用于点击检测
+                    this._passMark = { cx, cy, radius, heat };
+                    
+                    continue;
+                }
+                
                 const displayX = branch.x - this.startX;
                 const displayY = branch.y - this.startY;
                 if (displayX >= 0 && displayX < DISPLAY_SIZE && displayY >= 0 && displayY < DISPLAY_SIZE) {
                     const cx = padding + displayX * gridSize;
                     const cy = padding + displayY * gridSize;
 
+                    // 归一化热度到 0-1（对数尺度，让差距更明显）
+                    const heat = branch.heat || 0;
+                    
+                    // 根据是否有热度数据决定大小
+                    let radius, alpha, lineWidth;
+                    if (!hasHeatData) {
+                        // 无热度数据：使用固定大小
+                        radius = gridSize * 0.35;
+                        alpha = 0.5;
+                        lineWidth = 2;
+                    } else {
+                        const logMin = Math.log(minHeat + 1);
+                        const logMax = Math.log(maxHeat + 1);
+                        const logHeat = Math.log(heat + 1);
+                        const ratio = logMax > logMin ? (logHeat - logMin) / (logMax - logMin) : 0.5;
+                        
+                        // 根据热度计算圆圈大小（多档，整体缩小）
+                        const minRadius = gridSize * 0.12;
+                        const maxRadius = gridSize * 0.30;
+                        radius = minRadius + ratio * (maxRadius - minRadius);
+                        
+                        const minAlpha = 0.25;
+                        const maxAlpha = 0.65;
+                        alpha = minAlpha + ratio * (maxAlpha - minAlpha);
+                        
+                        const minLineWidth = 1;
+                        const maxLineWidth = 3;
+                        lineWidth = minLineWidth + ratio * (maxLineWidth - minLineWidth);
+                    }
+
                     // 半透明圆形标记
                     ctx.beginPath();
-                    ctx.arc(cx, cy, gridSize * 0.38, 0, Math.PI * 2);
+                    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
                     
                     if (branch.color === 'black') {
-                        // 黑棋位置：橙色半透明（更明显）
-                        ctx.fillStyle = 'rgba(255, 152, 0, 0.5)';
+                        // 黑棋位置：橙色半透明
+                        ctx.fillStyle = `rgba(255, 152, 0, ${alpha})`;
                         ctx.strokeStyle = '#FF9800';
                     } else {
                         // 白棋位置：蓝色半透明
-                        ctx.fillStyle = 'rgba(33, 150, 243, 0.5)';
+                        ctx.fillStyle = `rgba(33, 150, 243, ${alpha})`;
                         ctx.strokeStyle = '#2196F3';
                     }
                     ctx.fill();
-                    ctx.lineWidth = 3;
+                    ctx.lineWidth = lineWidth;
                     ctx.stroke();
                 }
             }
@@ -346,6 +443,15 @@
 
         // 坐标转换：画布坐标 -> SGF坐标
         canvasToSgf(canvasX, canvasY) {
+            // 先检查是否点击了脱先标记
+            if (this._passMark) {
+                const dx = canvasX - this._passMark.cx;
+                const dy = canvasY - this._passMark.cy;
+                if (Math.sqrt(dx * dx + dy * dy) <= this._passMark.radius) {
+                    return { isPass: true };
+                }
+            }
+            
             // canvasX/Y 已经是实际像素坐标
             const canvasSize = this.canvas.width; // 使用实际像素尺寸
             const padding = canvasSize * 0.05;

@@ -7,7 +7,7 @@
     <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
     <link rel="stylesheet" href="/weiqi-pro/weiqi-page/assets/css/joseki.css?v=20260505c">
     <script src="/weiqi-pro/weiqi-page/assets/js/board-thumbnail.js?v=20260505"></script>
-    <script src="/weiqi-pro/weiqi-page/assets/js/joseki-board.js?v=20260505d"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/joseki-board.js?v=20260506b"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -24,10 +24,32 @@
             color: white;
             padding: 8px 16px;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: bold;
             pointer-events: none;
             z-index: 100;
+        }
+        /* 脱先标记首次提示 */
+        .pass-hint {
+            background: rgba(255, 152, 0, 0.95);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+            pointer-events: none;
+            z-index: 100;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            white-space: nowrap;
+        }
+        .pass-hint::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 6px;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid rgba(255, 152, 0, 0.95);
         }
     </style>
 </head>
@@ -50,6 +72,7 @@
                 <div class="joseki-board-wrapper" style="position: relative;">
                     <canvas id="exploreBoard" class="joseki-board"></canvas>
                     <div id="passOverlay" class="pass-overlay" style="display: none;">脱先</div>
+                    <div id="passHint" class="pass-hint" style="display: none;">点击这里可以脱先 ↙</div>
                 </div>
 
                 <!-- 指标数据 -->
@@ -71,7 +94,6 @@
                 <!-- 功能按钮 -->
                 <div class="joseki-controls" id="exploreControls">
                     <button class="joseki-btn" id="undoBtn" disabled title="撤销">↩</button>
-                    <button class="joseki-btn secondary" id="passBtn" disabled title="脱先">⊘</button>
                     <button class="joseki-btn secondary" id="favBtn" title="收藏">⭐</button>
                     <button class="joseki-btn secondary" id="resetBtn" title="重置">⟳</button>
                 </div>
@@ -159,19 +181,26 @@
             
             try {
                 const subtree = await loadGzipJson(`${DATA_PATH}/${node.subtree.file}`);
+                // 合并子树根节点的所有字段
                 node.children = subtree.children;
+                node.heat = subtree.heat;  // 热度
+                if (subtree.freq) {
+                    node.freq = subtree.freq;
+                    node.moves = subtree.moves;
+                    node.prob = subtree.prob;
+                }
             } catch (e) {
                 console.error('[JosekiExplore] 子树加载失败:', e);
             }
         }
 
-        // 获取当前节点的选点
+        // 获取当前节点的选点（按热度降序）
         function getBranches(node) {
             if (!node.children) return [];
             
             const branches = [];
             for (const [coord, child] of Object.entries(node.children)) {
-                if (coord === 'coord' || coord === 'color' || coord === 'freq') continue;
+                if (coord === 'coord' || coord === 'color' || coord === 'freq' || coord === 'heat') continue;
                 
                 const coordData = JosekiUtils.sgfToCoord(coord);
                 if (coordData) {
@@ -179,14 +208,16 @@
                         ...coordData,
                         color: child.color,
                         sgf: coord,
-                        freq: child.freq
+                        heat: child.heat
                     });
                 }
             }
+            // 按热度降序排序
+            branches.sort((a, b) => (b.heat || 0) - (a.heat || 0));
             return branches;
         }
 
-        // 显示首着选点
+        // 显示首着选点（按热度降序）
         function showFirstMoveBranches() {
             if (!trieRoot || !trieRoot.children) {
                 return;
@@ -194,7 +225,7 @@
             
             const branches = [];
             for (const [coord, child] of Object.entries(trieRoot.children)) {
-                if (coord === 'coord' || coord === 'color' || coord === 'freq') continue;
+                if (coord === 'coord' || coord === 'color' || coord === 'freq' || coord === 'heat') continue;
                 
                 const coordData = JosekiUtils.sgfToCoord(coord);
                 if (coordData && !coordData.isPass) {
@@ -202,13 +233,48 @@
                         ...coordData,
                         color: 'black',
                         sgf: coord,
-                        freq: child.freq
+                        heat: child.heat
                     });
                 }
             }
+            // 按热度降序排序
+            branches.sort((a, b) => (b.heat || 0) - (a.heat || 0));
             
             board.setMoves([]);
             board.setBranches(branches);
+            
+            // 首次显示脱先提示
+            checkPassHint();
+        }
+        
+        // 检查并显示脱先提示（首次）
+        function checkPassHint() {
+            if (!board._passMark) return;
+            if (localStorage.getItem('joseki_pass_hinted')) return;
+            
+            localStorage.setItem('joseki_pass_hinted', 'true');
+            const hint = document.getElementById('passHint');
+            const canvas = document.getElementById('exploreBoard');
+            
+            // canvas 在视窗中的位置
+            const rect = canvas.getBoundingClientRect();
+            
+            // 脱先标记在 canvas 左下角，距离边缘 5%
+            const paddingRatio = 0.05;
+            const passCx = rect.width * paddingRatio;
+            const passCy = rect.height - rect.height * paddingRatio;
+            
+            // 提示框位置：fixed 定位，箭头指向脱先标记中心
+            // 提示框左边缘对齐脱先标记中心（箭头在提示框左边）
+            const hintLeft = rect.left + passCx - 6;  // 箭头偏移
+            const hintTop = rect.top + passCy - 38;    // 提示框高度约 30px，间距 8px
+            
+            hint.style.position = 'fixed';
+            hint.style.left = hintLeft + 'px';
+            hint.style.top = hintTop + 'px';
+            hint.style.bottom = 'auto';
+            hint.style.display = 'block';
+            setTimeout(() => hint.style.display = 'none', 3000);
         }
 
         // ========== 棋盘初始化 ==========
@@ -253,6 +319,12 @@
             
             const coord = board.canvasToSgf(canvasX, canvasY);
             if (!coord) return;
+            
+            // 如果点击了脱先标记
+            if (coord.isPass) {
+                handleMove('tt');
+                return;
+            }
             
             const validBranch = board.branches.find(b => b.sgf === coord.sgf);
             if (!validBranch) return;
@@ -311,29 +383,29 @@
             if (currentNode.children) {
                 const branches = [];
                 for (const [c, child] of Object.entries(currentNode.children)) {
-                    if (c === 'coord' || c === 'color' || c === 'freq') continue;
+                    if (c === 'coord' || c === 'color' || c === 'freq' || c === 'heat') continue;
                     const cd = JosekiUtils.sgfToCoord(c);
                     if (cd) {
                         branches.push({
                             ...cd,
                             color: child.color,
                             sgf: c,
-                            freq: child.freq
+                            heat: child.heat
                         });
                     }
                 }
                 board.setBranches(branches);
-                document.getElementById('passBtn').disabled = !currentNode.children['tt'];
+                checkPassHint();
             } else {
                 board.setBranches([]);
-                document.getElementById('passBtn').disabled = true;
+                
             }
 
             // 更新统计
-            if (currentNode.leaf) {
+            if (currentNode.freq) {
                 updateStats({
                     moves: currentNode.moves,
-                    freq: currentNode.total_freq || currentNode.freq,
+                    freq: currentNode.freq,
                     prob: currentNode.prob
                 });
             } else {
@@ -378,7 +450,7 @@
             // 恢复选点
             if (currentNodePath.length === 0) {
                 showFirstMoveBranches();
-                document.getElementById('passBtn').disabled = true;
+                
                 updateStats({ moves: 0 });
             } else {
                 if (currentNode.subtree && !currentNode.children) {
@@ -388,26 +460,26 @@
                 if (currentNode.children) {
                     const branches = [];
                     for (const [c, child] of Object.entries(currentNode.children)) {
-                        if (c === 'coord' || c === 'color' || c === 'freq') continue;
+                        if (c === 'coord' || c === 'color' || c === 'freq' || c === 'heat') continue;
                         const cd = JosekiUtils.sgfToCoord(c);
                         if (cd) {
                             branches.push({
                                 ...cd,
                                 color: child.color,
                                 sgf: c,
-                                freq: child.freq
+                                heat: child.heat
                             });
                         }
                     }
                     board.setBranches(branches);
-                    document.getElementById('passBtn').disabled = !currentNode.children['tt'];
+                    
                 } else {
                     board.setBranches([]);
-                    document.getElementById('passBtn').disabled = true;
+                    
                 }
 
-                if (currentNode.leaf) {
-                    updateStats({ moves: currentNode.moves, freq: currentNode.total_freq, prob: currentNode.prob });
+                if (currentNode.freq) {
+                    updateStats({ moves: currentNode.moves, freq: currentNode.freq, prob: currentNode.prob });
                 } else {
                     updateStats({ moves: currentNodePath.length });
                 }
@@ -652,29 +724,29 @@
             if (currentNode.children) {
                 const branches = [];
                 for (const [c, child] of Object.entries(currentNode.children)) {
-                    if (c === 'coord' || c === 'color' || c === 'freq') continue;
+                    if (c === 'coord' || c === 'color' || c === 'freq' || c === 'heat') continue;
                     const cd = JosekiUtils.sgfToCoord(c);
                     if (cd) {
                         branches.push({
                             ...cd,
                             color: child.color,
                             sgf: c,
-                            freq: child.freq
+                            heat: child.heat
                         });
                     }
                 }
                 board.setBranches(branches);
-                document.getElementById('passBtn').disabled = !currentNode.children['tt'];
+                checkPassHint();
             } else {
                 board.setBranches([]);
-                document.getElementById('passBtn').disabled = true;
+                
             }
             
             // 更新统计
-            if (currentNode.leaf) {
+            if (currentNode.freq) {
                 updateStats({
                     moves: currentNode.moves,
-                    freq: currentNode.total_freq || currentNode.freq,
+                    freq: currentNode.freq,
                     prob: currentNode.prob
                 });
             } else {
@@ -690,7 +762,7 @@
         });
 
         document.getElementById('undoBtn').addEventListener('click', undo);
-        document.getElementById('passBtn').addEventListener('click', () => handleMove('tt'));
+        
         document.getElementById('favBtn').addEventListener('click', addFavorite);
         document.getElementById('resetBtn').addEventListener('click', () => {
             currentMoves = [];
@@ -700,7 +772,7 @@
             showFirstMoveBranches();
             updateStats({});
             updateControls();
-            document.getElementById('passBtn').disabled = true;
+            
         });
 
         document.getElementById('favPrevPage').addEventListener('click', () => { favPage--; renderFavorites(); });
