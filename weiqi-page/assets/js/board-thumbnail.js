@@ -287,19 +287,44 @@
     }
 
     /**
-     * 批量渲染页面上的缩略图
+     * 批量渲染页面上的缩略图（懒加载）
+     * 使用 Intersection Observer，只绘制进入视口的缩略图
+     * 已绘制的跳过，避免重复绘制
      * @param {string} selector - canvas 选择器
      */
     function renderAll(selector = 'canvas.joseki-thumbnail') {
         const canvases = document.querySelectorAll(selector);
-        console.log('[BoardThumbnail] renderAll called, found', canvases.length, 'canvases');
-        canvases.forEach((canvas, i) => {
-            const movesData = canvas.dataset.moves || canvas.dataset.sgf;
-            const prefixLen = parseInt(canvas.dataset.prefixLen) || 0;
-            console.log('[BoardThumbnail] canvas', i, 'movesData:', movesData ? movesData.substring(0, 30) + '...' : 'empty', 'prefixLen:', prefixLen);
-            if (movesData) {
-                render(canvas, movesData, { prefixLen: prefixLen });
-            }
+        if (canvases.length === 0) return;
+        
+        // 使用 Intersection Observer 懒加载
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const canvas = entry.target;
+                    // 已绘制的跳过
+                    if (canvas.dataset.rendered === 'true') return;
+                    
+                    // 绘制缩略图
+                    const movesData = canvas.dataset.moves || canvas.dataset.sgf;
+                    const prefixLen = parseInt(canvas.dataset.prefixLen) || 0;
+                    if (movesData) {
+                        render(canvas, movesData, { prefixLen: prefixLen });
+                        canvas.dataset.rendered = 'true';
+                    }
+                    
+                    // 绘制后取消观察
+                    observer.unobserve(canvas);
+                }
+            });
+        }, { 
+            rootMargin: '50px 0px',  // 提前 50px 开始绘制
+            threshold: 0
+        });
+        
+        canvases.forEach(canvas => {
+            // 已绘制的跳过
+            if (canvas.dataset.rendered === 'true') return;
+            observer.observe(canvas);
         });
     }
 

@@ -1318,9 +1318,9 @@
         window.addEventListener('beforeunload', saveScrollPosition);
         window.addEventListener('pagehide', saveScrollPosition);
     </script>
-    <script src="/weiqi-pro/weiqi-page/assets/js/board-thumbnail.js?v=20260504"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/board-thumbnail.js?v=20260506"></script>
     <script>
-        // 在 renderJoseki 后调用缩略图渲染
+        // 在 renderJoseki 后调用缩略图渲染（懒加载）
         const originalRenderJoseki = renderJoseki;
         renderJoseki = function(date) {
             originalRenderJoseki(date);
@@ -1329,7 +1329,7 @@
                 BoardThumbnail.renderAll('.joseki-thumbnail');
             }, 50);
         };
-        // 页面加载完成后也要渲染
+        // 页面加载完成后渲染（懒加载，Intersection Observer 会自动处理）
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(function() {
                 BoardThumbnail.renderAll('.joseki-thumbnail');
