@@ -179,6 +179,7 @@
 
     /**
      * 绘制缩略图 (19路坐标，截取右上角13路放大显示)
+     * 支持 DPR 缩放，在手机上清晰显示
      * @param {HTMLCanvasElement} canvas - 目标 canvas
      * @param {Array} moves - 着法数组 (19路坐标)
      * @param {Object} options - 配置选项
@@ -187,25 +188,42 @@
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
-        const canvasSize = canvas.width;
+        // 获取 DPR（设备像素比），限制最大 2 倍
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        
+        // 获取期望的 CSS 像素尺寸（从 canvas 原有属性或默认 100）
+        let cssSize = parseInt(canvas.getAttribute('width')) || 100;
+        if (cssSize < 50) cssSize = 100;  // 太小的话用默认值
+        
+        // 设置 canvas 实际像素尺寸（考虑 DPR）
+        canvas.width = cssSize * dpr;
+        canvas.height = cssSize * dpr;
+        // CSS 尺寸保持不变
+        canvas.style.width = cssSize + 'px';
+        canvas.style.height = cssSize + 'px';
+        
         const displaySize = 13;  // 固定13路
 
+        // 应用 DPR 缩放
+        ctx.save();
+        ctx.scale(dpr, dpr);
+
         // 清空画布
-        ctx.clearRect(0, 0, canvasSize, canvasSize);
+        ctx.clearRect(0, 0, cssSize, cssSize);
 
         // 绘制棋盘背景
         const bgColor = options.bgColor || '#DCB35C';
         ctx.fillStyle = bgColor;
-        ctx.fillRect(0, 0, canvasSize, canvasSize);
+        ctx.fillRect(0, 0, cssSize, cssSize);
 
         // 计算截取区域 (19路坐标)
         // 13路: x从6-18, y从0-12
         const startX = 19 - displaySize;  // 6
         const startY = 0;
 
-        // 网格参数：基于displaySize填满整个canvas
-        const padding = canvasSize * 0.05;
-        const gridSize = (canvasSize - padding * 2) / (displaySize - 1);
+        // 网格参数：基于displaySize填满整个canvas（CSS像素）
+        const padding = cssSize * 0.05;
+        const gridSize = (cssSize - padding * 2) / (displaySize - 1);
 
         // 绘制网格线
         ctx.strokeStyle = '#8B7355';
@@ -216,14 +234,14 @@
             const x = padding + i * gridSize;
             ctx.beginPath();
             ctx.moveTo(x, padding);
-            ctx.lineTo(x, canvasSize - padding);
+            ctx.lineTo(x, cssSize - padding);
             ctx.stroke();
 
             // 横线
             const y = padding + i * gridSize;
             ctx.beginPath();
             ctx.moveTo(padding, y);
-            ctx.lineTo(canvasSize - padding, y);
+            ctx.lineTo(cssSize - padding, y);
             ctx.stroke();
         }
 
@@ -284,6 +302,9 @@
                 }
             }
         }
+        
+        // 恢复上下文状态
+        ctx.restore();
     }
 
     /**
