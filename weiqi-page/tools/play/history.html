@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>历史对局 | 围棋对弈</title>
+    <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 12px;
+        }
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 { font-size: 1.3em; margin: 0; }
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .icon-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .icon-btn:hover { background: rgba(255,255,255,0.3); }
+        .game-list {
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .game-card {
+            background: white;
+            border-radius: 10px;
+            padding: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .game-card:hover {
+            background: #fafafa;
+            transform: translateY(-1px);
+        }
+        
+        /* 棋子图标 */
+        .stone-icon { 
+            width: 14px; 
+            height: 14px; 
+            border-radius: 50%; 
+            flex-shrink: 0; 
+            display: inline-block; 
+            margin-right: 4px; 
+            vertical-align: middle; 
+        }
+        .stone-black { 
+            background: radial-gradient(circle at 30% 30%, #666, #000); 
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.3); 
+        }
+        .stone-white { 
+            background: radial-gradient(circle at 30% 30%, #fff, #ddd); 
+            border: 1px solid #ccc; 
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.2); 
+        }
+        
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .game-result {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+        .result-win { background: #e8f5e9; color: #388e3c; }
+        .result-lose { background: #ffebee; color: #c62828; }
+        .game-players {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.95em;
+            margin-bottom: 6px;
+        }
+        .player-self { color: #667eea; font-weight: 600; }
+        .player-vs { color: #999; font-weight: normal; }
+        .game-footer {
+            font-size: 0.85em;
+            color: #888;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .game-info {
+            display: flex;
+            gap: 12px;
+        }
+        .game-info span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            background: white;
+            border-radius: 8px;
+        }
+        .empty-icon {
+            font-size: 3em;
+            margin-bottom: 12px;
+        }
+        .btn {
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-top: 12px;
+        }
+        .btn:hover { background: #5568d3; }
+        
+        /* 操作按钮 */
+        .card-actions {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: none;
+            gap: 6px;
+        }
+        .game-card:hover .card-actions {
+            display: flex;
+        }
+        .card-btn {
+            background: rgba(0,0,0,0.05);
+            border: none;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.85em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .card-btn:hover { 
+            background: rgba(0,0,0,0.1); 
+            transform: scale(1.1);
+        }
+        .card-btn.delete:hover { 
+            background: #ffebee; 
+        }
+        
+        footer { 
+            text-align: center; 
+            padding: 15px; 
+            color: #999; 
+            font-size: 0.8em; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 历史对局</h1>
+            <div class="header-actions">
+                <button class="icon-btn" onclick="clearHistory()" title="清空历史">🗑️</button>
+            </div>
+        </header>
+        
+        <div id="content"></div>
+        
+        <footer><p>围棋智能助手 &copy; 2026</p></footer>
+    </div>
+    
+    <script>
+        const HISTORY_KEY = 'weiqi_history';
+        
+        // 加载历史对局
+        function loadGames() {
+            const content = document.getElementById('content');
+            
+            try {
+                const historyStr = localStorage.getItem(HISTORY_KEY);
+                const history = historyStr ? JSON.parse(historyStr) : [];
+                
+                if (history.length === 0) {
+                    content.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">📭</div>
+                            <p>暂无历史对局</p>
+                            <button class="btn" onclick="location.href='game.html'">开始对弈</button>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let html = '<div class="game-list">';
+                
+                history.forEach((game, index) => {
+                    const playerColor = game.config?.playerColor || 'black';
+                    const handicap = game.config?.handicap || 0;
+                    
+                    // 判断胜负
+                    const scoreLead = game.result || 0;
+                    const playerWon = (playerColor === 'black' && scoreLead > 0) || 
+                                     (playerColor === 'white' && scoreLead < 0);
+                    const resultText = scoreLead > 0 ? '黑胜' : '白胜';
+                    const resultScore = Math.abs(scoreLead).toFixed(1);
+                    
+                    html += `
+                        <div class="game-card">
+                            <div class="card-actions">
+                                <button class="card-btn" onclick="event.stopPropagation(); downloadSGF(${index})" title="导出 SGF">📥</button>
+                                <button class="card-btn delete" onclick="event.stopPropagation(); deleteGame(${index})" title="删除">🗑️</button>
+                            </div>
+                            <div class="game-header">
+                                <div class="game-players">
+                                    <span class="${playerColor === 'black' ? 'player-self' : ''}">
+                                        <span class="stone-icon stone-black"></span>${playerColor === 'black' ? '我' : 'AI'}
+                                    </span>
+                                    <span class="player-vs">vs</span>
+                                    <span class="${playerColor === 'white' ? 'player-self' : ''}">
+                                        <span class="stone-icon stone-white"></span>${playerColor === 'white' ? '我' : 'AI'}
+                                    </span>
+                                </div>
+                                <span class="game-result ${playerWon ? 'result-win' : 'result-lose'}">
+                                    ${playerWon ? '胜' : '负'} ${resultScore}目
+                                </span>
+                            </div>
+                            <div class="game-footer">
+                                <div class="game-info">
+                                    <span>📅 ${game.date || '未知日期'}</span>
+                                    ${handicap > 0 ? `<span>🎯 让${handicap}子</span>` : ''}
+                                    <span>${game.moves?.length || 0} 手</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                content.innerHTML = html;
+                
+            } catch (error) {
+                console.error('加载历史对局失败:', error);
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <p>数据加载失败</p>
+                        <button class="btn" onclick="loadGames()">重试</button>
+                    </div>
+                `;
+            }
+        }
+        
+        // 生成 SGF
+        function generateSGF(game) {
+            const coords = 'abcdefghijklmnopqrstuvwxyz';
+            let sgf = '(;GM[1]FF[4]SZ[19]CA[UTF-8]AP[WeiqiPlay]';
+            sgf += `KM[${game.config?.komi || 7.5}]`;
+            
+            // 添加让子信息
+            if (game.config?.handicap > 0) {
+                sgf += `HA[${game.config.handicap}]`;
+            }
+            
+            // 添加手数
+            for (const move of game.moves) {
+                if (move.x < 0 || move.y < 0) {
+                    // pass
+                    sgf += move.player === 'black' ? ';B[]' : ';W[]';
+                } else {
+                    const coord = coords[move.x] + coords[move.y];
+                    sgf += move.player === 'black' ? `;B[${coord}]` : `;W[${coord}]`;
+                }
+            }
+            
+            sgf += ')';
+            return sgf;
+        }
+        
+        // 下载 SGF
+        function downloadSGF(index) {
+            const historyStr = localStorage.getItem(HISTORY_KEY);
+            const history = historyStr ? JSON.parse(historyStr) : [];
+            const game = history[index];
+            
+            if (!game) {
+                alert('对局数据不存在');
+                return;
+            }
+            
+            const sgf = generateSGF(game);
+            const blob = new Blob([sgf], { type: 'application/x-go-sgf' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `game_${Date.now()}.sgf`;
+            a.click();
+            
+            URL.revokeObjectURL(url);
+        }
+        
+        // 删除对局
+        function deleteGame(index) {
+            if (!confirm('确定要删除这局对局吗？')) return;
+            
+            const historyStr = localStorage.getItem(HISTORY_KEY);
+            const history = historyStr ? JSON.parse(historyStr) : [];
+            
+            history.splice(index, 1);
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+            
+            loadGames();
+        }
+        
+        // 清空历史
+        function clearHistory() {
+            if (!confirm('确定要清空所有历史对局吗？')) return;
+            
+            localStorage.removeItem(HISTORY_KEY);
+            loadGames();
+        }
+        
+        // 加载
+        loadGames();
+    </script>
+</body>
+</html>

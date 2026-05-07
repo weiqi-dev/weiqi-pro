@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>围棋对弈</title>
+    <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            padding: 20px 0 30px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: none;
+            border-radius: 20px;
+            padding: 40px 32px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:active {
+            transform: translateY(-2px);
+        }
+
+        .nav-btn .icon {
+            font-size: 56px;
+            margin-bottom: 16px;
+        }
+
+        .nav-btn .title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .nav-btn .desc {
+            font-size: 0.95em;
+            color: #666;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 400px) {
+            .nav-btn {
+                padding: 32px 24px;
+            }
+            .nav-btn .icon {
+                font-size: 48px;
+            }
+            .nav-btn .title {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 围棋对弈</h1>
+            <p class="subtitle">与 KataGo AI 对弈，自动保存棋谱</p>
+        </header>
+
+        <div class="main-content">
+            <a href="game.html" class="nav-btn">
+                <div class="icon">🎯</div>
+                <div class="title">人机对弈</div>
+                <div class="desc">选择执黑执白<br>与 KataGo AI 对弈</div>
+            </a>
+
+            <a href="history.html" class="nav-btn">
+                <div class="icon">📚</div>
+                <div class="title">历史对局</div>
+                <div class="desc">查看历史棋谱<br>导出 SGF 文件</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

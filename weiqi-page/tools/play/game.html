@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>围棋对弈</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0;
+            touch-action: manipulation;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 0;
+            box-shadow: none;
+            padding: 4px;
+            max-width: 100%;
+            width: 100%;
+            min-height: 100vh;
+        }
+        
+        /* 顶部信息栏 */
+        .header {
+            text-align: center;
+            margin: 8px 0;
+        }
+        
+        .header h1 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 4px;
+        }
+        
+        .current-player {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .stone-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+        
+        .stone-indicator.black {
+            background: radial-gradient(circle at 30% 30%, #666, #000);
+        }
+        
+        .stone-indicator.white {
+            background: radial-gradient(circle at 30% 30%, #fff, #ccc);
+            border: 1px solid #ddd;
+        }
+        
+        /* 棋盘容器 */
+        .board-container {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+            position: relative;
+            width: 100%;
+        }
+        
+        #board {
+            background: #E3C16F;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            display: block;
+            touch-action: none;
+            cursor: pointer;
+        }
+        
+        /* 控制按钮 */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 12px 0;
+            padding: 0 10px;
+        }
+        
+        .btn {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .btn svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        
+        .btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .btn:active:not(:disabled) {
+            transform: scale(0.95);
+        }
+        
+        .btn-danger {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        /* 加载状态 */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .loading-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 300px;
+        }
+        
+        .loading-text {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+        
+        .progress-text {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        /* 选项对话框 */
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .dialog {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            min-width: 300px;
+            max-width: 90%;
+        }
+        
+        .dialog-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .dialog-option {
+            margin-bottom: 16px;
+        }
+        
+        .dialog-option label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .dialog-option select,
+        .dialog-option input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .dialog-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .dialog-buttons button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            background: #667eea;
+            color: white;
+        }
+        
+        .dialog-buttons button.secondary {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        /* 形势判断弹窗 */
+        .score-dialog .score-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+        
+        .score-dialog .score-value {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .score-dialog .score-detail {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        /* 响应式 */
+        @media (max-width: 599px) {
+            .container {
+                padding: 0;
+            }
+            .header {
+                margin: 4px 0;
+            }
+            .header h1 {
+                font-size: 16px;
+            }
+            .board-container {
+                margin: 0;
+                padding: 0 2px;
+            }
+            #board {
+                width: calc(100vw - 4px);
+                height: calc(100vw - 4px);
+                max-width: calc(100vh - 120px);
+                max-height: calc(100vh - 120px);
+            }
+            .toolbar {
+                margin: 8px 0;
+                padding: 0 4px;
+            }
+        }
+        
+        @media (min-width: 600px) {
+            body {
+                padding: 8px;
+            }
+            .container {
+                max-width: 500px;
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                min-height: auto;
+            }
+            .header h1 {
+                font-size: 20px;
+            }
+        }
+        
+        @media (min-width: 900px) {
+            .container {
+                max-width: 700px;
+                padding: 30px;
+            }
+        }
+    </style>
+  <script type="module" crossorigin src="./index.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部信息栏 -->
+        <div class="header">
+            <h1>围棋对弈</h1>
+            <div class="current-player">
+                <div class="stone-indicator black" id="playerIndicator"></div>
+                <span id="playerText">加载中...</span>
+            </div>
+        </div>
+        
+        <!-- 棋盘 -->
+        <div class="board-container">
+            <canvas id="board"></canvas>
+        </div>
+        
+        <!-- 控制按钮 -->
+        <div class="toolbar">
+            <button id="situationBtn" class="btn" onclick="showSituation()" title="形势判断">
+                <svg viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <line x1="3" y1="9" x2="21" y2="9"/>
+                    <line x1="3" y1="15" x2="21" y2="15"/>
+                    <line x1="9" y1="3" x2="9" y2="21"/>
+                    <line x1="15" y1="3" x2="15" y2="21"/>
+                </svg>
+            </button>
+            <button id="endBtn" class="btn" onclick="endGame()" title="结束对局">
+                <svg viewBox="0 0 24 24">
+                    <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+                    <line x1="12" y1="2" x2="12" y2="12"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    
+    <!-- 加载状态 -->
+    <div class="loading" id="loading">
+        <div class="loading-content">
+            <div class="loading-text" id="loadingText">正在加载模型...</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            <div class="progress-text" id="progressText">0%</div>
+        </div>
+    </div>
+
+    <!-- 主入口文件（Vite 会自动处理 TypeScript） -->
+</body>
+</html>

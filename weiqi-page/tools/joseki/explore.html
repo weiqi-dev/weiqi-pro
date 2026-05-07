@@ -51,6 +51,34 @@
             border-right: 5px solid transparent;
             border-top: 5px solid rgba(255, 152, 0, 0.95);
         }
+        /* 胜率指标样式 */
+        .winrate-stat { cursor: pointer; }
+        .winrate-stat:hover { text-decoration: underline; }
+        .winrate-stat.positive { color: #4caf50; }
+        .winrate-stat.negative { color: #f44336; }
+        .winrate-stat.neutral { color: #666; }
+        /* 胜率详情弹窗 */
+        .winrate-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 999; }
+        .winrate-backdrop.active { opacity: 1; visibility: visible; pointer-events: auto; }
+        .winrate-sheet { position: fixed; left: 0; right: 0; bottom: 0; background: white; border-radius: 16px 16px 0 0; padding: 16px 20px 24px; transform: translateY(100%); transition: transform 0.3s ease; z-index: 1000; max-width: 480px; margin: 0 auto; pointer-events: none; }
+        .winrate-sheet.active { transform: translateY(0); pointer-events: auto; }
+        .winrate-sheet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #eee; }
+        @media (min-width: 768px) {
+            .winrate-sheet { left: 50%; right: auto; top: 50%; bottom: auto; transform: translate(-50%, -40%) scale(0.9); opacity: 0; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
+            .winrate-sheet.active { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+        .winrate-title { font-size: 1.1em; font-weight: 600; color: #333; }
+        .winrate-close-btn { width: 32px; height: 32px; border: none; background: #f5f5f5; border-radius: 50%; cursor: pointer; font-size: 1em; color: #666; display: flex; align-items: center; justify-content: center; }
+        .winrate-close-btn:hover { background: #e0e0e0; }
+        .winrate-detail-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95em; }
+        .winrate-detail-label { color: #666; }
+        .winrate-detail-value { font-weight: 500; }
+        .winrate-bar { height: 24px; border-radius: 12px; overflow: hidden; background: #f5f5f5; margin: 12px 0; display: flex; }
+        .winrate-bar-positive { background: #4caf50; }
+        .winrate-bar-neutral { background: #bdbdbd; }
+        .winrate-bar-negative { background: #f44336; }
+        .winrate-bar-labels { display: flex; justify-content: space-between; font-size: 0.8em; color: #666; margin-top: 4px; }
+        .winrate-hint { font-size: 0.85em; color: #999; margin-top: 16px; padding-top: 12px; border-top: 1px solid #eee; }
     </style>
 </head>
 <body>
@@ -88,6 +116,10 @@
                     <div class="stat">
                         <span class="stat-value" id="statProb">-</span>
                         <span class="stat-label">出现概率</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value winrate-stat" id="statWinrate" onclick="showWinrateDetail()">-</span>
+                        <span class="stat-label">胜率变化</span>
                     </div>
                 </div>
 
@@ -143,10 +175,10 @@
     <script>
         // ========== 数据加载 ==========
         const DATA_PATH = '/weiqi-pro/weiqi-page/assets/data/joseki';
-        
+
         let trieRoot = null;           // 索引 trie 根节点
         let currentNode = null;        // 当前遍历到的节点
-        let currentNodePath = [];      // 当前路径（着法序列）
+        let currentNodePath = [];      // 当前路径(着法序列)
         let currentMoves = [];         // 当前棋盘上的棋子
         let favorites = [];
         let board = null;
@@ -178,7 +210,7 @@
             if (!node.subtree || node.children) {
                 return; // 不是裁剪点或已加载
             }
-            
+
             try {
                 const subtree = await loadGzipJson(`${DATA_PATH}/${node.subtree.file}`);
                 // 合并子树根节点的所有字段
@@ -194,14 +226,14 @@
             }
         }
 
-        // 获取当前节点的选点（按热度降序）
+        // 获取当前节点的选点(按热度降序)
         function getBranches(node) {
             if (!node.children) return [];
-            
+
             const branches = [];
             for (const [coord, child] of Object.entries(node.children)) {
                 if (coord === 'coord' || coord === 'color' || coord === 'freq' || coord === 'heat') continue;
-                
+
                 const coordData = JosekiUtils.sgfToCoord(coord);
                 if (coordData) {
                     branches.push({
@@ -217,16 +249,16 @@
             return branches;
         }
 
-        // 显示首着选点（按热度降序）
+        // 显示首着选点(按热度降序)
         function showFirstMoveBranches() {
             if (!trieRoot || !trieRoot.children) {
                 return;
             }
-            
+
             const branches = [];
             for (const [coord, child] of Object.entries(trieRoot.children)) {
                 if (coord === 'coord' || coord === 'color' || coord === 'freq' || coord === 'heat') continue;
-                
+
                 const coordData = JosekiUtils.sgfToCoord(coord);
                 if (coordData && !coordData.isPass) {
                     branches.push({
@@ -239,36 +271,36 @@
             }
             // 按热度降序排序
             branches.sort((a, b) => (b.heat || 0) - (a.heat || 0));
-            
+
             board.setMoves([]);
             board.setBranches(branches);
-            
+
             // 首次显示脱先提示
             checkPassHint();
         }
-        
-        // 检查并显示脱先提示（首次）
+
+        // 检查并显示脱先提示(首次)
         function checkPassHint() {
             if (!board._passMark) return;
             if (localStorage.getItem('joseki_pass_hinted')) return;
-            
+
             localStorage.setItem('joseki_pass_hinted', 'true');
             const hint = document.getElementById('passHint');
             const canvas = document.getElementById('exploreBoard');
-            
+
             // canvas 在视窗中的位置
             const rect = canvas.getBoundingClientRect();
-            
-            // 脱先标记在 canvas 左下角，距离边缘 5%
+
+            // 脱先标记在 canvas 左下角,距离边缘 5%
             const paddingRatio = 0.05;
             const passCx = rect.width * paddingRatio;
             const passCy = rect.height - rect.height * paddingRatio;
-            
-            // 提示框位置：fixed 定位，箭头指向脱先标记中心
-            // 提示框左边缘对齐脱先标记中心（箭头在提示框左边）
+
+            // 提示框位置:fixed 定位,箭头指向脱先标记中心
+            // 提示框左边缘对齐脱先标记中心(箭头在提示框左边)
             const hintLeft = rect.left + passCx - 6;  // 箭头偏移
-            const hintTop = rect.top + passCy - 38;    // 提示框高度约 30px，间距 8px
-            
+            const hintTop = rect.top + passCy - 38;    // 提示框高度约 30px,间距 8px
+
             hint.style.position = 'fixed';
             hint.style.left = hintLeft + 'px';
             hint.style.top = hintTop + 'px';
@@ -282,13 +314,13 @@
             const canvas = document.getElementById('exploreBoard');
             const container = canvas.parentElement;
             const displaySize = Math.min(container.clientWidth, 400);
-            
+
             const dpr = Math.min(window.devicePixelRatio || 1, 2);
             canvas.width = displaySize * dpr;
             canvas.height = displaySize * dpr;
             canvas.style.width = displaySize + 'px';
             canvas.style.height = displaySize + 'px';
-            
+
             if (!board) {
                 board = new JosekiBoard(canvas, { dpr });
                 canvas.addEventListener('click', handleBoardClick);
@@ -297,14 +329,14 @@
                 board.resize(canvas, dpr);
             }
         }
-        
+
         window.addEventListener('resize', initBoard);
 
         function handleBoardClick(e) {
             e.preventDefault();
             const rect = e.target.getBoundingClientRect();
             let clientX, clientY;
-            
+
             if (e.type === 'touchend') {
                 const touch = e.changedTouches[0];
                 clientX = touch.clientX;
@@ -313,31 +345,31 @@
                 clientX = e.clientX;
                 clientY = e.clientY;
             }
-            
+
             const canvasX = (clientX - rect.left) * (e.target.width / rect.width);
             const canvasY = (clientY - rect.top) * (e.target.height / rect.height);
-            
+
             const coord = board.canvasToSgf(canvasX, canvasY);
             if (!coord) return;
-            
+
             // 如果点击了脱先标记
             if (coord.isPass) {
                 handleMove('tt');
                 return;
             }
-            
+
             const validBranch = board.branches.find(b => b.sgf === coord.sgf);
             if (!validBranch) return;
-            
+
             handleMove(coord.sgf);
         }
 
         // ========== 着法处理 ==========
         async function handleMove(coord) {
-            
+
             if (!currentNode) return;
 
-            // 检查是否是裁剪点，需要加载子树
+            // 检查是否是裁剪点,需要加载子树
             if (currentNode.subtree && !currentNode.children) {
                 await loadSubtree(currentNode);
             }
@@ -354,15 +386,15 @@
             // 更新棋盘
             const coordData = JosekiUtils.sgfToCoord(coord);
             const nextColor = currentNodePath.length % 2 === 1 ? 'black' : 'white';
-            
-            // 如果是脱先，显示 overlay 提示
+
+            // 如果是脱先,显示 overlay 提示
             if (coordData.isPass) {
                 const overlay = document.getElementById('passOverlay');
                 overlay.textContent = `${nextColor === 'black' ? '黑' : '白'}方脱先`;
                 overlay.style.display = 'block';
                 setTimeout(() => overlay.style.display = 'none', 800);
             }
-            
+
             currentMoves.push({
                 x: coordData.x,
                 y: coordData.y,
@@ -378,7 +410,7 @@
 
             // 更新显示
             board.setMoves(currentMoves, currentMoves.length);
-            
+
             // 获取下一着选点
             if (currentNode.children) {
                 const branches = [];
@@ -398,7 +430,7 @@
                 checkPassHint();
             } else {
                 board.setBranches([]);
-                
+
             }
 
             // 更新统计
@@ -406,7 +438,8 @@
                 updateStats({
                     moves: currentNode.moves,
                     freq: currentNode.freq,
-                    prob: currentNode.prob
+                    prob: currentNode.prob,
+                    winrate: currentNode.winrate
                 });
             } else {
                 updateStats({ moves: currentNodePath.length });
@@ -420,11 +453,24 @@
             document.getElementById('statMoves').textContent = data.moves || 0;
             document.getElementById('statFreq').textContent = data.freq ? JosekiUtils.formatFreq(data.freq) : '-';
             document.getElementById('statProb').textContent = data.prob ? JosekiUtils.formatProb(data.prob) : '-';
+            
+            // 胜率统计
+            const winrateEl = document.getElementById('statWinrate');
+            if (data.winrate) {
+                currentWinrateData = data.winrate;
+                const delta = data.winrate.delta || 0;
+                winrateEl.textContent = (delta > 0 ? '+' : '') + (delta * 100).toFixed(2) + '%';
+                winrateEl.className = 'stat-value winrate-stat ' + (delta > 0.02 ? 'positive' : delta < -0.02 ? 'negative' : 'neutral');
+            } else {
+                currentWinrateData = null;
+                winrateEl.textContent = '-';
+                winrateEl.className = 'stat-value winrate-stat neutral';
+            }
         }
 
         function updateControls() {
             document.getElementById('undoBtn').disabled = currentNodePath.length <= 0;
-            // 只有是定式（freq非0）时才能收藏
+            // 只有是定式(freq非0)时才能收藏
             document.getElementById('favBtn').disabled = !currentNode.freq;
         }
 
@@ -450,13 +496,13 @@
             // 恢复选点
             if (currentNodePath.length === 0) {
                 showFirstMoveBranches();
-                
+
                 updateStats({ moves: 0 });
             } else {
                 if (currentNode.subtree && !currentNode.children) {
                     await loadSubtree(currentNode);
                 }
-                
+
                 if (currentNode.children) {
                     const branches = [];
                     for (const [c, child] of Object.entries(currentNode.children)) {
@@ -472,10 +518,10 @@
                         }
                     }
                     board.setBranches(branches);
-                    
+
                 } else {
                     board.setBranches([]);
-                    
+
                 }
 
                 if (currentNode.freq) {
@@ -504,9 +550,9 @@
         }
 
         function addFavorite() {
-            // 检查是否是定式（freq非0）
+            // 检查是否是定式(freq非0)
             if (!currentNode.freq) return;
-            
+
             const path = currentMoves.map(m => {
                 if (m.isPass) return 'tt';
                 return String.fromCharCode(97 + m.x, 97 + m.y);
@@ -519,7 +565,7 @@
 
             favorites.push(path);
             saveFavorites();
-            alert('收藏成功！');
+            alert('收藏成功!');
         }
 
         let favPage = 0;
@@ -528,7 +574,7 @@
         function renderFavorites() {
             const count = favorites.length;
             document.getElementById('favoritesCount').textContent = `已收藏 ${count} 条`;
-            
+
             if (count === 0) {
                 document.getElementById('favoritesGrid').innerHTML = '';
                 document.getElementById('favoritesEmpty').style.display = 'block';
@@ -551,9 +597,9 @@
                 const div = document.createElement('div');
                 div.className = 'joseki-item';
                 div.dataset.path = path;
-                
+
                 const moves = JosekiUtils.parseMoves(path.split('-')).filter(m => m.x !== undefined && m.y !== undefined);
-                
+
                 div.innerHTML = `
                     <div class="fav-thumb-wrapper">
                         <canvas width="100" height="100"></canvas>
@@ -564,24 +610,24 @@
 
                 const canvas = div.querySelector('canvas');
                 BoardThumbnail.render(canvas, moves);
-                
+
                 // 点击缩略图加载探索
                 div.addEventListener('click', () => loadFavoriteToExplore(path));
-                
+
                 // 删除按钮事件
                 const deleteBtn = div.querySelector('.fav-delete-btn');
                 deleteBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    if (confirm('删除此收藏？')) {
+                    if (confirm('删除此收藏?')) {
                         deleteFavorite(path);
                     }
                 });
-                
+
                 // 移动端长按删除
                 let longPressTimer = null;
                 div.addEventListener('touchstart', (e) => {
                     longPressTimer = setTimeout(() => {
-                        if (confirm('删除此收藏？')) {
+                        if (confirm('删除此收藏?')) {
                             deleteFavorite(path);
                         }
                     }, 500);
@@ -626,7 +672,7 @@
 
         function clearFavorites() {
             if (favorites.length === 0) return;
-            if (confirm('确定清空所有收藏？')) {
+            if (confirm('确定清空所有收藏?')) {
                 favorites = [];
                 saveFavorites();
                 renderFavorites();
@@ -640,7 +686,7 @@
                 alert('请选择文件');
                 return;
             }
-            
+
             const reader = new FileReader();
             reader.onload = (e) => {
                 try {
@@ -654,10 +700,10 @@
                         fileInput.value = '';
                         alert(`成功导入 ${newItems.length} 条收藏`);
                     } else {
-                        alert('导入失败：数据格式错误');
+                        alert('导入失败:数据格式错误');
                     }
                 } catch (err) {
-                    alert('导入失败：JSON 解析错误');
+                    alert('导入失败:JSON 解析错误');
                 }
             };
             reader.readAsText(file);
@@ -667,10 +713,10 @@
         function switchTab(tabName) {
             document.querySelectorAll('.joseki-tab').forEach(t => t.classList.remove('active'));
             document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
-            
+
             document.getElementById('exploreTab').style.display = tabName === 'explore' ? 'block' : 'none';
             document.getElementById('favoritesTab').style.display = tabName === 'favorites' ? 'block' : 'none';
-            
+
             if (tabName === 'favorites') {
                 renderFavorites();
             }
@@ -680,12 +726,12 @@
         async function loadFavoriteToExplore(path) {
             // 切换到探索标签
             switchTab('explore');
-            
+
             // 重置状态
             currentNodePath = [];
             currentMoves = [];
             currentNode = trieRoot;
-            
+
             // 模拟点击路径上的每一步
             const pathCoords = path.split('-');
             for (const coord of pathCoords) {
@@ -693,11 +739,11 @@
                 if (currentNode.subtree && !currentNode.children) {
                     await loadSubtree(currentNode);
                 }
-                
+
                 if (currentNode.children && currentNode.children[coord]) {
                     currentNode = currentNode.children[coord];
                     currentNodePath.push(coord);
-                    
+
                     const coordData = JosekiUtils.sgfToCoord(coord);
                     if (coordData) {
                         const nextColor = currentNodePath.length % 2 === 1 ? 'black' : 'white';
@@ -711,15 +757,15 @@
                     }
                 }
             }
-            
-            // 到达目标节点后，检查是否需要加载子树（中间节点可能是裁剪点）
+
+            // 到达目标节点后,检查是否需要加载子树(中间节点可能是裁剪点)
             if (currentNode.subtree && !currentNode.children) {
                 await loadSubtree(currentNode);
             }
-            
+
             // 更新棋盘
             board.setMoves(currentMoves, currentMoves.length);
-            
+
             // 获取下一着选点
             if (currentNode.children) {
                 const branches = [];
@@ -739,20 +785,21 @@
                 checkPassHint();
             } else {
                 board.setBranches([]);
-                
+
             }
-            
+
             // 更新统计
             if (currentNode.freq) {
                 updateStats({
                     moves: currentNode.moves,
                     freq: currentNode.freq,
-                    prob: currentNode.prob
+                    prob: currentNode.prob,
+                    winrate: currentNode.winrate
                 });
             } else {
                 updateStats({ moves: currentNodePath.length });
             }
-            
+
             updateControls();
         }
 
@@ -762,7 +809,7 @@
         });
 
         document.getElementById('undoBtn').addEventListener('click', undo);
-        
+
         document.getElementById('favBtn').addEventListener('click', addFavorite);
         document.getElementById('resetBtn').addEventListener('click', () => {
             currentMoves = [];
@@ -772,7 +819,7 @@
             showFirstMoveBranches();
             updateStats({});
             updateControls();
-            
+
         });
 
         document.getElementById('favPrevPage').addEventListener('click', () => { favPage--; renderFavorites(); });
@@ -800,13 +847,94 @@
             script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js';
             script.onload = () => {
                 init();
-            };
+            }; 
             script.onerror = () => {
                 console.error('[JosekiExplore] pako 加载失败');
-            };
+            }; 
             document.head.appendChild(script);
         } else {
             init();
+        }
+        
+        // ========== 胜率详情弹窗 ========== 
+        let currentWinrateData = null;
+        
+        function showWinrateDetail() {
+            if (!currentWinrateData || !currentWinrateData.samples) {
+                return;
+            }
+            
+            const wr = currentWinrateData;
+            const delta = wr.delta || 0;
+            const stddev = wr.stddev || 0;
+            const samples = wr.samples || 0;
+            const positive = wr.positive || 0;
+            const negative = wr.negative || 0;
+            const neutral = wr.neutral || 0;
+            
+            const posPct = Math.round(positive / samples * 100);
+            const negPct = Math.round(negative / samples * 100);
+            const neuPct = Math.round(neutral / samples * 100);
+            
+            let stability = '较稳定';
+            if (stddev < 0.02) stability = '很稳定';
+            else if (stddev < 0.04) stability = '较稳定';
+            else if (stddev < 0.06) stability = '一般';
+            else stability = '不稳定';
+            
+            let backdrop = document.getElementById('winrate-backdrop');
+            let sheet = document.getElementById('winrate-sheet');
+            
+            if (!backdrop) {
+                backdrop = document.createElement('div');
+                backdrop.id = 'winrate-backdrop';
+                backdrop.className = 'winrate-backdrop';
+                backdrop.addEventListener('click', closeWinrateSheet);
+                document.body.appendChild(backdrop);
+                
+                sheet = document.createElement('div');
+                sheet.id = 'winrate-sheet';
+                sheet.className = 'winrate-sheet';
+                document.body.appendChild(sheet);
+            }
+            
+            sheet.innerHTML = 
+                '<div class="winrate-sheet-header">' +
+                    '<span class="winrate-title">📈 胜率详情</span>' +
+                    '<button class="winrate-close-btn" id="winrate-close-btn">✕</button>' +
+                '</div>' +
+                '<div class="winrate-detail-row"><span class="winrate-detail-label">胜率变化</span><span class="winrate-detail-value">' + (delta > 0 ? '+' : '') + (delta * 100).toFixed(2) + '%</span></div>' +
+                '<div class="winrate-detail-row"><span class="winrate-detail-label">标准差</span><span class="winrate-detail-value">' + stddev.toFixed(4) + ' (' + stability + ')</span></div>' +
+                '<div class="winrate-detail-row"><span class="winrate-detail-label">样本数</span><span class="winrate-detail-value">' + samples + '</span></div>' +
+                '<div class="winrate-bar">' +
+                    '<div class="winrate-bar-positive" style="width:' + posPct + '%"></div>' +
+                    '<div class="winrate-bar-neutral" style="width:' + neuPct + '%"></div>' +
+                    '<div class="winrate-bar-negative" style="width:' + negPct + '%"></div>' +
+                '</div>' +
+                '<div class="winrate-bar-labels">' +
+                    '<span>黑有利 ' + positive + ' (' + posPct + '%)</span>' +
+                    '<span>中性 ' + neutral + '</span>' +
+                    '<span>白有利 ' + negative + ' (' + negPct + '%)</span>' +
+                '</div>' +
+                '<div class="winrate-hint">💡 delta > 0: 先手有利 | 标准差越小越稳定</div>';
+            
+            backdrop.classList.add('active');
+            sheet.classList.add('active');
+            
+            // 每次更新内容后重新绑定关闭按钮事件
+            document.getElementById('winrate-close-btn').addEventListener('click', closeWinrateSheet);
+        }
+        
+        function closeWinrateSheet() {
+            const backdrop = document.getElementById('winrate-backdrop');
+            const sheet = document.getElementById('winrate-sheet');
+            if (backdrop) {
+                backdrop.classList.remove('active');
+                backdrop.style.visibility = 'hidden';
+            }
+            if (sheet) {
+                sheet.classList.remove('active');
+            }
         }
     </script>
 </body>
