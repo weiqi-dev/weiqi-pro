@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>比赛详情 - 云比赛</title>
     <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
+    <script src="/weiqi-pro/weiqi-page/assets/js/yunbisai-proxy.js?v=20260508"></script>
     <script>document.write('<script src="/weiqi-pro/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -128,6 +129,24 @@
     </div>
     <script>
         let event = null, groups = [], selectedGroup = null, totalRounds = 1, currentRound = 1, rankingsMap = {};
+        
+        // ========== 数据源配置 ==========
+        // 默认使用代理方式（免费），不需要后端服务器
+        // 可切换为 'backend' 使用后端 API（需要认证）
+        let dataSource = 'proxy'; // 'proxy' 或 'backend'
+        let proxyClient = null;
+        
+        // 初始化代理客户端
+        function initProxyClient() {
+            if (!proxyClient) {
+                proxyClient = new YunbisaiProxy({
+                    proxyUrl: 'https://api.weiqi.lol',
+                    debug: false,
+                    timeout: 30000
+                });
+            }
+            return proxyClient;
+        }
         
         // ========== 名字处理工具函数 ==========
         /**
@@ -285,11 +304,27 @@
             // 清空旧数据，防止不同比赛的分组混在一起
             groups = [];
             document.getElementById('groupSelect').innerHTML = '<option value="">选择分组</option>';
-            if (!hasToken()) { redirectToAuth(); return; }
+            
             try {
-                const response = await fetchWithAuth(`/api/v1/yunbisai/events/${event.id}/groups`);
-                if (!response) return;
-                const data = await response.json();
+                let data;
+                
+                if (dataSource === 'proxy') {
+                    // 使用代理方式
+                    const client = initProxyClient();
+                    const result = await client.getGroups(event.id);
+                    
+                    data = {
+                        success: true,
+                        data: result
+                    };
+                } else {
+                    // 使用后端 API 方式
+                    if (!hasToken()) { redirectToAuth(); return; }
+                    const response = await fetchWithAuth(`/api/v1/yunbisai/events/${event.id}/groups`);
+                    if (!response) return;
+                    data = await response.json();
+                }
+                
                 if (!data.success) throw new Error(data.error?.message);
                 groups = data.data.groups || [];
                 
@@ -407,11 +442,31 @@
             }
             
             document.getElementById('rankingList').innerHTML = '<div class="loading"><div class="spinner"></div><p>加载排名...</p></div>';
-            if (!hasToken()) { redirectToAuth(); return null; }
+            
             try {
-                const response = await fetchWithAuth(`/api/v1/yunbisai/groups/${selectedGroup.id}`);
-                if (!response) return null;
-                const data = await response.json();
+                let data;
+                
+                if (dataSource === 'proxy') {
+                    // 使用代理方式
+                    const client = initProxyClient();
+                    const result = await client.getRanking(selectedGroup.id, 'default');
+                    
+                    data = {
+                        success: true,
+                        data: {
+                            rankings: result.rankings,
+                            total_rounds: result.total_rounds,
+                            completed_rounds: result.completed_rounds
+                        }
+                    };
+                } else {
+                    // 使用后端 API 方式
+                    if (!hasToken()) { redirectToAuth(); return null; }
+                    const response = await fetchWithAuth(`/api/v1/yunbisai/groups/${selectedGroup.id}`);
+                    if (!response) return null;
+                    data = await response.json();
+                }
+                
                 if (!data.success) throw new Error(data.error?.message);
                 renderRanking(data.data);
                 return data.data;
@@ -436,15 +491,11 @@
             const allNames = data.rankings.map(p => p.name);
             const needsOriginal = detectDuplicateNames(allNames);
             
-            const isFinal = data.completed_rounds >= data.total_rounds;
-            let html = '<table class="ranking-table"><thead><tr><th>排名</th><th>姓名</th><th>积分</th><th>对手分</th>';
-            if (isFinal) html += '<th>累进分</th><th>逆减</th>';
-            html += '</tr></thead><tbody>';
+            // 始终显示所有列（积分、对手分、累进分、逆减）
+            let html = '<table class="ranking-table"><thead><tr><th>排名</th><th>姓名</th><th>积分</th><th>对手分</th><th>累进分</th><th>逆减</th></tr></thead><tbody>';
             data.rankings.forEach((player, index) => {
                 const rankClass = index < 3 ? 'top3' : '';
-                html += `<tr><td class="rank-num ${rankClass}">${player.rank}</td><td class="rank-name">${playerLink(player.name, needsOriginal)}</td><td class="rank-score">${player.score}</td><td class="opponent-score" onclick="showOpponents('${player.name.replace(/'/g, "\\'")}', ${index})">${player.opponent_score || 0}</td>`;
-                if (isFinal) html += `<td>${player.progressive_score || 0}</td><td>${player.opponent_score_reverse_minus || '-'}</td>`;
-                html += '</tr>';
+                html += `<tr><td class="rank-num ${rankClass}">${player.rank}</td><td class="rank-name">${playerLink(player.name, needsOriginal)}</td><td class="rank-score">${player.score}</td><td class="opponent-score" onclick="showOpponents('${player.name.replace(/'/g, "\\'")}', ${index})">${player.opponent_score || 0}</td><td>${player.progressive_score || 0}</td><td>${player.opponent_score_reverse_minus || '-'}</td></tr>`;
             });
             html += '</tbody></table>';
             document.getElementById('rankingList').innerHTML = html;
@@ -459,12 +510,31 @@
             
             currentRound = round;
             document.getElementById('matchesList').innerHTML = '<div class="loading"><div class="spinner"></div><p>加载中...</p></div>';
-            if (!hasToken()) { redirectToAuth(); return; }
+            
             try {
-                // 加载对阵
-                const response = await fetchWithAuth(`/api/v1/yunbisai/groups/${selectedGroup.id}/matches?round=${round}`);
-                if (!response) return;
-                const data = await response.json();
+                let data;
+                
+                if (dataSource === 'proxy') {
+                    // 使用代理方式
+                    const client = initProxyClient();
+                    const result = await client.getMatches(selectedGroup.id, round);
+                    
+                    data = {
+                        success: true,
+                        data: {
+                            matches: result.matches,
+                            total_rounds: result.totalRounds,
+                            round: result.round
+                        }
+                    };
+                } else {
+                    // 使用后端 API 方式
+                    if (!hasToken()) { redirectToAuth(); return; }
+                    const response = await fetchWithAuth(`/api/v1/yunbisai/groups/${selectedGroup.id}/matches?round=${round}`);
+                    if (!response) return;
+                    data = await response.json();
+                }
+                
                 if (!data.success) throw new Error(data.error?.message);
                 
                 // 加载该轮之前的排名数据（该轮开始前的积分）
@@ -483,9 +553,26 @@
         
         async function loadRoundRanking(round) {
             try {
-                const response = await fetchWithAuth(`/api/v1/yunbisai/groups/${selectedGroup.id}?round=${round}`);
-                if (!response) return;
-                const data = await response.json();
+                let data;
+                
+                if (dataSource === 'proxy') {
+                    // 使用代理方式
+                    const client = initProxyClient();
+                    const result = await client.getRanking(selectedGroup.id, 'default');
+                    
+                    data = {
+                        success: true,
+                        data: {
+                            rankings: result.rankings
+                        }
+                    };
+                } else {
+                    // 使用后端 API 方式
+                    const response = await fetchWithAuth(`/api/v1/yunbisai/groups/${selectedGroup.id}?round=${round}`);
+                    if (!response) return;
+                    data = await response.json();
+                }
+                
                 if (!data.success) return;
                 
                 rankingsMap = {};

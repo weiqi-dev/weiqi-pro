@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>云比赛 - 围棋智能助手</title>
     <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
+    <script src="/weiqi-pro/weiqi-page/assets/js/yunbisai-proxy.js?v=20260508"></script>
     <script>document.write('<script src="/weiqi-pro/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -112,6 +113,24 @@
         const CACHE_KEY = 'yunbisai_visited';
         const MAX_RECENT = 20;
         
+        // ========== 数据源配置 ==========
+        // 默认使用代理方式（免费），不需要后端服务器
+        // 可切换为 'backend' 使用后端 API（需要认证）
+        let dataSource = 'proxy'; // 'proxy' 或 'backend'
+        let proxyClient = null;
+        
+        // 初始化代理客户端
+        function initProxyClient() {
+            if (!proxyClient) {
+                proxyClient = new YunbisaiProxy({
+                    proxyUrl: 'https://api.weiqi.lol',
+                    debug: false,
+                    timeout: 30000
+                });
+            }
+            return proxyClient;
+        }
+        
         // ========== 标签切换 ==========
         function switchTab(tabName) {
             document.querySelectorAll('.tab').forEach(tab => {
@@ -196,19 +215,37 @@
             const month = document.getElementById('monthSelect').value;
             const keyword = document.getElementById('keywordInput').value.trim();
             
-            if (!hasToken()) { redirectToAuth(); return; }
-            
             document.getElementById('queryBtn').disabled = true;
             document.getElementById('queryBtn').textContent = '查询中...';
             
             try {
-                let url = `/api/v1/yunbisai/events?month=${month}`;
-                if (area) url += `&area=${encodeURIComponent(area)}`;
-                if (keyword) url += `&keyword=${encodeURIComponent(keyword)}`;
+                let data;
                 
-                const response = await fetchWithAuth(url);
-                if (!response) return;
-                const data = await response.json();
+                if (dataSource === 'proxy') {
+                    // 使用代理方式（免费，不需要后端）
+                    const client = initProxyClient();
+                    const result = await client.getEvents({
+                        area: area,
+                        month: parseInt(month),
+                        keyword: keyword
+                    });
+                    
+                    data = {
+                        success: true,
+                        data: result
+                    };
+                } else {
+                    // 使用后端 API 方式（需要认证）
+                    if (!hasToken()) { redirectToAuth(); return; }
+                    
+                    let url = `/api/v1/yunbisai/events?month=${month}`;
+                    if (area) url += `&area=${encodeURIComponent(area)}`;
+                    if (keyword) url += `&keyword=${encodeURIComponent(keyword)}`;
+                    
+                    const response = await fetchWithAuth(url);
+                    if (!response) return;
+                    data = await response.json();
+                }
                 
                 if (!data.success) throw new Error(data.error?.message || '查询失败');
                 
