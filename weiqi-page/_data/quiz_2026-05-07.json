@@ -1,0 +1,86 @@
+[
+  {
+    "id": "202605080849040002",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-07/野狐/quiz_202605080849040002.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-07/野狐/game_202605080849040002.json",
+    "black": "常石隆志",
+    "white": "上野愛咲美",
+    "event": "第51期日本棋圣战预选<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605080849050004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-07/野狐/quiz_202605080849050004.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-07/野狐/game_202605080849050004.json",
+    "black": "申真谞",
+    "white": "洪性志",
+    "event": "第31届韩国GS加德士杯败者组<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605080849050005",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-07/野狐/quiz_202605080849050005.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-07/野狐/game_202605080849050005.json",
+    "black": "佐田篤史",
+    "white": "一力遼",
+    "event": "第51期日本碁圣战挑战者決赛<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 6,
+    "stats": {
+      "total": 6,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 6,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605080849050007",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-07/野狐/quiz_202605080849050007.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-07/野狐/game_202605080849050007.json",
+    "black": "安達利昌",
+    "white": "本木克弥",
+    "event": "第74期日本王座战本赛<绝艺讲解>",
+    "result": "白胜0.50目",
+    "count": 8,
+    "stats": {
+      "total": 8,
+      "result": "白胜0.50目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 5
+      }
+    }
+  }
+]

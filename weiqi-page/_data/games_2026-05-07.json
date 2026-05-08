@@ -1,0 +1,86 @@
+[
+  {
+    "id": "202605080849040001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-07/野狐/game_202605080849040001.json",
+    "black": "원제훈",
+    "white": "김다빈",
+    "black_rank": "P5段",
+    "white_rank": "P5段",
+    "result": "W+3.50",
+    "result_cn": "白胜3.50目",
+    "event": "韩国冲岩循环赛<绝艺讲解>"
+  },
+  {
+    "id": "202605080849040002",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-07/野狐/game_202605080849040002.json",
+    "black": "常石隆志",
+    "white": "上野愛咲美",
+    "black_rank": "P5段",
+    "white_rank": "P6段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第51期日本棋圣战预选<绝艺讲解>"
+  },
+  {
+    "id": "202605080849040003",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-07/野狐/game_202605080849040003.json",
+    "black": "辻篤仁",
+    "white": "井山裕太",
+    "black_rank": "P5段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第74期日本王座战本赛<绝艺讲解>"
+  },
+  {
+    "id": "202605080849050004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-07/野狐/game_202605080849050004.json",
+    "black": "申真谞",
+    "white": "洪性志",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第31届韩国GS加德士杯败者组<绝艺讲解>"
+  },
+  {
+    "id": "202605080849050005",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-07/野狐/game_202605080849050005.json",
+    "black": "佐田篤史",
+    "white": "一力遼",
+    "black_rank": "P7段",
+    "white_rank": "P9段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第51期日本碁圣战挑战者決赛<绝艺讲解>"
+  },
+  {
+    "id": "202605080849050006",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-07/野狐/game_202605080849050006.json",
+    "black": "吴侑珍",
+    "white": "金京垠",
+    "black_rank": "P9段",
+    "white_rank": "P5段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第6届韩国MOA女子最佳棋士战8强<绝艺讲解>"
+  },
+  {
+    "id": "202605080849050007",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-07/野狐/game_202605080849050007.json",
+    "black": "安達利昌",
+    "white": "本木克弥",
+    "black_rank": "P7段",
+    "white_rank": "P9段",
+    "result": "W+0.50",
+    "result_cn": "白胜0.50目",
+    "event": "第74期日本王座战本赛<绝艺讲解>"
+  }
+]
