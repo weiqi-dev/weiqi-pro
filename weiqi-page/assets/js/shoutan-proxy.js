@@ -83,8 +83,8 @@ class ShoutanProxy {
                 yh = reditxtMatch[1];
             }
             
-            // 解析 <Xs .../> 属性
-            const xsPattern = /<Xs\s+([^>]+)\/>/g;
+            // 解析 <Xs ... /> 属性（注意：斜杠前可能有空格）
+            const xsPattern = /<Xs\s+([^>]+)\s*\/>/g;
             let match;
             
             while ((match = xsPattern.exec(xmlContent)) !== null) {
@@ -171,9 +171,13 @@ class ShoutanProxy {
     /**
      * 解析 XML 属性
      */
+    /**
+     * 解析 XML 属性（支持中文属性名）
+     */
     parseAttributes(attrString) {
         const attrs = {};
-        const pattern = /(\w+)=['"]([^'"]*)['"]/g;
+        // 使用更宽松的正则，支持中文属性名
+        const pattern = /([^\s=]+)=['"]([^'"]*)['"]/g;
         let match;
         
         while ((match = pattern.exec(attrString)) !== null) {
