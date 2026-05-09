@@ -5,7 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>对手分析 - 围棋智能助手</title>
     <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
+    <script>const BASE_PATH = '/weiqi-pro/weiqi-page';</script>
     <script>document.write('<script src="/weiqi-pro/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
+    <!-- pako for gzip decompression -->
+    <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+    <!-- Proxy 模式依赖 -->
+    <script src="/weiqi-pro/weiqi-page/assets/js/foxwq-proxy.js"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/sgf-parser.js"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/coordinate-converter.js"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/corner-extractor.js"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/joseki-matcher.js"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/opponent-proxy.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -411,8 +421,11 @@
 
         // ========== 页面加载 ==========
         window.addEventListener('pageshow', function(event) {
+            // 代理模式不需要认证
             if (!hasToken()) {
-                redirectToAuth();
+                // 没有 token，使用代理模式，不需要跳转认证
+                // 直接渲染历史列表
+                renderHistoryList();
                 return;
             }
 
@@ -629,10 +642,8 @@
                 return;
             }
 
-            if (!hasToken()) {
-                redirectToAuth();
-                return;
-            }
+            // 默认使用代理模式，如果有 token 则使用 Backend 模式
+            const isProxyMode = !hasToken();
 
             queryBtn.disabled = true;
             queryBtn.textContent = '分析中...';
@@ -649,6 +660,60 @@
                 </div>
             `;
             statsSection.style.display = 'block';
+
+            // 代理模式：调用 OpponentProxy.analyze()
+            if (isProxyMode) {
+                try {
+                    // 进度回调函数
+                    const progressCallback = (percent, status, detail) => {
+                        statsSection.innerHTML = `
+                            <div class="card">
+                                <div style="text-align: center; padding: 20px;">
+                                    <div style="font-size: 24px; margin-bottom: 10px;">${percent}%</div>
+                                    <div style="font-size: 16px; color: #666;">${status}</div>
+                                    ${detail ? `<div style="font-size: 14px; color: #999; margin-top: 5px;">${detail}</div>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    };
+                    
+                    const result = await OpponentProxy.analyze(foxwqId, limit, progressCallback);
+                    
+                    currentData = {
+                        foxwqId: foxwqId,
+                        ...result
+                    };
+                    
+                    // 保存到缓存并更新最近列表
+                    if (result.games && result.games.length > 0) {
+                        addToCache(foxwqId, result);
+                    }
+                    
+                    // 存储到 sessionStorage
+                    sessionStorage.setItem('opponent_data', JSON.stringify({
+                        foxwqId: foxwqId,
+                        limit: limit,
+                        ...result
+                    }));
+                    
+                    // 显示统计
+                    displayStats(currentData);
+                    
+                } catch (error) {
+                    statsSection.innerHTML = `
+                        <div class="card">
+                            <div class="error">
+                                <strong>分析失败</strong>
+                                <p>${error.message}</p>
+                            </div>
+                        </div>
+                    `;
+                } finally {
+                    queryBtn.disabled = false;
+                    queryBtn.textContent = '开始分析';
+                }
+                return;
+            }
 
             try {
                 const response = await fetchWithAuth(

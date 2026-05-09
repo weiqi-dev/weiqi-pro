@@ -7,6 +7,9 @@
     <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
     <script>const BASE_PATH = '/weiqi-pro/weiqi-page';</script>
     <script>document.write('<script src="/weiqi-pro/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
+    <!-- Proxy 模式依赖 -->
+    <script src="/weiqi-pro/weiqi-page/assets/js/sgf-parser.js"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/replay-helper.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -92,10 +95,53 @@
         }
         .metrics-row { display: flex; gap: 24px; align-items: flex-start; }
         .joseki-thumbnail { width: 200px; height: 200px; flex-shrink: 0; border-radius: 8px; background: #DCB35C; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .metrics-info { flex: 1; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; justify-content: flex-start; }
-        .metric-col { display: flex; flex-direction: column; gap: 2px; }
-        .metric-value { font-size: 1.1em; font-weight: 600; color: #667eea; }
-        .metric-label { font-size: 0.75em; color: #888; }
+        .metrics-info { flex: 1; display: flex; flex-direction: column; gap: 4px; align-items: flex-start; justify-content: flex-start; max-height: 200px; }
+        .metric-col { display: flex; flex-direction: column; gap: 1px; position: relative; }
+        .metric-value { font-size: 1em; font-weight: 600; color: #667eea; }
+        .metric-label { font-size: 0.7em; color: #888; }
+        /* 胜率指标样式 */
+        .winrate-value { cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+        .winrate-value:hover { opacity: 0.8; }
+        .winrate-value.positive { color: #2e7d32; }
+        .winrate-value.negative { color: #c62828; }
+        .winrate-value.neutral { color: #666; }
+        /* 胜率详情弹窗 */
+        .winrate-backdrop { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.3s ease, visibility 0.3s ease; z-index: 999; }
+        .winrate-backdrop.active { opacity: 1; visibility: visible; pointer-events: auto; }
+        .winrate-sheet { position: fixed; left: 0; right: 0; bottom: 0; background: white; border-radius: 16px 16px 0 0; padding: 16px 20px 24px; transform: translateY(100%); transition: transform 0.3s ease; z-index: 1000; max-width: 480px; margin: 0 auto; pointer-events: none; }
+        .winrate-sheet.active { transform: translateY(0); pointer-events: auto; }
+        .winrate-sheet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #eee; }
+        /* PC端居中显示 */
+        @media (min-width: 768px) {
+            .winrate-sheet {
+                left: 50%;
+                right: auto;
+                top: 50%;
+                bottom: auto;
+                transform: translate(-50%, -40%) scale(0.9);
+                opacity: 0;
+                border-radius: 16px;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+            .winrate-sheet.active {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+        .winrate-title { font-size: 1.1em; font-weight: 600; color: #333; }
+        .winrate-close-btn { width: 32px; height: 32px; border: none; background: #f5f5f5; border-radius: 50%; cursor: pointer; font-size: 1em; color: #666; display: flex; align-items: center; justify-content: center; }
+        .winrate-close-btn:hover { background: #e0e0e0; }
+        .winrate-detail-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95em; }
+        .winrate-detail-label { color: #666; }
+        .winrate-detail-value { font-weight: 500; }
+        .winrate-bar { height: 24px; border-radius: 12px; overflow: hidden; background: #f5f5f5; margin: 12px 0; display: flex; }
+        .winrate-bar-positive { background: #4caf50; }
+        .winrate-bar-neutral { background: #bdbdbd; }
+        .winrate-bar-negative { background: #f44336; }
+        .winrate-bar-labels { display: flex; justify-content: space-between; font-size: 0.8em; color: #666; margin-top: 4px; }
+        .winrate-hint { font-size: 0.85em; color: #999; margin-top: 16px; padding-top: 12px; border-top: 1px solid #eee; }
         .joseki-footer { padding: 10px 15px; background: #fafafa; border-top: 1px solid #f5f5f5; display: flex; justify-content: space-between; align-items: center; }
         .joseki-tags { display: flex; gap: 6px; }
         .joseki-meta { font-size: 0.85em; color: #888; }
@@ -249,7 +295,11 @@
 
         // 加载数据
         async function loadData() {
-            if (!hasToken()) {
+            // 检查是否为 proxy 模式
+            const stored = sessionStorage.getItem('opponent_data');
+            const isProxyMode = stored && !hasToken();
+            
+            if (!hasToken() && !isProxyMode) {
                 redirectToAuth();
                 return;
             }
@@ -424,6 +474,27 @@
                 // 数据属性用于过滤
                 const dataTags = tags.join(' ');
 
+                // 胜率统计
+                let winrateDisplay = '-';
+                let winrateClass = 'neutral';
+                let winrateAttrs = '';
+                if (item.winrate_stats) {
+                    const wr = item.winrate_stats;
+                    const delta = wr.delta || 0;
+                    const stddev = wr.stddev || 0;
+                    const samples = wr.samples || 0;
+                    const positive = wr.positive || 0;
+                    const negative = wr.negative || 0;
+                    const neutral = wr.neutral || 0;
+                    // 显示格式
+                    winrateDisplay = (delta > 0 ? '+' : '') + (delta * 100).toFixed(2) + '%';
+                    // 样式类
+                    if (delta > 0.02) winrateClass = 'positive';
+                    else if (delta < -0.02) winrateClass = 'negative';
+                    // 单独的 data 属性
+                    winrateAttrs = "data-delta='" + delta + "' data-stddev='" + stddev + "' data-samples='" + samples + "' data-positive='" + positive + "' data-negative='" + negative + "' data-neutral='" + neutral + "'";
+                }
+
                 // 准备缩略图数据
                 const movesStr = prefix || '';
                 html += `
@@ -443,6 +514,7 @@
                                     <div class="metric-col"><span class="metric-value">${prefixLen}/${totalMoves}</span><span class="metric-label">匹配/总手数</span></div>
                                     <div class="metric-col"><span class="metric-value">${frequency}</span><span class="metric-label">库出现次数</span></div>
                                     <div class="metric-col"><span class="metric-value">${probDisplay}</span><span class="metric-label">库出现概率</span></div>
+                                    <div class="metric-col"><span class="metric-value winrate-value ${winrateClass}" ${winrateAttrs} onclick="event.stopPropagation(); toggleWinrateDetail(event, this)">${winrateDisplay}</span><span class="metric-label">胜率变化</span></div>
                                 </div>
                             </div>
                         </div>
@@ -488,6 +560,36 @@
 
             if (!extractedMoves) {
                 alert('没有着法数据');
+                return;
+            }
+            
+            // 检查是否为 proxy 模式
+            const stored = sessionStorage.getItem('opponent_data');
+            const isProxyMode = stored && !hasToken();
+            
+            if (isProxyMode) {
+                // Proxy 模式：使用 ReplayHelper 生成 replay 数据
+                try {
+                    const replayData = ReplayHelper.generateReplayData(extractedMoves, {
+                        game_name: '定式变化',
+                        black: '黑棋',
+                        white: '白棋'
+                    }, prefixLen > 0 ? prefixLen : -1);  // 跳转到定式结束位置
+                    
+                    // 生成唯一 key
+                    const localKey = 'replay_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    
+                    // 保存到 localStorage
+                    localStorage.setItem(localKey, JSON.stringify(replayData));
+                    
+                    // 跳转到 replay.html
+                    const replayUrl = `${BASE_PATH}/replay.html?local=${localKey}`;
+                    window.location.href = replayUrl;
+                    
+                } catch (error) {
+                    alert('棋谱解析失败: ' + error.message);
+                    console.error(error);
+                }
                 return;
             }
 
@@ -551,6 +653,36 @@
                 alert('无法获取棋谱数据');
                 return;
             }
+            
+            // 检查是否为 proxy 模式
+            const stored = sessionStorage.getItem('opponent_data');
+            const isProxyMode = stored && !hasToken();
+            
+            if (isProxyMode) {
+                // Proxy 模式：使用 ReplayHelper 生成 replay 数据
+                try {
+                    const replayData = ReplayHelper.generateReplayData(game.sgf, {
+                        black: game.black,
+                        white: game.white,
+                        result: game.result
+                    }, -1);  // -1 表示最后一手
+                    
+                    // 生成唯一 key
+                    const localKey = 'replay_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    
+                    // 保存到 localStorage
+                    localStorage.setItem(localKey, JSON.stringify(replayData));
+                    
+                    // 跳转到 replay.html
+                    const replayUrl = `${BASE_PATH}/replay.html?local=${localKey}`;
+                    window.location.href = replayUrl;
+                    
+                } catch (error) {
+                    alert('棋谱解析失败: ' + error.message);
+                    console.error(error);
+                }
+                return;
+            }
 
             try {
                 const response = await fetchWithAuth('/api/replay', {
@@ -598,6 +730,94 @@
         }
 
         // loadData() 移到下面的脚本中调用
+        
+        // ========== 胜率详情弹窗 ========== 
+        function toggleWinrateDetail(e, el) {
+            e.stopPropagation();
+            e.preventDefault();
+            
+            // 获取胜率数据
+            const delta = parseFloat(el.dataset.delta || 0);
+            const stddev = parseFloat(el.dataset.stddev || 0);
+            const samples = parseInt(el.dataset.samples || 0);
+            
+            if (!samples) {
+                return; // 无数据
+            }
+            
+            const positive = parseInt(el.dataset.positive || 0);
+            const negative = parseInt(el.dataset.negative || 0);
+            const neutral = parseInt(el.dataset.neutral || 0);
+            
+            // 计算百分比
+            const posPct = samples > 0 ? Math.round(positive / samples * 100) : 0;
+            const negPct = samples > 0 ? Math.round(negative / samples * 100) : 0;
+            const neuPct = samples > 0 ? Math.round(neutral / samples * 100) : 0;
+            
+            // 稳定性评级
+            let stability = '较稳定';
+            if (stddev < 0.02) stability = '很稳定';
+            else if (stddev < 0.04) stability = '较稳定';
+            else if (stddev < 0.06) stability = '一般';
+            else stability = '不稳定';
+            
+            // 创建或更新弹窗
+            let backdrop = document.getElementById('winrate-backdrop');
+            let sheet = document.getElementById('winrate-sheet');
+            
+            if (!backdrop) {
+                backdrop = document.createElement('div');
+                backdrop.id = 'winrate-backdrop';
+                backdrop.className = 'winrate-backdrop';
+                backdrop.addEventListener('click', closeWinrateSheet);
+                document.body.appendChild(backdrop);
+                
+                sheet = document.createElement('div');
+                sheet.id = 'winrate-sheet';
+                sheet.className = 'winrate-sheet';
+                document.body.appendChild(sheet);
+            }
+            
+            // 更新内容
+            sheet.innerHTML = 
+                '<div class="winrate-sheet-header">' +
+                    '<span class="winrate-title">📈 胜率详情</span>' +
+                    '<button class="winrate-close-btn" id="winrate-close-btn">✕</button>' +
+                '</div>' +
+                '<div class="winrate-detail-row"><span class="winrate-detail-label">胜率变化</span><span class="winrate-detail-value">' + (delta > 0 ? '+' : '') + (delta * 100).toFixed(2) + '%</span></div>' +
+                '<div class="winrate-detail-row"><span class="winrate-detail-label">标准差</span><span class="winrate-detail-value">' + stddev.toFixed(4) + ' (' + stability + ')</span></div>' +
+                '<div class="winrate-detail-row"><span class="winrate-detail-label">样本数</span><span class="winrate-detail-value">' + samples + '</span></div>' +
+                '<div class="winrate-bar">' +
+                    '<div class="winrate-bar-positive" style="width:' + posPct + '%"></div>' +
+                    '<div class="winrate-bar-neutral" style="width:' + neuPct + '%"></div>' +
+                    '<div class="winrate-bar-negative" style="width:' + negPct + '%"></div>' +
+                '</div>' +
+                '<div class="winrate-bar-labels">' +
+                    '<span>黑有利 ' + positive + ' (' + posPct + '%)</span>' +
+                    '<span>中性 ' + neutral + '</span>' +
+                    '<span>白有利 ' + negative + ' (' + negPct + '%)</span>' +
+                '</div>' +
+                '<div class="winrate-hint">💡 delta > 0: 先手有利 | 标准差越小越稳定</div>';
+            
+            // 显示弹窗
+            backdrop.classList.add('active');
+            sheet.classList.add('active');
+            
+            // 每次更新内容后重新绑定关闭按钮事件
+            document.getElementById('winrate-close-btn').addEventListener('click', closeWinrateSheet);
+        }
+        
+        function closeWinrateSheet() {
+            const backdrop = document.getElementById('winrate-backdrop');
+            const sheet = document.getElementById('winrate-sheet');
+            if (backdrop) {
+                backdrop.classList.remove('active');
+                backdrop.style.visibility = 'hidden';
+            }
+            if (sheet) {
+                sheet.classList.remove('active');
+            }
+        }
     </script>
     <script src="/weiqi-pro/weiqi-page/assets/js/board-thumbnail.js?v=20260504"></script>
     <script>

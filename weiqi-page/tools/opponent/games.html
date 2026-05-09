@@ -7,6 +7,9 @@
     <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
     <script>const BASE_PATH = '/weiqi-pro/weiqi-page';</script>
     <script>document.write('<script src="/weiqi-pro/weiqi-page/assets/js/auth.js?v=' + Date.now() + '"><\/script>');</script>
+    <!-- Proxy 模式依赖 -->
+    <script src="/weiqi-pro/weiqi-page/assets/js/sgf-parser.js"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/replay-helper.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -123,7 +126,7 @@
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         footer { text-align: center; padding: 15px; color: #999; font-size: 0.8em; }
-        
+
         /* iframe 全屏容器 */
         .replay-overlay {
             position: fixed;
@@ -148,22 +151,22 @@
             </div>
             <button class="icon-btn" onclick="clearVisited()" title="清除访问记录">👁️</button>
         </header>
-        
+
         <div id="content">
             <div class="loading">
                 <div class="spinner"></div>
                 <p>加载中...</p>
             </div>
         </div>
-        
+
         <footer><p>围棋智能助手 &copy; 2026</p></footer>
     </div>
-    
+
     <!-- 棋谱显示容器 -->
     <div id="replayOverlay" class="replay-overlay">
         <iframe id="replayIframe" class="replay-iframe"></iframe>
     </div>
-    
+
     <script>
         let opponentData = null;
         const SCROLL_KEY = 'games_scroll_pos';
@@ -171,7 +174,11 @@
 
         // 加载数据
         async function loadData() {
-            if (!hasToken()) {
+            // 检查是否为 proxy 模式
+            const stored = sessionStorage.getItem('opponent_data');
+            const isProxyMode = stored && !hasToken();
+
+            if (!hasToken() && !isProxyMode) {
                 redirectToAuth();
                 return;
             }
@@ -199,7 +206,7 @@
             }
         }
 
-        // 监听 pageshow 事件，处理 bfcache 恢复
+        // 监听 pageshow 事件,处理 bfcache 恢复
         window.addEventListener('pageshow', function(event) {
             if (opponentData) {
                 restoreScrollAndHighlights();
@@ -253,13 +260,13 @@
                 card.classList.remove('viewed');
             });
         }
-        
+
         // 显示棋谱列表
         function displayGames() {
             const content = document.getElementById('content');
-            
+
             const games = opponentData.games || [];
-            
+
             if (games.length === 0) {
                 content.innerHTML = `
                     <div class="empty-state">
@@ -269,14 +276,14 @@
                 `;
                 return;
             }
-            
+
             let html = '<div class="game-list">';
             const foxwqId = opponentData.foxwqId;
-            
+
             games.forEach((game, index) => {
                 const isBlack = game.black === foxwqId;
                 const isWhite = game.white === foxwqId;
-                
+
                 // 判断胜负
                 const resultText = game.result || '';
                 let resultClass = '';
@@ -285,10 +292,10 @@
                 } else if (resultText.includes('白胜')) {
                     resultClass = isWhite ? 'result-win' : 'result-lose';
                 }
-                
+
                 // 组合日期和时间
                 const dateTime = game.date + (game.time ? ' ' + game.time : '');
-                
+
                 html += `
                     <div class="game-card" data-index="${index}" onclick="saveScrollAndMarkViewed(${index}); viewGameByIndex(${index})">
                         <div class="game-header">
@@ -305,11 +312,11 @@
                     </div>
                 `;
             });
-            
+
             html += '</div>';
             content.innerHTML = html;
         }
-        
+
         // 查看棋谱
         function viewGameByIndex(index) {
             const games = opponentData.games || [];
@@ -320,12 +327,12 @@
             }
             viewGame(game, 'last');
         }
-        
+
         // 检测微信浏览器
         function isWeixinBrowser() {
             return /MicroMessenger/i.test(navigator.userAgent);
         }
-        
+
         // 查看棋谱
         async function viewGame(game, gotoMove) {
             const sgf = game.sgf;
@@ -334,37 +341,67 @@
                 return;
             }
             
+            // 检查是否为 proxy 模式
+            const stored = sessionStorage.getItem('opponent_data');
+            const isProxyMode = stored && !hasToken();
+            
+            if (isProxyMode) {
+                // Proxy 模式：使用 ReplayHelper 生成 replay 数据
+                try {
+                    const replayData = ReplayHelper.generateReplayData(sgf, {
+                        black: game.black,
+                        white: game.white,
+                        result: game.result
+                    }, -1);  // -1 表示最后一手
+                    
+                    // 生成唯一 key
+                    const localKey = 'replay_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                    
+                    // 保存到 localStorage
+                    localStorage.setItem(localKey, JSON.stringify(replayData));
+                    
+                    // 跳转到 replay.html
+                    const replayUrl = `${BASE_PATH}/replay.html?local=${localKey}`;
+                    window.location.href = replayUrl;
+                    
+                } catch (error) {
+                    alert('棋谱解析失败: ' + error.message);
+                    console.error(error);
+                }
+                return;
+            }
+
             try {
                 const response = await fetchWithAuth('/api/replay', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ sgf: sgf })
                 });
-                
+
                 if (!response) return;
-                
+
                 const data = await response.json();
-                
+
                 if (!data.success || !data.data) {
                     alert('生成棋谱数据失败');
                     return;
                 }
-                
+
                 // 生成唯一 key
                 const localKey = 'replay_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                
+
                 // 保存到 localStorage
                 localStorage.setItem(localKey, JSON.stringify(data.data));
-                
+
                 // 跳转到 replay.html
                 const replayUrl = `${BASE_PATH}/replay.html?local=${localKey}`;
                 window.location.href = replayUrl;
-                
+
             } catch (error) {
                 alert('加载失败: ' + error.message);
             }
         }
-        
+
         loadData();
     </script>
 </body>
