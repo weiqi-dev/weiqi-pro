@@ -1,0 +1,62 @@
+[
+  {
+    "id": "202605090836210001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-08/野狐/game_202605090836210001.json",
+    "black": "姜暻显",
+    "white": "林赏圭",
+    "black_rank": "P2段",
+    "white_rank": "P3段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "韩国冲岩循环赛<绝艺讲解>"
+  },
+  {
+    "id": "202605090836210002",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-08/野狐/game_202605090836210002.json",
+    "black": "尹渠",
+    "white": "최서비",
+    "black_rank": "P4段",
+    "white_rank": "P2段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605090836210003",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-08/野狐/game_202605090836210003.json",
+    "black": "刘砚畅",
+    "white": "俞俐均",
+    "black_rank": "P3段",
+    "white_rank": "P4段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605090836220004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-08/野狐/game_202605090836220004.json",
+    "black": "金恩持",
+    "white": "曾楚典",
+    "black_rank": "P9段",
+    "white_rank": "P2段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605090836220005",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-08/野狐/game_202605090836220005.json",
+    "black": "吴依铭",
+    "white": "崔精",
+    "black_rank": "P7段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<张学斌＆夏夏＆绝艺解说>"
+  }
+]
