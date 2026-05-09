@@ -74,6 +74,13 @@ class OpponentProxy {
                 
                 // 解析 SGF
                 const parsed = sgfParser.parse(sgfData);
+                
+                // 检查棋盘大小，跳过非19路棋谱
+                if (parsed.game_info.board_size !== 19) {
+                    console.log(`[Proxy] 棋谱 ${game.chessid} 不是19路棋盘 (${parsed.game_info.board_size}路)，跳过`);
+                    continue;
+                }
+                
                 const moves = sgfParser.extractMainBranch(parsed.tree, 80);
                 
                 if (!moves || moves.length === 0) {
