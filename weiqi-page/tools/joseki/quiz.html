@@ -7,7 +7,8 @@
     <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
     <link rel="stylesheet" href="/weiqi-pro/weiqi-page/assets/css/joseki.css?v=20260505c">
     <script src="/weiqi-pro/weiqi-page/assets/js/board-thumbnail.js?v=20260506"></script>
-    <script src="/weiqi-pro/weiqi-page/assets/js/joseki-board.js?v=20260506d"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/joseki-board.js?v=20260510b"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/joseki-loader.js?v=20260510"></script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -225,7 +226,10 @@
         // ========== 状态变量 ==========
         const DATA_PATH = '/weiqi-pro/weiqi-page/assets/data/joseki';
         
-        let quizData = { easy: [], medium: [], hard: [] };
+        // 定式加载器实例
+        const loader = new JosekiLoader(DATA_PATH);
+        
+        let quizData = { easy: null, medium: null, hard: null };
         let currentDifficulty = 'easy';
         let currentQuiz = null;
         let targetMoves = [];      // 目标定式完整着法
@@ -238,27 +242,41 @@
         let userColor = null;      // 'black' 或 'white'
 
         // ========== 数据加载 ==========
-        async function loadQuizData() {
+        
+        // 加载指定难度的题库（懒加载）
+        async function loadQuizData(difficulty) {
             try {
-                for (const diff of ['easy', 'medium', 'hard']) {
-                    const url = `${DATA_PATH}/quiz-${diff}.json.gz`;
-                    const response = await fetch(url);
-                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                    
-                    const compressed = await response.arrayBuffer();
-                    const decompressed = pako.ungzip(compressed, { to: 'string' });
-                    quizData[diff] = JSON.parse(decompressed).leaves || [];
-                }
-                // 恢复上次选择的难度
-                const savedDiff = localStorage.getItem('joseki_quiz_difficulty');
-                if (savedDiff && quizData[savedDiff] && quizData[savedDiff].length > 0) {
-                    currentDifficulty = savedDiff;
-                    document.getElementById('difficultySelect').value = savedDiff;
-                }
-                loadNextQuiz();
+                const data = await loader.loadQuizData(difficulty);
+                quizData[difficulty] = data;
+                return data;
             } catch (e) {
                 console.error('[JosekiQuiz] 加载失败:', e);
+                return null;
             }
+        }
+        
+        // 初始化：加载当前难度的题库
+        async function initQuizData() {
+            // 恢复上次选择的难度
+            const savedDiff = localStorage.getItem('joseki_quiz_difficulty') || 'easy';
+            currentDifficulty = savedDiff;
+            document.getElementById('difficultySelect').value = savedDiff;
+            
+            // 只加载当前难度的题库
+            await loadQuizData(savedDiff);
+            loadNextQuiz();
+        }
+        
+        // 难度切换处理
+        async function onDifficultyChange(newDiff) {
+            currentDifficulty = newDiff;
+            localStorage.setItem('joseki_quiz_difficulty', newDiff);
+            
+            // 如果该难度尚未加载，则加载
+            if (!quizData[newDiff]) {
+                await loadQuizData(newDiff);
+            }
+            loadNextQuiz();
         }
 
         // 加载下一题（智能选题：优先高频定式，避免重复）
@@ -381,6 +399,10 @@
                 // 正确！
                 userMoves.push(target);
                 currentIndex++;
+                
+                // 播放落子声效
+                playJosekiSound('place');
+                
                 updateProgress();
                 showExploreState();
             }
@@ -424,9 +446,15 @@
                         overlay.textContent = `${target.color === 'black' ? '黑' : '白'}方脱先`;
                         overlay.style.display = 'block';
                         setTimeout(() => overlay.style.display = 'none', 600);
+                        
+                        // 播放脱先声效
+                        playJosekiSound('pass');
                     } else {
                         // 实际落子，存入 userMoves
                         userMoves.push(target);
+                        
+                        // 播放落子声效
+                        playJosekiSound('place');
                     }
                     
                     currentIndex++;
@@ -459,6 +487,10 @@
                 // 正确！存入实际落子
                 userMoves.push(target);
                 currentIndex++;
+                
+                // 播放落子声效
+                playJosekiSound('place');
+                
                 updateProgress();
                 showChallengeState();
             } else {
@@ -477,6 +509,9 @@
                 overlay.textContent = '脱先';
                 overlay.style.display = 'block';
                 setTimeout(() => overlay.style.display = 'none', 600);
+                
+                // 播放脱先声效
+                playJosekiSound('pass');
                 
                 currentIndex++;
                 updateProgress();
@@ -597,7 +632,12 @@
 
         function loadQuizByPath(path, moves) {
             // 从 quizData 中查找 freq/prob（动态获取最新数据）
-            const found = quizData.easy.concat(quizData.medium, quizData.hard).find(q => q.path === path);
+            const allQuizzes = [
+                ...(quizData.easy || []),
+                ...(quizData.medium || []),
+                ...(quizData.hard || [])
+            ];
+            const found = allQuizzes.find(q => q.path === path);
             const freq = found?.freq || 0;
             const prob = found?.prob || 0;
             
@@ -719,6 +759,9 @@
 
         function undo() {
             if (mode !== 'explore' || currentIndex <= 0) return;
+            
+            // 播放撤销声效
+            playJosekiSound('undo');
 
             // 撤销一步
             currentIndex--;
@@ -794,9 +837,7 @@
 
         // ========== 事件绑定 ==========
         document.getElementById('difficultySelect').addEventListener('change', (e) => {
-            currentDifficulty = e.target.value;
-            localStorage.setItem('joseki_quiz_difficulty', currentDifficulty);
-            loadNextQuiz();
+            onDifficultyChange(e.target.value);
         });
 
         document.getElementById('undoBtn').addEventListener('click', undo);
@@ -858,10 +899,10 @@
         document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
 
         // ========== 初始化 ==========
-        function init() {
+        async function init() {
             initBoard();
             loadHistory();
-            loadQuizData();
+            await initQuizData();
         }
 
         // 加载 pako

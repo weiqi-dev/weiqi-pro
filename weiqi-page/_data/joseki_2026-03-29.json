@@ -1,7 +1,7 @@
 [
   {
     "id": "joseki_001",
-    "name": "TR角定式 kj_43561",
+    "name": "TR角定式 kj_43488",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_001.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410004.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd qc pc qd qf qe pe rf qb qg pf rh rc rd sd re oh tt qi rb sb sc rc ra]CA[UTF-8]GM[1]SZ[19];B[pd];W[qc];B[pc];W[qd];B[qf];W[qe];B[pe];W[rf];B[qb];W[qg];B[pf];W[rh];B[rc];W[rd];B[sd];W[re];B[oh];W[tt];B[qi];W[rb];B[sb];W[sc];B[rc];W[ra]C[出现次数:78];B[pk];W[nl];B[mk];W[nk];B[mj];W[nj];B[ni];W[lm];B[km];W[ll];B[li];W[kl];B[jl];W[jk];B[il];W[ik];B[hl];W[pb];B[ob];W[qa];B[kk];W[ql];B[qk];W[pl];B[nc])",
@@ -18,7 +18,7 @@
       "negative": 23,
       "neutral": 1
     },
-    "joseki_id": "kj_43561",
+    "joseki_id": "kj_43488",
     "corner": "tr",
     "black": "段博尧",
     "white": "傅健恒",
@@ -27,7 +27,7 @@
   },
   {
     "id": "joseki_002",
-    "name": "TL角定式 kj_10770",
+    "name": "TL角定式 kj_05388",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_002.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410007.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd qc pc qd qf rf qg qe pe rg qh tt rh tt qb rb pb ra tt]CA[UTF-8]GM[1]SZ[19];B[pd];W[qc];B[pc];W[qd];B[qf];W[rf];B[qg];W[qe];B[pe];W[rg];B[qh];W[tt];B[rh];W[tt];B[qb];W[rb];B[pb];W[ra];B[tt]C[出现次数:69];W[lc];B[le])",
@@ -44,7 +44,7 @@
       "negative": 14,
       "neutral": 11
     },
-    "joseki_id": "kj_10770",
+    "joseki_id": "kj_05388",
     "corner": "tl",
     "black": "金恩持",
     "white": "廖元赫",
@@ -53,7 +53,7 @@
   },
   {
     "id": "joseki_003",
-    "name": "TR角定式 kj_62708",
+    "name": "TR角定式 kj_62748",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_003.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410008.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd qc pc qd qf qe pe rf qb qg pf rh rc rd sd re tt mc]CA[UTF-8]GM[1]SZ[19];B[pd];W[qc];B[pc];W[qd];B[qf];W[qe];B[pe];W[rf];B[qb];W[qg];B[pf];W[rh];B[rc];W[rd];B[sd];W[re];B[tt];W[mc]C[出现次数:168];B[ra];W[sb];B[sc])",
@@ -70,7 +70,7 @@
       "negative": 79,
       "neutral": 31
     },
-    "joseki_id": "kj_62708",
+    "joseki_id": "kj_62748",
     "corner": "tr",
     "black": "崔宰荣",
     "white": "金禹丞",
@@ -79,7 +79,7 @@
   },
   {
     "id": "joseki_004",
-    "name": "TR角定式 kj_68900",
+    "name": "TR角定式 kj_67524",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_004.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410001.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd qc pc qd pe rf tt qg tt ld pg ph qf rh oh pi jc]CA[UTF-8]GM[1]SZ[19];B[pd];W[qc];B[pc];W[qd];B[pe];W[rf];B[tt];W[qg];B[tt];W[ld];B[pg];W[ph];B[qf];W[rh];B[oh];W[pi];B[jc]C[出现次数:139](;W[mg];B[qb];W[rb];B[ob];W[tt];B[jg];W[he];B[je];W[gd])(;W[og]C[出现次数:98];B[ng](;W[pf]C[出现次数:59])))",
@@ -96,7 +96,7 @@
       "negative": 28,
       "neutral": 9
     },
-    "joseki_id": "kj_68900",
+    "joseki_id": "kj_67524",
     "corner": "tr",
     "black": "叶长欣",
     "white": "傅健恒",
@@ -105,7 +105,7 @@
   },
   {
     "id": "joseki_005",
-    "name": "BL角定式 kj_07949",
+    "name": "BL角定式 kj_16054",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_005.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410003.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd nc lc qf pf pg of qc qe qg rd pc og pi oh qj]CA[UTF-8]GM[1]SZ[19];B[pd];W[nc];B[lc];W[qf];B[pf];W[pg];B[of];W[qc];B[qe];W[qg];B[rd];W[pc];B[og];W[pi];B[oh];W[qj]C[出现次数:70];B[md];W[rc];B[tt];W[nd];B[me];W[hd];B[he];W[gg];B[tt];W[hh];B[ie];W[hj];B[hk];W[ik];B[hl];W[tt];B[gj];W[ij];B[gk];W[tt];B[jm];W[lk];B[nj];W[li];B[mb];W[nb];B[pk];W[qk];B[pl])",
@@ -122,7 +122,7 @@
       "negative": 38,
       "neutral": 8
     },
-    "joseki_id": "kj_07949",
+    "joseki_id": "kj_16054",
     "corner": "bl",
     "black": "田沐沐",
     "white": "叶长欣",
@@ -131,7 +131,7 @@
   },
   {
     "id": "joseki_006",
-    "name": "TR角定式 kj_56073",
+    "name": "TR角定式 kj_56087",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_006.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410005.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd qc pc qd qf qe pe rf qg rg qh of oh]CA[UTF-8]GM[1]SZ[19];B[pd];W[qc];B[pc];W[qd];B[qf];W[qe];B[pe];W[rf];B[qg];W[rg];B[qh];W[of];B[oh]C[出现次数:987](;W[pf];B[mc];W[ne];B[qb];W[rb];B[ng];W[nc];B[rc];W[rd];B[sb];W[sc];B[ra];W[sa];B[md];W[pb];B[ob];W[qa];B[me];W[nb];B[nd];W[od];B[mb];W[oe])(;W[mf]C[出现次数:302];B[ld]C[出现次数:99])(;W[ld]C[出现次数:95])(;W[lc]C[出现次数:91]))",
@@ -148,7 +148,7 @@
       "negative": 154,
       "neutral": 33
     },
-    "joseki_id": "kj_56073",
+    "joseki_id": "kj_56087",
     "corner": "tr",
     "black": "李元荣",
     "white": "安成浚",
@@ -157,7 +157,7 @@
   },
   {
     "id": "joseki_007",
-    "name": "BL角定式 kj_00811",
+    "name": "BL角定式 kj_00404",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_007.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410007.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc pd qd oc pe od qc oe pf of og ng nh]CA[UTF-8]GM[1]SZ[19];B[pc];W[pd];B[qd];W[oc];B[pe];W[od];B[qc];W[oe];B[pf];W[of];B[og];W[ng];B[nh]C[出现次数:60];W[mg];B[mh];W[lh];B[lg];W[kh];B[oh];W[lf];B[tt];W[ie];B[tt];W[id])",
@@ -174,7 +174,7 @@
       "negative": 20,
       "neutral": 2
     },
-    "joseki_id": "kj_00811",
+    "joseki_id": "kj_00404",
     "corner": "bl",
     "black": "金恩持",
     "white": "廖元赫",
@@ -183,7 +183,7 @@
   },
   {
     "id": "joseki_008",
-    "name": "BL角定式 kj_81165",
+    "name": "BL角定式 kj_81220",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_008.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410008.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd nc tt kc tt qf pf pg of qe qd pb]CA[UTF-8]GM[1]SZ[19];B[pd];W[nc];B[tt];W[kc];B[tt];W[qf];B[pf];W[pg];B[of];W[qe];B[qd];W[pb]C[出现次数:152];B[nd];W[mc];B[oi];W[qi];B[ph];W[og];B[qg];W[qh];B[rg];W[ng];B[re];W[ok];B[tt];W[nk];B[mk];W[mj];B[pk];W[pj];B[lj];W[mi])",
@@ -200,7 +200,7 @@
       "negative": 45,
       "neutral": 11
     },
-    "joseki_id": "kj_81165",
+    "joseki_id": "kj_81220",
     "corner": "bl",
     "black": "崔宰荣",
     "white": "金禹丞",
@@ -209,7 +209,7 @@
   },
   {
     "id": "joseki_009",
-    "name": "TL角定式 kj_76500",
+    "name": "TL角定式 kj_38063",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_009.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410006.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc pe qe qf qd pf nc tt pi mf nh]CA[UTF-8]GM[1]SZ[19];B[pc];W[pe];B[qe];W[qf];B[qd];W[pf];B[nc];W[tt];B[pi];W[mf];B[nh]C[出现次数:93];W[md];B[mc];W[lh];B[qh];W[ld];B[ne];W[ng];B[mh];W[mg];B[li];W[kh];B[ki];W[ji];B[mj];W[jj];B[jh];W[kf];B[tt];W[lk];B[kj];W[kk];B[jk];W[tt];B[ik])",
@@ -226,7 +226,7 @@
       "negative": 57,
       "neutral": 13
     },
-    "joseki_id": "kj_76500",
+    "joseki_id": "kj_38063",
     "corner": "tl",
     "black": "宋圭相",
     "white": "이지현M",
@@ -235,7 +235,7 @@
   },
   {
     "id": "joseki_010",
-    "name": "BR角定式 kj_73948",
+    "name": "BR角定式 kj_36975",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_010.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410006.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd qc pc qd pe rf tt qg ng tt]CA[UTF-8]GM[1]SZ[19];B[pd];W[qc];B[pc];W[qd];B[pe];W[rf];B[tt];W[qg];B[ng];W[tt]C[出现次数:173];B[md])",
@@ -252,7 +252,7 @@
       "negative": 57,
       "neutral": 31
     },
-    "joseki_id": "kj_73948",
+    "joseki_id": "kj_36975",
     "corner": "br",
     "black": "宋圭相",
     "white": "이지현M",
@@ -261,7 +261,7 @@
   },
   {
     "id": "joseki_011",
-    "name": "BL角定式 kj_51195",
+    "name": "BL角定式 kj_25328",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_011.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410004.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc pe qe qf qd pf nc tt kc]CA[UTF-8]GM[1]SZ[19];B[pc];W[pe];B[qe];W[qf];B[qd];W[pf];B[nc];W[tt];B[kc]C[出现次数:157];W[od];B[oc];W[tt];B[ic])",
@@ -278,7 +278,7 @@
       "negative": 81,
       "neutral": 14
     },
-    "joseki_id": "kj_51195",
+    "joseki_id": "kj_25328",
     "corner": "bl",
     "black": "段博尧",
     "white": "傅健恒",
@@ -287,7 +287,7 @@
   },
   {
     "id": "joseki_012",
-    "name": "TL角定式 kj_29889",
+    "name": "TL角定式 kj_59658",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_012.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410009.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc qe od tt qi tt pf qc qf]CA[UTF-8]GM[1]SZ[19];B[pc];W[qe];B[od];W[tt];B[qi];W[tt];B[pf];W[qc];B[qf]C[出现次数:88](;W[qb];B[re];W[rd];B[pe];W[qd];B[pb];W[rf];B[rg];W[se];B[tt];W[md];B[mb];W[lh];B[lf];W[kf];B[kg];W[lg];B[ke];W[mf];B[tt];W[le];B[kf];W[ng];B[ld];W[ph];B[mi];W[ni];B[nh];W[oh];B[mh];W[qg];B[rh];W[pd];B[oe];W[oc];B[nc];W[ob];B[nb])(;W[rf]C[出现次数:62]))",
@@ -304,7 +304,7 @@
       "negative": 14,
       "neutral": 5
     },
-    "joseki_id": "kj_29889",
+    "joseki_id": "kj_59658",
     "corner": "tl",
     "black": "朴廷桓",
     "white": "韩态熙",
@@ -313,7 +313,7 @@
   },
   {
     "id": "joseki_013",
-    "name": "TL角定式 kj_38114",
+    "name": "TL角定式 kj_76328",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_013.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410008.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd qc pc qd pe rf tt md lc]CA[UTF-8]GM[1]SZ[19];B[pd];W[qc];B[pc];W[qd];B[pe];W[rf];B[tt];W[md];B[lc]C[出现次数:76];W[qg];B[pg];W[ph];B[qf];W[qh];B[re];W[qe];B[pf];W[rd];B[oh];W[oi];B[nh];W[ni];B[mi];W[mj];B[pi];W[pj];B[lj];W[mk];B[lh])",
@@ -330,7 +330,7 @@
       "negative": 39,
       "neutral": 8
     },
-    "joseki_id": "kj_38114",
+    "joseki_id": "kj_76328",
     "corner": "tl",
     "black": "崔宰荣",
     "white": "金禹丞",
@@ -339,14 +339,14 @@
   },
   {
     "id": "joseki_014",
-    "name": "TL角定式 kj_49891",
+    "name": "TL角定式 kj_24955",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_014.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410005.json",
-    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd pc qc oc qb kc ie mc]CA[UTF-8]GM[1]SZ[19];B[pd];W[pc];B[qc];W[oc];B[qb];W[kc];B[ie];W[mc]C[出现次数:669];B[qf])",
+    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd pc qc oc qb kc ie mc]CA[UTF-8]GM[1]SZ[19];B[pd];W[pc];B[qc];W[oc];B[qb];W[kc];B[ie];W[mc]C[出现次数:670];B[qf])",
     "move_count": 9,
     "matched_prefix_len": 8,
-    "count": 669,
-    "frequency": 669,
+    "count": 670,
+    "frequency": 670,
     "probability": 0.000183,
     "winrate_stats": {
       "delta": 0.0016,
@@ -356,7 +356,7 @@
       "negative": 49,
       "neutral": 25
     },
-    "joseki_id": "kj_49891",
+    "joseki_id": "kj_24955",
     "corner": "tl",
     "black": "李元荣",
     "white": "安成浚",
@@ -365,24 +365,24 @@
   },
   {
     "id": "joseki_015",
-    "name": "TR角定式 kj_39379",
+    "name": "TR角定式 kj_76791",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_015.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410002.json",
-    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc qe od tt qh pf rd me]CA[UTF-8]GM[1]SZ[19];B[pc];W[qe];B[od];W[tt];B[qh];W[pf];B[rd];W[me]C[出现次数:132];B[oh];W[nf];B[mc];W[pl];B[tt];W[mh];B[oj];W[nl];B[om];W[ol];B[mi];W[li];B[mj];W[qm];B[tt];W[ll];B[lj];W[lh];B[jj];W[qj];B[nh];W[jh];B[oe];W[of];B[kd];W[jl];B[id];W[je];B[ke];W[kf];B[jd];W[ij];B[ii];W[ji];B[ik];W[kj];B[hj];W[kk];B[qi];W[pj];B[pi];W[tt];B[hm];W[gm])",
+    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc qe od tt qh pf rd me]CA[UTF-8]GM[1]SZ[19];B[pc];W[qe];B[od];W[tt];B[qh];W[pf];B[rd];W[me]C[出现次数:133];B[oh];W[nf];B[mc];W[pl];B[tt];W[mh];B[oj];W[nl];B[om];W[ol];B[mi];W[li];B[mj];W[qm];B[tt];W[ll];B[lj];W[lh];B[jj];W[qj];B[nh];W[jh];B[oe];W[of];B[kd];W[jl];B[id];W[je];B[ke];W[kf];B[jd];W[ij];B[ii];W[ji];B[ik];W[kj];B[hj];W[kk];B[qi];W[pj];B[pi];W[tt];B[hm];W[gm])",
     "move_count": 52,
     "matched_prefix_len": 8,
-    "count": 132,
-    "frequency": 132,
+    "count": 133,
+    "frequency": 133,
     "probability": 3.6e-05,
     "winrate_stats": {
-      "delta": 0.0053,
+      "delta": 0.0054,
       "stddev": 0.0202,
-      "samples": 131,
-      "positive": 61,
+      "samples": 132,
+      "positive": 62,
       "negative": 36,
       "neutral": 34
     },
-    "joseki_id": "kj_39379",
+    "joseki_id": "kj_76791",
     "corner": "tr",
     "black": "陈豪鑫",
     "white": "田沐沐",
@@ -391,7 +391,7 @@
   },
   {
     "id": "joseki_016",
-    "name": "BL角定式 kj_93195",
+    "name": "BL角定式 kj_93245",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_016.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410009.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc pe qe qf qd pf mc tt]CA[UTF-8]GM[1]SZ[19];B[pc];W[pe];B[qe];W[qf];B[qd];W[pf];B[mc];W[tt]C[出现次数:357];B[mf];W[mh];B[kg];W[nd];B[md];W[oh];B[ki];W[jc];B[lb];W[gd];B[gb];W[jh];B[kh];W[hh];B[hf];W[if];B[ig];W[hg];B[ie];W[gf];B[jf];W[he];B[if];W[tt];B[hd];W[tt];B[hj];W[tt];B[gi];W[tt];B[gh];W[hk];B[ik];W[hl];B[jj])",
@@ -408,7 +408,7 @@
       "negative": 42,
       "neutral": 49
     },
-    "joseki_id": "kj_93195",
+    "joseki_id": "kj_93245",
     "corner": "bl",
     "black": "朴廷桓",
     "white": "韩态熙",
@@ -417,7 +417,7 @@
   },
   {
     "id": "joseki_017",
-    "name": "BR角定式 kj_65057",
+    "name": "BR角定式 kj_65098",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_017.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410001.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc qe od tt qh tt og tt]CA[UTF-8]GM[1]SZ[19];B[pc];W[qe];B[od];W[tt];B[qh];W[tt];B[og];W[tt]C[出现次数:254];B[kd];W[tt];B[kc];W[ke];B[le];W[lf];B[me];W[tt];B[kg];W[oe];B[rd];W[mh];B[kf];W[mf];B[ki];W[ne];B[nd];W[pd];B[ob];W[ng];B[tt];W[oh];B[tt];W[pg])",
@@ -434,7 +434,7 @@
       "negative": 90,
       "neutral": 62
     },
-    "joseki_id": "kj_65057",
+    "joseki_id": "kj_65098",
     "corner": "br",
     "black": "叶长欣",
     "white": "傅健恒",
@@ -443,7 +443,7 @@
   },
   {
     "id": "joseki_018",
-    "name": "BL角定式 kj_67826",
+    "name": "BL角定式 kj_67871",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_018.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410006.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd nc pf jd tt qh tt]CA[UTF-8]GM[1]SZ[19];B[pd];W[nc];B[pf];W[jd];B[tt];W[qh];B[tt]C[出现次数:1209](;W[pk];B[tt];W[oe];B[pe];W[pb];B[oh];W[nl];B[le];W[lc];B[ll];W[ql];B[nm];W[ml];B[mm];W[lk];B[kl];W[kk];B[jk];W[mj];B[jj];W[jl];B[tt];W[mf];B[mh];W[kh];B[li];W[kj];B[ki];W[ji];B[oc];W[ob];B[nd];W[md];B[me];W[ii];B[hj];W[ne];B[nf];W[lf];B[ke];W[kf];B[qg];W[rh];B[je];W[od];B[of];W[pc];B[rg];W[ig];B[hk];W[tt];B[id];W[gd])(;W[rf]C[出现次数:384])(;W[qk]C[出现次数:207])(;W[oe]C[出现次数:169])(;W[oh]C[出现次数:117]))",
@@ -460,7 +460,7 @@
       "negative": 124,
       "neutral": 33
     },
-    "joseki_id": "kj_67826",
+    "joseki_id": "kj_67871",
     "corner": "bl",
     "black": "宋圭相",
     "white": "이지현M",
@@ -469,15 +469,15 @@
   },
   {
     "id": "joseki_019",
-    "name": "BL角定式 kj_98545",
+    "name": "BL角定式 kj_98614",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_019.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410005.json",
-    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd tt nc qf qi qk oi]CA[UTF-8]GM[1]SZ[19];B[pd];W[tt];B[nc];W[qf];B[qi];W[qk];B[oi]C[出现次数:1312](;W[qm];B[tt];W[qd];B[qc];W[rc];B[qb];W[pe];B[rd];W[qe];B[rb];W[me])(;W[ok]C[出现次数:633];B[of]C[出现次数:223])(;W[of]C[出现次数:156])(;W[qd];B[qc](;W[rc]C[出现次数:182])))",
+    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd tt nc qf qi qk oi]CA[UTF-8]GM[1]SZ[19];B[pd];W[tt];B[nc];W[qf];B[qi];W[qk];B[oi]C[出现次数:1316](;W[qm];B[tt];W[qd];B[qc];W[rc];B[qb];W[pe];B[rd];W[qe];B[rb];W[me])(;W[ok]C[出现次数:635];B[of]C[出现次数:224])(;W[of]C[出现次数:156])(;W[qd];B[qc](;W[rc]C[出现次数:183])))",
     "move_count": 18,
     "matched_prefix_len": 7,
-    "count": 1312,
-    "frequency": 1312,
-    "probability": 0.000359,
+    "count": 1316,
+    "frequency": 1316,
+    "probability": 0.00036,
     "winrate_stats": {
       "delta": -0.0013,
       "stddev": 0.0387,
@@ -486,7 +486,7 @@
       "negative": 17,
       "neutral": 13
     },
-    "joseki_id": "kj_98545",
+    "joseki_id": "kj_98614",
     "corner": "bl",
     "black": "李元荣",
     "white": "安成浚",
@@ -495,14 +495,14 @@
   },
   {
     "id": "joseki_020",
-    "name": "BR角定式 kj_90583",
+    "name": "BR角定式 kj_90650",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_020.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410005.json",
-    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc tt qf pd qd qc qb]CA[UTF-8]GM[1]SZ[19];B[pc];W[tt];B[qf];W[pd];B[qd];W[qc];B[qb]C[出现次数:391](;W[tt];B[lc];W[ld];B[mc];W[md];B[oc];W[ke];B[lf])(;W[rc]C[出现次数:316];B[pe]C[出现次数:278](;W[od]C[出现次数:263];B[oc]C[出现次数:203])))",
+    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc tt qf pd qd qc qb]CA[UTF-8]GM[1]SZ[19];B[pc];W[tt];B[qf];W[pd];B[qd];W[qc];B[qb]C[出现次数:392](;W[tt];B[lc];W[ld];B[mc];W[md];B[oc];W[ke];B[lf])(;W[rc]C[出现次数:317];B[pe]C[出现次数:279](;W[od]C[出现次数:264];B[oc]C[出现次数:204])))",
     "move_count": 15,
     "matched_prefix_len": 7,
-    "count": 391,
-    "frequency": 391,
+    "count": 392,
+    "frequency": 392,
     "probability": 0.000107,
     "winrate_stats": {
       "delta": 0.0043,
@@ -512,7 +512,7 @@
       "negative": 33,
       "neutral": 8
     },
-    "joseki_id": "kj_90583",
+    "joseki_id": "kj_90650",
     "corner": "br",
     "black": "李元荣",
     "white": "安成浚",
@@ -521,7 +521,7 @@
   },
   {
     "id": "joseki_021",
-    "name": "TR角定式 kj_63705",
+    "name": "TR角定式 kj_31338",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_021.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410003.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc tt qe pf pe tt qj]CA[UTF-8]GM[1]SZ[19];B[pc];W[tt];B[qe];W[pf];B[pe];W[tt];B[qj]C[出现次数:144];W[pk];B[pj];W[nk];B[oj];W[ok];B[qk];W[pl];B[mm];W[nj];B[ll];W[tt];B[lj];W[li];B[ki];W[lh];B[ni];W[mj];B[kj];W[nh];B[oh];W[mi];B[of];W[oi];B[ph];W[nf];B[oe];W[jg];B[hi];W[tt];B[hk])",
@@ -538,7 +538,7 @@
       "negative": 47,
       "neutral": 9
     },
-    "joseki_id": "kj_63705",
+    "joseki_id": "kj_31338",
     "corner": "tr",
     "black": "田沐沐",
     "white": "叶长欣",
@@ -547,15 +547,15 @@
   },
   {
     "id": "joseki_022",
-    "name": "TR角定式 kj_63722",
+    "name": "TR角定式 kj_63710",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_022.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410007.json",
-    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd nc qf pc qc qb rb]CA[UTF-8]GM[1]SZ[19];B[pd];W[nc];B[qf];W[pc];B[qc];W[qb];B[rb]C[出现次数:10537](;W[qd];B[rc];W[od];B[pe];W[ob])(;W[pb]C[出现次数:4335];B[qd]C[出现次数:4318])(;W[tt]C[出现次数:2934])(;W[ob]C[出现次数:1860]))",
+    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd nc qf pc qc qb rb]CA[UTF-8]GM[1]SZ[19];B[pd];W[nc];B[qf];W[pc];B[qc];W[qb];B[rb]C[出现次数:10538](;W[qd];B[rc];W[od];B[pe];W[ob])(;W[pb]C[出现次数:4335];B[qd]C[出现次数:4318])(;W[tt]C[出现次数:2934])(;W[ob]C[出现次数:1860]))",
     "move_count": 12,
     "matched_prefix_len": 7,
-    "count": 10537,
-    "frequency": 10537,
-    "probability": 0.002883,
+    "count": 10538,
+    "frequency": 10538,
+    "probability": 0.002881,
     "winrate_stats": {
       "delta": -0.0341,
       "stddev": 0.1016,
@@ -564,7 +564,7 @@
       "negative": 72,
       "neutral": 33
     },
-    "joseki_id": "kj_63722",
+    "joseki_id": "kj_63710",
     "corner": "tr",
     "black": "金恩持",
     "white": "廖元赫",
@@ -573,7 +573,7 @@
   },
   {
     "id": "joseki_023",
-    "name": "BL角定式 kj_80946",
+    "name": "BL角定式 kj_81004",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_023.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410002.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd tt mc qd qe re pe]CA[UTF-8]GM[1]SZ[19];B[pd];W[tt];B[mc];W[qd];B[qe];W[re];B[pe]C[出现次数:281](;W[rc];B[qc];W[rd];B[qb];W[qg];B[oj];W[ph];B[tt];W[lg];B[ng];W[ld];B[lf];W[mf];B[md];W[le];B[kf];W[me];B[mg])(;W[rd]C[出现次数:213];B[qc]C[出现次数:91](;W[rc]C[出现次数:80];B[qb]C[出现次数:78])))",
@@ -590,7 +590,7 @@
       "negative": 41,
       "neutral": 2
     },
-    "joseki_id": "kj_80946",
+    "joseki_id": "kj_81004",
     "corner": "bl",
     "black": "陈豪鑫",
     "white": "田沐沐",
@@ -599,7 +599,7 @@
   },
   {
     "id": "joseki_024",
-    "name": "BR角定式 kj_83538",
+    "name": "BR角定式 kj_83594",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_024.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410002.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc tt pe tt qh qd pd]CA[UTF-8]GM[1]SZ[19];B[pc];W[tt];B[pe];W[tt];B[qh];W[qd];B[pd]C[出现次数:165](;W[tt];B[oj];W[pl];B[tt];W[lm];B[nm];W[tt];B[mm])(;W[rf]C[出现次数:121];B[qe]C[出现次数:84](;W[re]C[出现次数:80])))",
@@ -616,7 +616,7 @@
       "negative": 25,
       "neutral": 8
     },
-    "joseki_id": "kj_83538",
+    "joseki_id": "kj_83594",
     "corner": "br",
     "black": "陈豪鑫",
     "white": "田沐沐",
@@ -625,7 +625,7 @@
   },
   {
     "id": "joseki_025",
-    "name": "TL角定式 kj_88427",
+    "name": "TL角定式 kj_87226",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_025.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410004.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc qe ld jc qd pe nd]CA[UTF-8]GM[1]SZ[19];B[pc];W[qe];B[ld];W[jc];B[qd];W[pe];B[nd]C[出现次数:112](;W[pi];B[je];W[tt];B[qk];W[tt];B[qh];W[ph];B[qi])(;W[je]C[出现次数:64]))",
@@ -642,7 +642,7 @@
       "negative": 16,
       "neutral": 11
     },
-    "joseki_id": "kj_88427",
+    "joseki_id": "kj_87226",
     "corner": "tl",
     "black": "段博尧",
     "white": "傅健恒",
@@ -651,7 +651,7 @@
   },
   {
     "id": "joseki_026",
-    "name": "BR角定式 kj_70623",
+    "name": "BR角定式 kj_70666",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_026.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410004.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd tt mc qf qe pf pi]CA[UTF-8]GM[1]SZ[19];B[pd];W[tt];B[mc];W[qf];B[qe];W[pf];B[pi]C[出现次数:195];W[ne];B[nd];W[me];B[kd];W[nh];B[kf];W[tt];B[mi];W[ni];B[mj];W[nj];B[nk];W[lg];B[kg];W[lh];B[lk];W[kh];B[jh];W[ji];B[ih];W[ii];B[hh];W[tt];B[ki];W[qh];B[qi];W[ph])",
@@ -668,7 +668,7 @@
       "negative": 98,
       "neutral": 18
     },
-    "joseki_id": "kj_70623",
+    "joseki_id": "kj_70666",
     "corner": "br",
     "black": "段博尧",
     "white": "傅健恒",
@@ -677,7 +677,7 @@
   },
   {
     "id": "joseki_027",
-    "name": "BL角定式 kj_31618",
+    "name": "BL角定式 kj_07864",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_027.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410001.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc qe od tt qh qj pj]CA[UTF-8]GM[1]SZ[19];B[pc];W[qe];B[od];W[tt];B[qh];W[qj];B[pj]C[出现次数:74];W[pk];B[oj];W[qk];B[pf];W[qc];B[qb];W[rb];B[qd];W[rc];B[ob];W[pe];B[re];W[oe];B[pd];W[rf];B[rd];W[qf];B[ne];W[of];B[oh];W[nf];B[qi];W[me];B[ok];W[ol];B[nl];W[om];B[li];W[mk];B[lm];W[nk];B[nm];W[kk];B[tt];W[jm];B[tt];W[ni];B[nh])",
@@ -694,7 +694,7 @@
       "negative": 23,
       "neutral": 12
     },
-    "joseki_id": "kj_31618",
+    "joseki_id": "kj_07864",
     "corner": "bl",
     "black": "叶长欣",
     "white": "傅健恒",
@@ -703,7 +703,7 @@
   },
   {
     "id": "joseki_028",
-    "name": "TL角定式 kj_53454",
+    "name": "TL角定式 kj_53475",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_028.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410003.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd nc lc tt pg jc]CA[UTF-8]GM[1]SZ[19];B[pd];W[nc];B[lc];W[tt];B[pg];W[jc]C[出现次数:354];B[qc];W[oe];B[kd];W[jd];B[kf];W[je];B[ke];W[pe];B[od];W[nd];B[qe];W[kc];B[ld];W[qf];B[re];W[nf];B[pf];W[ph];B[oh];W[mg];B[jf];W[lh];B[oi];W[jh];B[ih];W[ii];B[hh];W[if];B[jg];W[ji];B[hf];W[he];B[ig];W[tt];B[ie];W[hd];B[gj];W[il];B[tt];W[kl])",
@@ -720,7 +720,7 @@
       "negative": 81,
       "neutral": 17
     },
-    "joseki_id": "kj_53454",
+    "joseki_id": "kj_53475",
     "corner": "tl",
     "black": "田沐沐",
     "white": "叶长欣",
@@ -729,7 +729,7 @@
   },
   {
     "id": "joseki_029",
-    "name": "BR角定式 kj_01949",
+    "name": "BR角定式 kj_15589",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_029.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410007.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd tt mc md ld le]CA[UTF-8]GM[1]SZ[19];B[pd];W[tt];B[mc];W[md];B[ld];W[le]C[出现次数:62];B[ke];W[lc];B[kd];W[nc];B[mb];W[nb];B[lb];W[pc];B[qc];W[qd];B[pe];W[rc];B[qb];W[qe];B[rb];W[pf];B[oe];W[of];B[ne];W[nf];B[me];W[rd];B[oc];W[qi])",
@@ -746,7 +746,7 @@
       "negative": 24,
       "neutral": 4
     },
-    "joseki_id": "kj_01949",
+    "joseki_id": "kj_15589",
     "corner": "br",
     "black": "金恩持",
     "white": "廖元赫",
@@ -755,14 +755,14 @@
   },
   {
     "id": "joseki_030",
-    "name": "TR角定式 kj_51886",
+    "name": "TR角定式 kj_51912",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_030.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410009.json",
-    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd nc pf oe pe tt]CA[UTF-8]GM[1]SZ[19];B[pd];W[nc];B[pf];W[oe];B[pe];W[tt]C[出现次数:2678];B[lf];W[tt];B[kh];W[ki];B[lh])",
+    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pd nc pf oe pe tt]CA[UTF-8]GM[1]SZ[19];B[pd];W[nc];B[pf];W[oe];B[pe];W[tt]C[出现次数:2680];B[lf];W[tt];B[kh];W[ki];B[lh])",
     "move_count": 11,
     "matched_prefix_len": 6,
-    "count": 2678,
-    "frequency": 2678,
+    "count": 2680,
+    "frequency": 2680,
     "probability": 0.000733,
     "winrate_stats": {
       "delta": -0.0167,
@@ -772,7 +772,7 @@
       "negative": 151,
       "neutral": 52
     },
-    "joseki_id": "kj_51886",
+    "joseki_id": "kj_51912",
     "corner": "tr",
     "black": "朴廷桓",
     "white": "韩态熙",
@@ -781,7 +781,7 @@
   },
   {
     "id": "joseki_031",
-    "name": "TL角定式 kj_51653",
+    "name": "TL角定式 kj_51371",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_031.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410001.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc qe nd pi tt om]CA[UTF-8]GM[1]SZ[19];B[pc];W[qe];B[nd];W[pi];B[tt];W[om]C[出现次数:310];B[kl];W[im];B[gl];W[ik];B[tt];W[gj])",
@@ -798,7 +798,7 @@
       "negative": 89,
       "neutral": 8
     },
-    "joseki_id": "kj_51653",
+    "joseki_id": "kj_51371",
     "corner": "tl",
     "black": "叶长欣",
     "white": "傅健恒",
@@ -807,14 +807,14 @@
   },
   {
     "id": "joseki_032",
-    "name": "BR角定式 kj_86833",
+    "name": "BR角定式 kj_86888",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_032.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410008.json",
-    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc tt pe qi qk qg]CA[UTF-8]GM[1]SZ[19];B[pc];W[tt];B[pe];W[qi];B[qk];W[qg]C[出现次数:883];B[qm];W[re];B[lc];W[jc];B[qd])",
+    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc tt pe qi qk qg]CA[UTF-8]GM[1]SZ[19];B[pc];W[tt];B[pe];W[qi];B[qk];W[qg]C[出现次数:884];B[qm];W[re];B[lc];W[jc];B[qd])",
     "move_count": 11,
     "matched_prefix_len": 6,
-    "count": 883,
-    "frequency": 883,
+    "count": 884,
+    "frequency": 884,
     "probability": 0.000242,
     "winrate_stats": {
       "delta": 0.025,
@@ -824,7 +824,7 @@
       "negative": 8,
       "neutral": 7
     },
-    "joseki_id": "kj_86833",
+    "joseki_id": "kj_86888",
     "corner": "br",
     "black": "崔宰荣",
     "white": "金禹丞",
@@ -833,15 +833,15 @@
   },
   {
     "id": "joseki_033",
-    "name": "TR角定式 kj_54716",
+    "name": "TR角定式 kj_54703",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_033.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410006.json",
-    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc qe od tt pf]CA[UTF-8]GM[1]SZ[19];B[pc];W[qe];B[od];W[tt];B[pf]C[出现次数:25936])",
+    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc qe od tt pf]CA[UTF-8]GM[1]SZ[19];B[pc];W[qe];B[od];W[tt];B[pf]C[出现次数:25948])",
     "move_count": 5,
     "matched_prefix_len": 5,
-    "count": 25936,
-    "frequency": 25936,
-    "probability": 0.007096,
+    "count": 25948,
+    "frequency": 25948,
+    "probability": 0.007094,
     "winrate_stats": {
       "delta": -0.0071,
       "stddev": 0.0632,
@@ -850,7 +850,7 @@
       "negative": 695,
       "neutral": 260
     },
-    "joseki_id": "kj_54716",
+    "joseki_id": "kj_54703",
     "corner": "tr",
     "black": "宋圭相",
     "white": "이지현M",
@@ -859,7 +859,7 @@
   },
   {
     "id": "joseki_034",
-    "name": "BR角定式 kj_39563",
+    "name": "BR角定式 kj_79226",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_034.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410009.json",
     "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc qe mc tt qh]CA[UTF-8]GM[1]SZ[19];B[pc];W[qe];B[mc];W[tt];B[qh]C[出现次数:90];W[tt];B[oh])",
@@ -876,7 +876,7 @@
       "negative": 31,
       "neutral": 18
     },
-    "joseki_id": "kj_39563",
+    "joseki_id": "kj_79226",
     "corner": "br",
     "black": "朴廷桓",
     "white": "韩态熙",
@@ -885,24 +885,24 @@
   },
   {
     "id": "joseki_035",
-    "name": "BR角定式 kj_83304",
+    "name": "BR角定式 kj_83350",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_035.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410003.json",
-    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc qe nd qi]CA[UTF-8]GM[1]SZ[19];B[pc];W[qe];B[nd];W[qi]C[出现次数:2050];B[jc];W[mj];B[kh];W[jf];B[ih];W[kd];B[kc];W[ld])",
+    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc qe nd qi]CA[UTF-8]GM[1]SZ[19];B[pc];W[qe];B[nd];W[qi]C[出现次数:2051];B[jc];W[mj];B[kh];W[jf];B[ih];W[kd];B[kc];W[ld])",
     "move_count": 12,
     "matched_prefix_len": 4,
-    "count": 2050,
-    "frequency": 2050,
+    "count": 2051,
+    "frequency": 2051,
     "probability": 0.000561,
     "winrate_stats": {
-      "delta": 0.0008,
-      "stddev": 0.0554,
-      "samples": 472,
+      "delta": 0.0007,
+      "stddev": 0.0553,
+      "samples": 473,
       "positive": 188,
-      "negative": 196,
+      "negative": 197,
       "neutral": 88
     },
-    "joseki_id": "kj_83304",
+    "joseki_id": "kj_83350",
     "corner": "br",
     "black": "田沐沐",
     "white": "叶长欣",
@@ -911,15 +911,15 @@
   },
   {
     "id": "joseki_036",
-    "name": "TL角定式 kj_52245",
+    "name": "TL角定式 kj_52273",
     "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/joseki/2026-03-29/joseki_036.json",
     "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-03-29/野狐/game_202603300818410002.json",
-    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc tt qe ld]CA[UTF-8]GM[1]SZ[19];B[pc];W[tt];B[qe];W[ld]C[出现次数:630];B[nc];W[tt];B[je];W[lf];B[me];W[le];B[ig];W[ih];B[jg];W[mc];B[nb];W[lh];B[jh];W[tt];B[jj];W[jc];B[tt];W[lj];B[tt];W[jk];B[ik];W[ij];B[kk];W[ji];B[tt];W[ki];B[ic];W[jd];B[id];W[qg];B[tt];W[nk])",
+    "moves": "(;FF[4]AP[WeiqiJoseki:1.0]C[定式树: pc tt qe ld]CA[UTF-8]GM[1]SZ[19];B[pc];W[tt];B[qe];W[ld]C[出现次数:631];B[nc];W[tt];B[je];W[lf];B[me];W[le];B[ig];W[ih];B[jg];W[mc];B[nb];W[lh];B[jh];W[tt];B[jj];W[jc];B[tt];W[lj];B[tt];W[jk];B[ik];W[ij];B[kk];W[ji];B[tt];W[ki];B[ic];W[jd];B[id];W[qg];B[tt];W[nk])",
     "move_count": 36,
     "matched_prefix_len": 4,
-    "count": 630,
-    "frequency": 630,
-    "probability": 0.000172,
+    "count": 631,
+    "frequency": 631,
+    "probability": 0.000173,
     "winrate_stats": {
       "delta": 0.0023,
       "stddev": 0.0681,
@@ -928,7 +928,7 @@
       "negative": 198,
       "neutral": 34
     },
-    "joseki_id": "kj_52245",
+    "joseki_id": "kj_52273",
     "corner": "tl",
     "black": "陈豪鑫",
     "white": "田沐沐",

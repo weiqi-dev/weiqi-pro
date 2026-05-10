@@ -7,6 +7,7 @@
  * - 棋子绘制（含提子逻辑）
  * - 可选分支标记
  * - 播放控制
+ * - 落子音效
  */
 
 (function(global) {
@@ -14,6 +15,158 @@
 
     const BOARD_SIZE = 19;
     const DISPLAY_SIZE = 13;
+
+    // ==================== 声效系统 ====================
+    
+    // AudioContext 实例（延迟初始化）
+    let audioCtx = null;
+    let noiseBuffer = null;
+    
+    function initAudioContext() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        return audioCtx;
+    }
+    
+    function createNoiseBuffer() {
+        if (!audioCtx) return null;
+        const bufferSize = audioCtx.sampleRate * 0.1;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+        }
+        return buffer;
+    }
+    
+    /**
+     * 播放围棋音效
+     * @param {string} type - 音效类型: 'place'(落子), 'capture'(吃子), 'pass'(停一手), 'undo'(悔棋)
+     */
+    function playJosekiSound(type) {
+        // 初始化 AudioContext
+        if (!audioCtx) {
+            initAudioContext();
+            noiseBuffer = createNoiseBuffer();
+        }
+        
+        if (!audioCtx) return;
+        
+        // 恢复 AudioContext（用户交互后才能播放）
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+        
+        if (type === 'place') {
+            // 落子音：木石碰撞声
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = noiseBuffer;
+            
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.value = 2500;
+            filter.Q.value = 1;
+            
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.06);
+            
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            noise.start(audioCtx.currentTime);
+            noise.stop(audioCtx.currentTime + 0.06);
+            
+            // 添加谐波增强木质感
+            const osc = audioCtx.createOscillator();
+            osc.type = 'triangle';
+            osc.frequency.value = 400;
+            
+            const oscGain = audioCtx.createGain();
+            oscGain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            oscGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+            
+            osc.connect(oscGain);
+            oscGain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.05);
+            
+        } else if (type === 'capture') {
+            // 吃子音：提子声（更低沉、稍长）
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = noiseBuffer;
+            
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 1200;
+            filter.frequency.linearRampToValueAtTime(600, audioCtx.currentTime + 0.15);
+            
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.6, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.18);
+            
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            noise.start(audioCtx.currentTime);
+            noise.stop(audioCtx.currentTime + 0.18);
+            
+            // 添加一些随机微响声模拟石子散落
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    if (audioCtx && audioCtx.state === 'running') {
+                        const microNoise = audioCtx.createBufferSource();
+                        microNoise.buffer = noiseBuffer;
+                        const microFilter = audioCtx.createBiquadFilter();
+                        microFilter.type = 'highpass';
+                        microFilter.frequency.value = 3000;
+                        const microGain = audioCtx.createGain();
+                        microGain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                        microGain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
+                        microNoise.connect(microFilter);
+                        microFilter.connect(microGain);
+                        microGain.connect(audioCtx.destination);
+                        microNoise.start(audioCtx.currentTime);
+                        microNoise.stop(audioCtx.currentTime + 0.03);
+                    }
+                }, 50 + i * 30);
+            }
+            
+        } else if (type === 'pass') {
+            // 停一手：轻柔提示音
+            const osc = audioCtx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.value = 523.25; // C5
+            
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.1);
+            
+        } else if (type === 'undo') {
+            // 悔棋音效：短促的"啵"声
+            const osc = audioCtx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.08);
+            
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.08);
+        }
+    }
 
     // ==================== 提子逻辑 ====================
 
@@ -118,6 +271,9 @@
             this.branches = []; // 可选分支
             this.marks = [];   // 标记（正确/错误）
             this._passMark = null; // 脱先标记的位置和大小
+            this._loadingMark = null; // 加载标记 {x, y, color}
+            this._loadingAngle = 0; // 加载图标旋转角度
+            this._loadingAnimationId = null; // 动画 ID
 
             this.startX = BOARD_SIZE - DISPLAY_SIZE; // 6
             this.startY = 0;
@@ -150,6 +306,36 @@
         setMarks(marks) {
             // marks: [{x, y, type: 'correct'|'wrong'}, ...]
             this.marks = marks || [];
+            this.render();
+        }
+
+        setLoadingMark(x, y, color) {
+            // 设置加载标记，开始旋转动画
+            this._loadingMark = { x, y, color };
+            this._loadingAngle = 0;
+            
+            // 启动旋转动画
+            if (!this._loadingAnimationId) {
+                const animate = () => {
+                    if (!this._loadingMark) {
+                        this._loadingAnimationId = null;
+                        return;
+                    }
+                    this._loadingAngle = (this._loadingAngle + 15) % 360;
+                    this.render();
+                    this._loadingAnimationId = requestAnimationFrame(animate);
+                };
+                this._loadingAnimationId = requestAnimationFrame(animate);
+            }
+        }
+
+        clearLoadingMark() {
+            // 清除加载标记，停止动画
+            this._loadingMark = null;
+            if (this._loadingAnimationId) {
+                cancelAnimationFrame(this._loadingAnimationId);
+                this._loadingAnimationId = null;
+            }
             this.render();
         }
 
@@ -373,6 +559,39 @@
             }
             ctx.restore();
 
+            // 加载标记（旋转的加载图标）
+            if (this._loadingMark) {
+                const mark = this._loadingMark;
+                if (mark.x >= this.startX && mark.x < BOARD_SIZE && mark.y >= this.startY && mark.y < this.startY + DISPLAY_SIZE) {
+                    const localX = mark.x - this.startX;
+                    const localY = mark.y - this.startY;
+                    const cx = padding + localX * gridSize;
+                    const cy = padding + localY * gridSize;
+                    const radius = gridSize * 0.35;
+
+                    // 绘制旋转的加载图标
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.rotate(this._loadingAngle * Math.PI / 180);
+                    
+                    // 绘制加载圆弧
+                    ctx.beginPath();
+                    ctx.arc(0, 0, radius, 0, Math.PI * 1.5);
+                    ctx.strokeStyle = mark.color === 'black' ? '#FF9800' : '#2196F3';
+                    ctx.lineWidth = 3;
+                    ctx.lineCap = 'round';
+                    ctx.stroke();
+                    
+                    // 绘制加载圆点
+                    ctx.beginPath();
+                    ctx.arc(0, -radius, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = mark.color === 'black' ? '#FF9800' : '#2196F3';
+                    ctx.fill();
+                    
+                    ctx.restore();
+                }
+            }
+
             // 正确/错误标记
             for (const mark of this.marks) {
                 if (mark.x >= this.startX && mark.x < BOARD_SIZE && mark.y >= this.startY && mark.y < this.startY + DISPLAY_SIZE) {
@@ -508,6 +727,7 @@
     // ==================== 导出 ====================
 
     global.JosekiBoard = JosekiBoard;
+    global.playJosekiSound = playJosekiSound;
     global.JosekiUtils = {
         sgfToCoord,
         parseMoves,

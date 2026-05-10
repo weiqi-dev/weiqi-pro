@@ -1,0 +1,45 @@
+{
+  "models": [
+    {
+      "id": "lionffen-b24c64",
+      "name": "Lionffen 中等模型",
+      "description": "24层网络，轻量级，平衡速度和棋力",
+      "url": "https://media.katagotraining.org/uploaded/networks/models_extra/lionffen_b24c64_3x3_v3_12300.bin.gz",
+      "fallbackUrl": "models/lionffen-b24c64.bin.gz",
+      "size": "4.7MB",
+      "sizeBytes": 4837376,
+      "version": "v3",
+      "blocks": 24,
+      "default": true,
+      "recommended": ["mobile", "beginner", "intermediate"],
+      "difficulty": ["easy", "medium", "hard"],
+      "features": {
+        "fastInference": true,
+        "lowMemory": true
+      }
+    },
+    {
+      "id": "katago-small",
+      "name": "KataGo 小模型",
+      "description": "20层网络，经典模型，稳定可靠",
+      "url": "https://media.katagotraining.org/uploaded/networks/models/katago-small.bin.gz",
+      "fallbackUrl": "models/katago-small.bin.gz",
+      "size": "3.7MB",
+      "sizeBytes": 3879731,
+      "version": "1.0.0",
+      "blocks": 20,
+      "default": false,
+      "recommended": ["desktop", "intermediate"],
+      "difficulty": ["medium", "hard"],
+      "features": {
+        "fastInference": true,
+        "lowMemory": false
+      }
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2026-05-10",
+    "source": "https://katagotraining.org/extra_networks/"
+  }
+}

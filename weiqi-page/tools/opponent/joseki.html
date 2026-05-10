@@ -497,6 +497,14 @@
 
                 // 准备缩略图数据
                 const movesStr = prefix || '';
+                
+                // 计算探索着法串参数
+                let exploreMoves = '';
+                if (prefix && prefixLen > 0) {
+                    const movesArray = prefix.split(/\s+/);
+                    const prefixMoves = movesArray.slice(0, prefixLen);
+                    exploreMoves = prefixMoves.join('-');
+                }
                 html += `
                     <div class="joseki-card" data-index="${index}" data-tags="${dataTags}" onclick="saveScrollAndMarkViewed(${index}); viewJosekiMoves(${index})">
                         <div class="joseki-header">
@@ -520,13 +528,22 @@
                         </div>
                         <div class="joseki-footer">
                             <div class="joseki-tags">${tagsHtml}</div>
-                            <button class="joseki-btn" onclick="event.stopPropagation(); saveScrollAndMarkViewed(${index}); viewJosekiGame(${index})">📖 棋谱</button>
+                            <div style="display:flex;gap:6px;">
+                                ${exploreMoves ? '<button class="joseki-btn" style="background:#e3f2fd;color:#1565c0;" onclick="event.stopPropagation(); goToExplore(\'' + exploreMoves + '\')">🔍 探索</button>' : ''}
+                                <button class="joseki-btn" onclick="event.stopPropagation(); saveScrollAndMarkViewed(${index}); viewJosekiGame(${index})">📖 棋谱</button>
+                            </div>
                         </div>
                     </div>
                 `;
             });
 
             return html;
+        }
+        
+        // 跳转到定式探索页面
+        function goToExplore(movesParam) {
+            if (!movesParam) return;
+            window.location.href = BASE_PATH + '/tools/joseki/explore.html?moves=' + movesParam;
         }
 
         // 设置过滤器
