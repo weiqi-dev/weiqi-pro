@@ -1,17 +1,16 @@
 {
   "models": [
     {
-      "id": "lionffen-b24c64",
-      "name": "Lionffen 中等模型",
-      "description": "24层网络，轻量级，平衡速度和棋力",
-      "url": "https://media.katagotraining.org/uploaded/networks/models_extra/lionffen_b24c64_3x3_v3_12300.bin.gz",
-      "fallbackUrl": "models/lionffen-b24c64.bin.gz",
-      "size": "4.7MB",
-      "sizeBytes": 4837376,
-      "version": "v3",
-      "blocks": 24,
+      "id": "katago-small",
+      "name": "KataGo 小模型",
+      "description": "20层网络，经典模型，稳定可靠",
+      "url": "models/katago-small.bin.gz",
+      "size": "3.7MB",
+      "sizeBytes": 3879731,
+      "version": "1.0.0",
+      "blocks": 20,
       "default": true,
-      "recommended": ["mobile", "beginner", "intermediate"],
+      "recommended": ["mobile", "desktop", "beginner", "intermediate"],
       "difficulty": ["easy", "medium", "hard"],
       "features": {
         "fastInference": true,
@@ -19,27 +18,27 @@
       }
     },
     {
-      "id": "katago-small",
-      "name": "KataGo 小模型",
-      "description": "20层网络，经典模型，稳定可靠",
-      "url": "https://media.katagotraining.org/uploaded/networks/models/katago-small.bin.gz",
-      "fallbackUrl": "models/katago-small.bin.gz",
-      "size": "3.7MB",
-      "sizeBytes": 3879731,
-      "version": "1.0.0",
-      "blocks": 20,
+      "id": "g170-b10c128",
+      "name": "KataGo b10c128",
+      "description": "10块128通道网络，较强棋力",
+      "url": "models/g170-b10c128.bin.gz",
+      "size": "10.6MB",
+      "sizeBytes": 11138987,
+      "version": "g170",
+      "blocks": 10,
       "default": false,
-      "recommended": ["desktop", "intermediate"],
-      "difficulty": ["medium", "hard"],
+      "recommended": ["desktop", "advanced"],
+      "difficulty": ["hard"],
       "features": {
-        "fastInference": true,
+        "fastInference": false,
         "lowMemory": false
       }
     }
   ],
   "metadata": {
-    "version": "1.0.0",
-    "lastUpdated": "2026-05-10",
-    "source": "https://katagotraining.org/extra_networks/"
+    "version": "1.4.0",
+    "lastUpdated": "2026-05-11",
+    "source": "https://katagotraining.org/",
+    "note": "所有模型已内置，无需外部下载"
   }
 }

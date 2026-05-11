@@ -367,6 +367,11 @@ class SGFParser {
     _extractGameInfo(tree) {
         const props = tree.properties || {};
         
+        // 获取第一个子节点的属性（预置子可能在这里）
+        const childProps = (tree.children && tree.children.length > 0) 
+            ? (tree.children[0].properties || {}) 
+            : {};
+        
         const getProp = (key, defaultValue = '') => {
             const val = props[key] || defaultValue;
             if (Array.isArray(val) && val.length > 0) {
@@ -389,14 +394,29 @@ class SGFParser {
         
         // 让子位置
         const handicapStones = [];
-        const abProp = props['AB'] || [];
-        const abList = Array.isArray(abProp) ? abProp : [abProp];
+        
+        // 解析 AB[] (添加黑子) - 先检查根节点，再检查第一个子节点
+        let abProp = props['AB'] || childProps['AB'] || [];
+        let abList = Array.isArray(abProp) ? abProp : [abProp];
         for (const coord of abList) {
             if (coord && coord.length >= 2) {
                 const x = coord.charCodeAt(0) - 97;
                 const y = coord.charCodeAt(1) - 97;
                 if (x >= 0 && x < boardSize && y >= 0 && y < boardSize) {
-                    handicapStones.push({ x, y });
+                    handicapStones.push({ x, y, color: 'B' });
+                }
+            }
+        }
+        
+        // 解析 AW[] (添加白子) - 先检查根节点，再检查第一个子节点
+        let awProp = props['AW'] || childProps['AW'] || [];
+        let awList = Array.isArray(awProp) ? awProp : [awProp];
+        for (const coord of awList) {
+            if (coord && coord.length >= 2) {
+                const x = coord.charCodeAt(0) - 97;
+                const y = coord.charCodeAt(1) - 97;
+                if (x >= 0 && x < boardSize && y >= 0 && y < boardSize) {
+                    handicapStones.push({ x, y, color: 'W' });
                 }
             }
         }
@@ -428,9 +448,12 @@ class SGFParser {
         
         while (node.children && node.children.length > 0) {
             node = node.children[0];
-            const coord = node.coord || 'tt';
-            moves.push([node.color, coord]);
-            if (moves.length >= firstN) break;
+            // 跳过没有着法属性的节点（如预置子节点 AB[]/AW[]）
+            if (node.color !== null) {
+                const coord = node.coord || 'tt';
+                moves.push([node.color, coord]);
+                if (moves.length >= firstN) break;
+            }
         }
         
         return moves;

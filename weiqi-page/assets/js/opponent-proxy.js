@@ -88,8 +88,11 @@ class OpponentProxy {
                     continue;
                 }
                 
+                // 获取预置子信息
+                const handicapStones = parsed.game_info.handicap_stones || [];
+                
                 // 提取四个角
-                const corners = cornerExtractor.extractFourCorners(moves);
+                const corners = cornerExtractor.extractFourCorners(moves, 80, handicapStones);
                 
                 // 匹配每个角
                 for (const cornerKey of ['tl', 'tr', 'bl', 'br']) {

@@ -15,16 +15,65 @@ class CornerExtractor {
      * 提取四个角的着法
      * @param {Array} moves - 主分支着法 [(color, coord), ...]
      * @param {number} firstN - 只取前N手
-     * @returns {Object} {tl: [...], tr: [...], bl: [...], br: [...]}
+     * @param {Array} handicapStones - 预置子 [{x, y, color}, ...]
+     * @returns {Object} {tl: [...], tr: [...], bl: [...], br: [...], handicap: {tl: [...], tr: [...], bl: [...], br: [...]}}
      */
-    extractFourCorners(moves, firstN = 80) {
+    extractFourCorners(moves, firstN = 80, handicapStones = []) {
         const limitedMoves = moves.slice(0, firstN);
         const result = {};
+        const handicapResult = {};
+        
+        // 先将预置子分配到各个角
+        const handicapByCorner = this._distributeHandicapStones(handicapStones);
         
         for (const cornerKey of ['tl', 'tr', 'bl', 'br']) {
-            const cornerMoves = this.extractCorner(limitedMoves, cornerKey);
+            const cornerHandicap = handicapByCorner[cornerKey] || [];
+            const cornerMoves = this.extractCorner(limitedMoves, cornerKey, cornerHandicap);
             if (cornerMoves && cornerMoves.length >= 2) {
                 result[cornerKey] = cornerMoves;
+            }
+            // 保存每个角的预置子信息
+            if (cornerHandicap.length > 0) {
+                handicapResult[cornerKey] = cornerHandicap;
+            }
+        }
+        
+        // 如果有预置子，也返回预置子信息
+        if (Object.keys(handicapResult).length > 0) {
+            result.handicap = handicapResult;
+        }
+        
+        return result;
+    }
+    
+    /**
+     * 将预置子分配到各个角
+     * @param {Array} handicapStones - [{x, y, color}, ...]
+     * @returns {Object} {tl: [...], tr: [...], bl: [...], br: [...]}
+     */
+    _distributeHandicapStones(handicapStones) {
+        const result = { tl: [], tr: [], bl: [], br: [] };
+        
+        // 13路范围配置
+        const cornerRanges = {
+            tl: { colRange: [0, 12], rowRange: [0, 12] },
+            tr: { colRange: [6, 18], rowRange: [0, 12] },
+            bl: { colRange: [0, 12], rowRange: [6, 18] },
+            br: { colRange: [6, 18], rowRange: [6, 18] }
+        };
+        
+        for (const stone of handicapStones) {
+            const { x, y, color } = stone;
+            
+            // 检查属于哪个角
+            for (const [cornerKey, range] of Object.entries(cornerRanges)) {
+                const [colMin, colMax] = range.colRange;
+                const [rowMin, rowMax] = range.rowRange;
+                
+                if (x >= colMin && x <= colMax && y >= rowMin && y <= rowMax) {
+                    result[cornerKey].push(stone);
+                    break; // 一个子只属于一个角
+                }
             }
         }
         
@@ -35,9 +84,10 @@ class CornerExtractor {
      * 提取单个角的着法（含脱先标记）
      * @param {Array} moves - [(color, coord), ...] 完整着法序列
      * @param {string} cornerKey - 角标识 ('tl', 'tr', 'bl', 'br')
+     * @param {Array} handicapStones - 该角的预置子 [{x, y, color}, ...]
      * @returns {Array} 处理后的着法序列(含tt脱先标记)
      */
-    extractCorner(moves, cornerKey) {
+    extractCorner(moves, cornerKey, handicapStones = []) {
         // 定义四角的13路范围和角的原点
         const cornerConfig = {
             tl: { colRange: [0, 12], rowRange: [0, 12], origin: [0, 0] },
@@ -54,7 +104,7 @@ class CornerExtractor {
         
         // 多级回退策略: 13路 → 11路 → 9路
         // 1. 先尝试13路
-        const result13 = this._extractCornerMovesLu(moves, cornerKey, 13);
+        const result13 = this._extractCornerMovesLu(moves, cornerKey, 13, handicapStones);
         
         // 检查13路是否需要回退（被剔除的着法在凸包内）
         const shouldFallback13 = this._shouldFallback(result13);
@@ -64,7 +114,7 @@ class CornerExtractor {
         }
         
         // 2. 回退到11路
-        const result11 = this._extractCornerMovesLu(moves, cornerKey, 11);
+        const result11 = this._extractCornerMovesLu(moves, cornerKey, 11, handicapStones);
         const shouldFallback11 = this._shouldFallback(result11);
         
         if (!shouldFallback11) {
@@ -72,14 +122,18 @@ class CornerExtractor {
         }
         
         // 3. 最终回退到9路
-        return this._extractCornerMoves9Lu(moves, cornerKey);
+        return this._extractCornerMoves9Lu(moves, cornerKey, handicapStones);
     }
     
     /**
      * 通用N路角提取
+     * @param {Array} moves - 主分支着法
+     * @param {string} cornerKey - 角标识
+     * @param {number} luSize - 路数
+     * @param {Array} handicapStones - 该角的预置子 [{x, y, color}, ...]
      * @returns {Object} {moves, corePositions, discardedPositions}
      */
-    _extractCornerMovesLu(moves, cornerKey, luSize) {
+    _extractCornerMovesLu(moves, cornerKey, luSize, handicapStones = []) {
         // N路范围配置
         const ranges = {
             9: {
@@ -147,12 +201,28 @@ class CornerExtractor {
         const { corePositions, discardedPositions } = this._findTemporalCore(
             allPositions,
             cornerMoves,
-            4
+            4,
+            handicapStones
         );
         
         // 构建结果
         const result = [];
         let lastColor = null;
+        
+        // 先添加预置子作为初始着法
+        // 预置子通常是黑子，需要插入白方的 pass 保持交替
+        for (const stone of handicapStones) {
+            // 转换为 SGF 坐标
+            const coord = String.fromCharCode(97 + stone.x) + String.fromCharCode(97 + stone.y);
+            
+            // 如果上一个是黑子，插入白方的 pass
+            if (lastColor === 'B') {
+                result.push(['W', 'tt']);
+            }
+            
+            result.push([stone.color, coord]);
+            lastColor = stone.color;
+        }
         
         for (const [color, coord, col, row] of cornerMoves) {
             const posKey = `${col},${row}`;
@@ -175,8 +245,11 @@ class CornerExtractor {
     
     /**
      * 提取指定角的着法（9路范围，最终回退方案）
+     * @param {Array} moves - 主分支着法
+     * @param {string} cornerKey - 角标识
+     * @param {Array} handicapStones - 该角的预置子 [{x, y, color}, ...]
      */
-    _extractCornerMoves9Lu(moves, cornerKey) {
+    _extractCornerMoves9Lu(moves, cornerKey, handicapStones = []) {
         // 9路范围配置
         const cornerConfig = {
             tl: { colRange: [0, 8], rowRange: [0, 8] },
@@ -206,11 +279,18 @@ class CornerExtractor {
             }
         }
         
-        if (cornerMovesList.length === 0) return [];
+        if (cornerMovesList.length === 0 && handicapStones.length === 0) return [];
         
         // 时序过滤
         const activePositions = new Set();
         const corePositions = new Set();
+        
+        // 先添加预置子作为初始位置
+        for (const stone of handicapStones) {
+            const posKey = `${stone.x},${stone.y}`;
+            activePositions.add(posKey);
+            corePositions.add(posKey);
+        }
         
         for (const [color, col, row, coord] of cornerMovesList) {
             if (activePositions.size === 0) {
@@ -241,6 +321,20 @@ class CornerExtractor {
         const result = [];
         let lastColor = null;
         
+        // 先添加预置子作为初始着法
+        for (const stone of handicapStones) {
+            // 转换为 SGF 坐标
+            const coord = String.fromCharCode(97 + stone.x) + String.fromCharCode(97 + stone.y);
+            
+            // 如果上一个是黑子，插入白方的 pass
+            if (lastColor === 'B') {
+                result.push(['W', 'tt']);
+            }
+            
+            result.push([stone.color, coord]);
+            lastColor = stone.color;
+        }
+        
         for (const [color, col, row, coord] of cornerMovesList) {
             const posKey = `${col},${row}`;
             if (corePositions.has(posKey)) {
@@ -258,11 +352,22 @@ class CornerExtractor {
     
     /**
      * 基于行棋时序确定核心定式区域
+     * @param {Set} positions - 所有位置集合
+     * @param {Array} moves - 着法序列
+     * @param {number} maxDistance - 最大距离
+     * @param {Array} initialPositions - 初始位置（预置子）[{x, y}, ...]
      */
-    _findTemporalCore(positions, moves, maxDistance = 4) {
+    _findTemporalCore(positions, moves, maxDistance = 4, initialPositions = []) {
         const corePositions = new Set();
         const discardedPositions = new Set();
         const activePositions = new Set();
+        
+        // 先添加预置子作为初始位置
+        for (const pos of initialPositions) {
+            const posKey = `${pos.x},${pos.y}`;
+            activePositions.add(posKey);
+            corePositions.add(posKey);
+        }
         
         for (const [color, coord, col, row] of moves) {
             const posKey = `${col},${row}`;

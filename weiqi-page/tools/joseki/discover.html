@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>定式发现 - 围棋智能助手</title>
+    <link rel="icon" type="image/x-icon" href="/weiqi-pro/weiqi-page/assets/favicon/favicon.ico?v=20260502">
+    <script>const BASE_PATH = '/weiqi-pro/weiqi-page';</script>
+    <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/sgf-parser.js"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/coordinate-converter.js"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/corner-extractor.js"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/joseki-matcher.js"></script>
+    <script src="/weiqi-pro/weiqi-page/assets/js/foxwq-proxy.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container { max-width: 480px; margin: 0 auto; padding: 12px; }
+        header {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        h1 { font-size: 1.6em; margin-bottom: 4px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .subtitle { font-size: 0.85em; opacity: 0.9; }
+
+        /* 标签切换 */
+        .tabs {
+            display: flex;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 16px;
+        }
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .tab:hover { color: white; }
+        .tab.active {
+            background: white;
+            color: #667eea;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* 卡片 */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .card h2 { font-size: 1.1em; margin-bottom: 12px; color: #333; }
+
+        /* 表单元素 */
+        .form-group { margin-bottom: 12px; }
+        .form-group label {
+            display: block;
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        select, input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            background: white;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* 按钮 */
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 12px;
+        }
+        button:hover { opacity: 0.9; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        /* 进度条 */
+        .progress-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: none;
+        }
+        .progress-card.active { display: block; }
+        .progress-bar-bg {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        .progress-text {
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+        }
+
+        /* 统计卡片 */
+        .stats-cards { display: none; }
+        .stats-cards.show { display: block; }
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .stats-card:hover { transform: translateY(-2px); }
+        .stats-card:active { transform: scale(0.98); }
+        .stats-card h3 {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .stat-item { text-align: center; }
+        .stat-value {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #667eea;
+        }
+        .stat-label {
+            font-size: 0.8em;
+            color: #888;
+            margin-top: 4px;
+        }
+        .stat-item-full {
+            grid-column: span 2;
+            text-align: center;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+        .stat-item-full .stat-value { font-size: 1.8em; }
+
+        /* 历史记录列表 */
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .history-item {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .history-item:hover { transform: translateY(-2px); }
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .history-id {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .history-time { font-size: 0.8em; color: #888; }
+        .history-stats {
+            display: flex;
+            gap: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+        .history-stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        /* 文件选择 */
+        .file-input { display: none; }
+        .file-label {
+            display: block;
+            padding: 16px;
+            border: 2px dashed #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.2s;
+        }
+        .file-label:hover { border-color: #667eea; color: #667eea; }
+        .file-name {
+            margin-top: 8px;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 定式发现</h1>
+            <p class="subtitle">分析棋谱，发现定式</p>
+        </header>
+
+        <!-- 标签切换 -->
+        <div id="tabsSection" class="tabs">
+            <div class="tab active" data-tab="online" onclick="switchTab('online')">
+                <span>🌐</span>
+                <span>线上棋谱</span>
+            </div>
+            <div class="tab" data-tab="upload" onclick="switchTab('upload')">
+                <span>📁</span>
+                <span>导入棋谱</span>
+            </div>
+            <div class="tab" data-tab="history" onclick="switchTab('history')">
+                <span>📋</span>
+                <span>历史</span>
+            </div>
+        </div>
+
+        <!-- 线上棋谱 -->
+        <div id="onlinePanel" class="tab-content active">
+            <div class="card">
+                <div class="form-group">
+                    <label>来源</label>
+                    <select id="sourceSelect">
+                        <option value="foxwq" selected>野狐围棋</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>日期</label>
+                    <select id="dateSelect">
+                        <option value="0">今天</option>
+                        <option value="1" selected>昨天</option>
+                        <option value="">全部</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>数量</label>
+                    <select id="limitSelect">
+                        <option value="10">10 个棋谱</option>
+                        <option value="20">20 个棋谱</option>
+                        <option value="50" selected>50 个棋谱</option>
+                        <option value="100">100 个棋谱</option>
+                    </select>
+                </div>
+                <button onclick="startOnlineAnalysis()" id="analyzeBtn">开始分析</button>
+            </div>
+        </div>
+
+        <!-- 导入棋谱 -->
+        <div id="uploadPanel" class="tab-content">
+            <div class="card">
+                <div class="file-input-wrapper">
+                    <input type="file" id="sgfFileInput" class="file-input" accept=".sgf" onchange="handleFileSelect(event)">
+                    <label for="sgfFileInput" class="file-label">
+                        📄 点击选择 SGF 文件
+                        <div id="fileName" class="file-name"></div>
+                    </label>
+                </div>
+                <button onclick="startUploadAnalysis()" id="uploadBtn" disabled>开始分析</button>
+            </div>
+        </div>
+
+        <!-- 历史记录 -->
+        <div id="historyPanel" class="tab-content">
+            <div class="card">
+                <h2>📋 查询记录 <button class="btn-small" onclick="clearHistory()" style="width:auto;padding:4px 8px;font-size:0.85em;margin-left:auto;background:#f5f5f5;color:#666;">🗑️ 清除</button></h2>
+                <div id="historyList" class="history-list">
+                    <div class="empty-state">暂无历史记录</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 进度显示 -->
+        <div id="progressCard" class="progress-card">
+            <div class="progress-bar-bg">
+                <div id="progressBar" class="progress-bar-fill"></div>
+            </div>
+            <div id="progressText" class="progress-text">准备中...</div>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div id="statsSection" class="stats-cards"></div>
+
+        <footer><p>围棋智能助手 &copy; 2026</p></footer>
+    </div>
+
+    <script>
+        // ========== 全局变量 ==========
+        const HISTORY_KEY = 'discover_history';
+        
+        let foxwqProxy = null;
+        let sgfParser = null;
+        let cornerExtractor = null;
+        let josekiMatcher = null;
+        
+        let currentResults = [];
+        let currentGames = [];
+        
+        // ========== 工具函数 ==========
+        function formatDate(date) {
+            const d = new Date(date);
+            return d.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        function getDateStr(offset) {
+            const d = new Date();
+            d.setDate(d.getDate() - offset);
+            return d.toISOString().split('T')[0];
+        }
+        
+        function generateId() {
+            return new Date().toISOString().replace(/[-:T]/g, '').split('.')[0];
+        }
+        
+        // ========== 初始化 ==========
+        window.addEventListener('pageshow', function(event) {
+            foxwqProxy = new FoxwqProxy({ debug: true });
+            sgfParser = new SGFParser();
+            cornerExtractor = new CornerExtractor();
+            josekiMatcher = new JosekiMatcher(BASE_PATH + '/assets/data/joseki');
+            
+            renderHistoryList();
+        });
+        
+        // ========== 隐藏/显示标签栏 ==========
+        function hideTabs() {
+            // 只隐藏标签内容面板，标签栏保留
+            document.getElementById('onlinePanel').style.display = 'none';
+            document.getElementById('uploadPanel').style.display = 'none';
+            document.getElementById('historyPanel').style.display = 'none';
+        }
+        
+        function showTabs() {
+            // 显示当前激活的面板
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.style.display = '';
+            });
+        }
+        
+        // ========== 标签切换 ==========
+        function switchTab(tabName) {
+            // 显示标签栏（如果之前被隐藏了）
+            showTabs();
+            
+            // 隐藏统计卡片
+            document.getElementById('statsSection').classList.remove('show');
+            
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+            
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName + 'Panel').classList.add('active');
+            
+            if (tabName === 'history') {
+                renderHistoryList();
+            }
+        }
+        
+        // ========== 文件选择处理 ==========
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('uploadBtn').disabled = false;
+            } else {
+                document.getElementById('fileName').textContent = '';
+                document.getElementById('uploadBtn').disabled = true;
+            }
+        }
+        
+        // ========== 进度显示 ==========
+        function showProgress(show = true) {
+            const card = document.getElementById('progressCard');
+            if (show) {
+                card.classList.add('active');
+            } else {
+                card.classList.remove('active');
+            }
+        }
+        
+        function updateProgress(percent, text) {
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressText').textContent = text;
+        }
+        
+        // ========== 线上棋谱分析 ==========
+        async function startOnlineAnalysis() {
+            const btn = document.getElementById('analyzeBtn');
+            btn.disabled = true;
+            btn.textContent = '分析中...';
+            
+            showProgress(true);
+            updateProgress(0, '正在获取棋谱列表...');
+            
+            try {
+                // 获取选择的参数
+                const dateOffset = document.getElementById('dateSelect').value;
+                const limit = parseInt(document.getElementById('limitSelect').value);
+                
+                // 确定日期过滤
+                let dateFilter = dateOffset ? getDateStr(parseInt(dateOffset)) : null;
+                
+                // 获取公开棋谱列表
+                const qipuList = await foxwqProxy.fetchPublicQipuList(dateFilter);
+                
+                if (qipuList.length === 0) {
+                    updateProgress(100, '未找到棋谱');
+                    setTimeout(() => showProgress(false), 1500);
+                    btn.disabled = false;
+                    btn.textContent = '开始分析';
+                    return;
+                }
+                
+                // 限制数量
+                const qipuToAnalyze = qipuList.slice(0, limit);
+                updateProgress(5, `找到 ${qipuList.length} 个棋谱，分析前 ${qipuToAnalyze.length} 个...`);
+                
+                // 加载定式库索引
+                await josekiMatcher.loadIndex();
+                
+                // 分析每个棋谱
+                currentResults = [];
+                currentGames = [];
+                const total = qipuToAnalyze.length;
+                
+                for (let i = 0; i < total; i++) {
+                    const qipu = qipuToAnalyze[i];
+                    const percent = 5 + (i / total) * 90;
+                    
+                    updateProgress(percent, `分析棋谱 ${i + 1}/${total}: ${qipu.title.substring(0, 20)}...`);
+                    
+                    try {
+                        const { sgf, title, date } = await foxwqProxy.fetchPublicQipuSgf(qipu.url);
+                        const results = await analyzeSgf(sgf, title, date);
+                        
+                        currentResults.push(...results);
+                        currentGames.push({
+                            title: title,
+                            date: date,
+                            sgf: sgf
+                        });
+                    } catch (error) {
+                        console.error(`分析棋谱失败: ${qipu.title}`, error);
+                    }
+                }
+                
+                // 按 prefix_len 排序
+                currentResults.sort((a, b) => b.prefix_len - a.prefix_len);
+                
+                updateProgress(100, `分析完成，发现 ${currentResults.length} 个定式`);
+                
+                // 保存到历史记录
+                saveToHistory('foxwq');
+                
+                // 显示统计卡片
+                setTimeout(() => {
+                    showProgress(false);
+                    displayStats();
+                }, 500);
+                
+            } catch (error) {
+                console.error('线上棋谱分析失败:', error);
+                updateProgress(100, '分析失败: ' + error.message);
+                setTimeout(() => showProgress(false), 2000);
+            }
+            
+            btn.disabled = false;
+            btn.textContent = '开始分析';
+        }
+        
+        // ========== 导入棋谱分析 ==========
+        async function startUploadAnalysis() {
+            const fileInput = document.getElementById('sgfFileInput');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('请选择 SGF 文件');
+                return;
+            }
+            
+            const btn = document.getElementById('uploadBtn');
+            btn.disabled = true;
+            btn.textContent = '分析中...';
+            
+            showProgress(true);
+            updateProgress(0, '正在读取文件...');
+            
+            try {
+                const sgfContent = await readFileAsText(file);
+                
+                updateProgress(30, '正在分析棋谱...');
+                
+                await josekiMatcher.loadIndex();
+                
+                const fileName = file.name.replace(/\.sgf$/i, '');
+                currentResults = await analyzeSgf(sgfContent, fileName, '');
+                currentGames = [{
+                    title: fileName,
+                    date: '',
+                    sgf: sgfContent
+                }];
+                
+                currentResults.sort((a, b) => b.prefix_len - a.prefix_len);
+                
+                updateProgress(100, `分析完成，发现 ${currentResults.length} 个定式`);
+                
+                saveToHistory('upload');
+                
+                setTimeout(() => {
+                    showProgress(false);
+                    displayStats();
+                }, 500);
+                
+            } catch (error) {
+                console.error('导入棋谱分析失败:', error);
+                updateProgress(100, '分析失败: ' + error.message);
+                setTimeout(() => showProgress(false), 2000);
+            }
+            
+            btn.disabled = false;
+            btn.textContent = '开始分析';
+        }
+        
+        function readFileAsText(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.onerror = (e) => reject(new Error('文件读取失败'));
+                reader.readAsText(file, 'UTF-8');
+            });
+        }
+        
+        // ========== 定式匹配逻辑 ==========
+        async function analyzeSgf(sgfContent, title, date) {
+            const results = [];
+            
+            try {
+                const parsed = sgfParser.parse(sgfContent);
+                
+                if (parsed.game_info.board_size !== 19) {
+                    console.log(`跳过非19路棋谱: ${parsed.game_info.board_size}路`);
+                    return results;
+                }
+                
+                const moves = sgfParser.extractMainBranch(parsed.tree, 80);
+                
+                if (!moves || moves.length === 0) {
+                    console.warn('棋谱没有着法');
+                    return results;
+                }
+                
+                // 获取预置子信息
+                const handicapStones = parsed.game_info?.handicap_stones || [];
+                
+                const corners = cornerExtractor.extractFourCorners(moves, 80, handicapStones);
+                
+                for (const cornerKey of ['tl', 'tr', 'bl', 'br']) {
+                    const cornerMoves = corners[cornerKey];
+                    
+                    if (!cornerMoves || cornerMoves.length < 4) continue;
+                    
+                    const coords = cornerMoves.map(([color, coord]) => coord);
+                    const trMoves = CoordinateConverter.convertToTopRight(coords, cornerKey);
+                    const normResult = CoordinateConverter.normalizeCornerSequence(trMoves);
+                    const normalized = normResult.normalized;
+                    
+                    const result = await josekiMatcher.matchSequence(normalized);
+                    
+                    if (result && result.freq > 0 && result.matchedCount >= 4) {
+                        const treeSgf = await josekiMatcher.exportTree(
+                            result.matched,
+                            normalized,
+                            5
+                        );
+                        
+                        results.push({
+                            joseki_id: result.josekiId || `local_${Date.now()}`,
+                            prefix: result.matched.join(' '),
+                            prefix_len: result.matchedCount,
+                            total_moves: result.totalCount,
+                            source_corner: cornerKey,
+                            frequency: result.freq || 0,
+                            probability: result.prob || 0,
+                            winrate_stats: result.winrate_stats || null,
+                            extracted_moves: treeSgf,
+                            game_info: {
+                                black: parsed.game_info.black || '黑棋',
+                                white: parsed.game_info.white || '白棋',
+                                date: date || parsed.game_info.date || '',
+                                event: '',
+                                result: ''
+                            },
+                            file: title
+                        });
+                    }
+                }
+                
+            } catch (error) {
+                console.error('分析 SGF 失败:', error);
+            }
+            
+            return results;
+        }
+        
+        // ========== 统计卡片显示 ==========
+        function displayStats() {
+            // 隐藏标签栏
+            hideTabs();
+            
+            const statsSection = document.getElementById('statsSection');
+            
+            // 计算定式统计
+            let josekiCount = currentResults.length;
+            let hotCount = 0;
+            let hitCount = 0;
+            let complexCount = 0;
+            
+            currentResults.forEach(r => {
+                const prefixLen = r.prefix_len || 0;
+                const frequency = r.frequency || 0;
+                const totalMoves = r.total_moves || 0;
+                
+                // 热门: prefixLen >= 8 && frequency >= 5
+                if (prefixLen >= 8 && frequency >= 5) hotCount++;
+                // 命中: prefixLen >= 8 && prefixLen >= totalMoves
+                if (prefixLen >= 8 && prefixLen >= totalMoves) hitCount++;
+                // 复杂: prefixLen >= 12
+                if (prefixLen >= 12) complexCount++;
+            });
+            
+            statsSection.innerHTML = `
+                <div class="stats-card" onclick="viewJoseki()">
+                    <h3>📚 定式发现</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value">${josekiCount}</div>
+                            <div class="stat-label">匹配定式数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${hotCount}</div>
+                            <div class="stat-label">🔥 热门</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${hitCount}</div>
+                            <div class="stat-label">🎯 命中</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${complexCount}</div>
+                            <div class="stat-label">🧩 复杂</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            statsSection.classList.add('show');
+        }
+        
+        // ========== 导航 ==========
+        function viewJoseki() {
+            // 保存数据到 sessionStorage，供对手分析页面使用
+            const data = {
+                foxwq_id: '定式发现',
+                games: currentGames.map(g => ({
+                    black: '黑棋',
+                    white: '白棋',
+                    date: g.date || '',
+                    file: g.title,
+                    opponent: '',
+                    result: '',
+                    sgf: g.sgf
+                })),
+                joseki: {
+                    count: currentResults.length,
+                    results: currentResults
+                }
+            };
+            
+            sessionStorage.setItem('opponent_data', JSON.stringify(data));
+            location.href = BASE_PATH + '/tools/opponent/joseki.html';
+        }
+        
+        // ========== 历史记录管理 ==========
+        function saveToHistory(source) {
+            const id = generateId();
+            const record = {
+                id: id,
+                createdAt: new Date().toISOString(),
+                source: source,
+                totalGames: currentGames.length,
+                josekiCount: currentResults.length,
+                results: currentResults,
+                games: currentGames
+            };
+            
+            let history = getHistoryList();
+            history.unshift(record);
+            localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+            
+            renderHistoryList();
+        }
+        
+        function getHistoryList() {
+            try {
+                return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+            } catch (e) {
+                return [];
+            }
+        }
+        
+        function renderHistoryList() {
+            const listContainer = document.getElementById('historyList');
+            const history = getHistoryList();
+            
+            if (history.length === 0) {
+                listContainer.innerHTML = '<div class="empty-state">暂无历史记录</div>';
+                return;
+            }
+            
+            listContainer.innerHTML = history.map(record => {
+                const sourceIcon = record.source === 'foxwq' ? '🌐' : '📁';
+                const sourceText = record.source === 'foxwq' ? '线上棋谱' : '导入棋谱';
+                
+                return `
+                    <div class="history-item" onclick="loadHistoryResult('${record.id}')">
+                        <div class="history-header">
+                            <span class="history-id">${sourceIcon} ${sourceText}</span>
+                            <span class="history-time">${formatDate(record.createdAt)}</span>
+                        </div>
+                        <div class="history-stats">
+                            <span class="history-stat">📋 ${record.totalGames} 个棋谱</span>
+                            <span class="history-stat">📚 ${record.josekiCount} 个定式</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function loadHistoryResult(id) {
+            const history = getHistoryList();
+            const record = history.find(r => r.id === id);
+            
+            if (!record) {
+                alert('历史记录不存在');
+                return;
+            }
+            
+            currentResults = record.results || [];
+            currentGames = record.games || [];
+            
+            // 根据来源切换到对应的标签
+            const tabName = record.source === 'upload' ? 'upload' : 'online';
+            
+            // 更新标签激活状态
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.tab[data-tab="${tabName}"]`).classList.add('active');
+            
+            // 显示统计卡片（会自动隐藏标签内容面板）
+            displayStats();
+        }
+        
+        function clearHistory() {
+            if (!confirm('确定要清除所有历史记录吗？')) return;
+            
+            localStorage.removeItem(HISTORY_KEY);
+            currentResults = [];
+            currentGames = [];
+            
+            renderHistoryList();
+            
+            // 隐藏统计卡片
+            document.getElementById('statsSection').classList.remove('show');
+        }
+    </script>
+</body>
+</html>
