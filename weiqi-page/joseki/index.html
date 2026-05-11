@@ -1166,7 +1166,20 @@
                         movesArray = joseki.moves;
                     } else if (typeof joseki.moves === 'string') {
                         movesStr = joseki.moves;
-                        movesArray = joseki.moves.split(/\s+/);
+                        // 判断是否为 SGF 格式
+                        if (joseki.moves.includes(';') && (joseki.moves.includes('B[') || joseki.moves.includes('W['))) {
+                            // SGF 格式：提取着法坐标
+                            const sgfMoves = [];
+                            const regex = /([BW])\[([a-s]{2}|tt|aa)\]/gi;
+                            let match;
+                            while ((match = regex.exec(joseki.moves)) !== null) {
+                                sgfMoves.push(match[2]);  // 只取坐标部分
+                            }
+                            movesArray = sgfMoves;
+                        } else {
+                            // 空格分隔的坐标字符串
+                            movesArray = joseki.moves.trim().split(/\s+/);
+                        }
                     }
                     // 提取前 matched_prefix_len 个着法，生成定式探索参数
                     if (movesArray && joseki.matched_prefix_len > 0) {
