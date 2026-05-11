@@ -1,0 +1,98 @@
+[
+  {
+    "id": "202605110805320001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-10/野狐/game_202605110805320001.json",
+    "black": "华学明",
+    "white": "睦镇硕",
+    "black_rank": "P7段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605110805320002",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-10/野狐/game_202605110805320002.json",
+    "black": "战鹰",
+    "white": "崔精",
+    "black_rank": "P2段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605110805320003",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-10/野狐/game_202605110805320003.json",
+    "black": "金恩持",
+    "white": "王祥云",
+    "black_rank": "P9段",
+    "white_rank": "P4段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605110805320004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-10/野狐/game_202605110805320004.json",
+    "black": "林君谚",
+    "white": "胡子豪",
+    "black_rank": "P9段",
+    "white_rank": "P6段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605110805320005",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-10/野狐/game_202605110805320005.json",
+    "black": "檀啸",
+    "white": "平田智也",
+    "black_rank": "P9段",
+    "white_rank": "P8段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605110805320006",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-10/野狐/game_202605110805320006.json",
+    "black": "元晟溱",
+    "white": "古灵益",
+    "black_rank": "P9段",
+    "white_rank": "P7段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605110805330007",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-10/野狐/game_202605110805330007.json",
+    "black": "罗玄",
+    "white": "杨鼎新",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605110805330008",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-10/野狐/game_202605110805330008.json",
+    "black": "唐嘉雯",
+    "white": "허서현",
+    "black_rank": "P7段",
+    "white_rank": "P5段",
+    "result": "W+0.25",
+    "result_cn": "白胜0.25目",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  }
+]
