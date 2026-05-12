@@ -16,36 +16,62 @@
         }
 
         .container {
-            max-width: 480px;
+            max-width: 400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 12px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
         header {
-            text-align: center;
+            padding: 12px 10px 8px;
             color: white;
-            padding: 20px 0 30px;
+        }
+
+        .header-top {
+            text-align: center;
+            margin-bottom: 8px;
         }
 
         h1 {
-            font-size: 2em;
-            margin-bottom: 8px;
+            font-size: 1.8em;
+            margin-bottom: 4px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
-        .subtitle {
-            font-size: 1em;
-            opacity: 0.9;
+        .header-bottom {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 4px;
+        }
+
+        .history-btn {
+            background: transparent;
+            border: none;
+            padding: 4px;
+            font-size: 1.4em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+            text-decoration: none;
+        }
+
+        .history-btn:hover {
+            transform: scale(1.1);
         }
 
         .main-content {
-            flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            gap: 16px;
+            margin-top: 12px;
+            flex: 1;
+            justify-content: flex-start;
         }
 
         .nav-btn {
@@ -55,33 +81,32 @@
             justify-content: center;
             background: white;
             border: none;
-            border-radius: 16px;
-            padding: 28px 24px;
-            margin-bottom: 16px;
+            border-radius: 12px;
+            padding: 20px 16px;
             cursor: pointer;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
             text-decoration: none;
             color: #333;
         }
 
         .nav-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
 
         .nav-btn:active {
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
 
         .nav-btn .icon {
-            font-size: 40px;
+            font-size: 2em;
             margin-bottom: 10px;
         }
 
         .nav-btn .title {
-            font-size: 1.3em;
-            font-weight: bold;
+            font-size: 1.2em;
+            font-weight: 600;
             margin-bottom: 6px;
             color: #333;
         }
@@ -93,45 +118,51 @@
             line-height: 1.4;
         }
 
-        @media (max-width: 400px) {
-            .nav-btn {
-                padding: 32px 24px;
-            }
-            .nav-btn .icon {
-                font-size: 48px;
-            }
-            .nav-btn .title {
-                font-size: 1.3em;
-            }
+        footer {
+            text-align: center;
+            padding: 8px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.7em;
+            margin-top: auto;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🎮 围棋对弈</h1>
-            <p class="subtitle">与 KataGo AI 对弈，自动保存棋谱</p>
+            <div class="header-top">
+                <h1>🎮 围棋对弈</h1>
+            </div>
+            <div class="header-bottom">
+                <a href="history.html" class="history-btn" title="历史对局">
+                    <span>📋</span>
+                </a>
+            </div>
         </header>
 
         <div class="main-content">
+            <a href="hh.html" class="nav-btn">
+                <div class="icon">👥</div>
+                <div class="title">真人对弈</div>
+                <div class="desc">创建房间邀请好友，P2P 直连实时对弈</div>
+            </a>
+
             <a href="hm.html" class="nav-btn">
                 <div class="icon">🎯</div>
                 <div class="title">人机对弈</div>
-                <div class="desc">选择执黑执白<br>与 KataGo AI 对弈</div>
+                <div class="desc">选择执黑执白，与 KataGo AI 对弈</div>
             </a>
 
             <a href="mm.html" class="nav-btn">
                 <div class="icon">🤖</div>
                 <div class="title">AI 自对弈</div>
-                <div class="desc">观看 AI 实战<br>学习 AI 棋路</div>
-            </a>
-
-            <a href="history.html" class="nav-btn">
-                <div class="icon">📚</div>
-                <div class="title">历史对局</div>
-                <div class="desc">查看历史棋谱<br>导出 SGF 文件</div>
+                <div class="desc">观看 AI 实战，学习 AI 棋路</div>
             </a>
         </div>
+
+        <footer>
+            <p>自动保存棋谱 · 支持导出 SGF</p>
+        </footer>
     </div>
 </body>
 </html>

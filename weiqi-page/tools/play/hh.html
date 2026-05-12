@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>真人对弈</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 10px;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .players-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        .player-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .player-box.right {
+            flex-direction: row-reverse;
+        }
+        .stone {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .stone.black {
+            background: radial-gradient(circle at 30% 30%, #666, #000);
+        }
+        .stone.white {
+            background: radial-gradient(circle at 30% 30%, #fff, #ccc);
+            border: 1px solid #ddd;
+        }
+        .player-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .player-box.right .player-info {
+            align-items: flex-end;
+        }
+        .player-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+        .player-time {
+            font-size: 18px;
+            font-weight: bold;
+            color: #666;
+        }
+        .player-time.active { color: #667eea; }
+        .player-time.low { color: #ff6b6b; }
+        
+        .board-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            margin: 0;
+        }
+        #board {
+            width: 100%;
+            height: 100%;
+            background: #E3C16F;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        #board { cursor: pointer; }
+        #board.disabled { cursor: not-allowed; }
+        
+        .toolbar {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 16px;
+        }
+        .tool-btn {
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 12px;
+            background: #f5f5f5;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tool-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke: #333;
+            stroke-width: 2;
+            fill: none;
+        }
+        .tool-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .tool-btn.danger { background: #ff6b6b; }
+        .tool-btn.danger svg { stroke: white; }
+        .tool-btn.primary { background: #667eea; }
+        .tool-btn.primary svg { stroke: white; }
+        
+        .status-bar {
+            text-align: center;
+            padding: 8px;
+            background: #f0f4ff;
+            border-radius: 8px;
+            margin-top: 12px;
+            font-size: 14px;
+            color: #667eea;
+        }
+        
+        .action-bar {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            background: #667eea;
+            color: white;
+        }
+        .action-btn.secondary {
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .dialog-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .dialog {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            min-width: 280px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .dialog-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 12px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 6px;
+        }
+        .form-row {
+            display: flex;
+            gap: 8px;
+        }
+        .form-row input, .form-group input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+        }
+        .btn-small {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            background: #667eea;
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 8px;
+        }
+        .radio-group label {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+        .radio-group input:checked + label {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        .radio-group input { display: none; }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .btn-primary { background: #667eea; color: white; }
+        .btn-secondary { background: #f5f5f5; color: #333; }
+        
+        .room-display {
+            text-align: center;
+            padding: 12px;
+            background: #f0f4ff;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        .room-display .label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 4px;
+        }
+        .room-display .value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            letter-spacing: 1px;
+        }
+        
+        .condition-list {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.8;
+            padding-left: 16px;
+        }
+        
+        .waiting {
+            text-align: center;
+            padding: 16px;
+            color: #666;
+        }
+        .waiting-dots::after {
+            content: "";
+            animation: dots 1.5s infinite;
+        }
+        @keyframes dots {
+            0%, 20% { content: ""; }
+            40% { content: "."; }
+            60% { content: ".."; }
+            80%, 100% { content: "..."; }
+        }
+        
+        @media (max-width: 400px) {
+            .container { padding: 10px; }
+            .players-bar { padding: 8px; }
+            .player-time { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="players-bar">
+            <div class="player-box" id="blackBox">
+                <div class="stone black"></div>
+                <div class="player-info">
+                    <span class="player-name" id="blackName">黑方</span>
+                    <span class="player-time" id="blackTime">30:00</span>
+                </div>
+            </div>
+            <div class="player-box right" id="whiteBox">
+                <div class="stone white"></div>
+                <div class="player-info">
+                    <span class="player-name" id="whiteName">白方</span>
+                    <span class="player-time" id="whiteTime">30:00</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="board-container">
+            <canvas id="board"></canvas>
+        </div>
+        
+        <div class="toolbar">
+            <button class="tool-btn primary" id="confirmBtn" onclick="confirmMove()" title="确定" style="display:none">
+                <svg viewBox="0 0 24 24">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+            </button>
+            <button class="tool-btn" id="undoBtn" onclick="requestUndo()" title="悔棋" disabled>
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 14L4 9l5-5"/>
+                    <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/>
+                </svg>
+            </button>
+            <button class="tool-btn" id="passBtn" onclick="passMove()" title="停一手" disabled>
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke-dasharray="4 2" fill="none"/>
+                </svg>
+            </button>
+            <button class="tool-btn" id="countBtn" onclick="requestCount()" title="数子" disabled>
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 3v18M3 12h18" stroke-width="2"/>
+                    <circle cx="12" cy="12" r="9" fill="none"/>
+                </svg>
+            </button>
+            <button class="tool-btn danger" id="endBtn" onclick="requestEnd()" title="结束对局" disabled>
+                <svg viewBox="0 0 24 24">
+                    <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+                    <line x1="12" y1="2" x2="12" y2="12"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="status-bar" id="gameStatus"></div>
+    </div>
+    
+    <div id="dialogContainer"></div>
+
+    <script src="hh.js"></script>
+</body>
+</html>
