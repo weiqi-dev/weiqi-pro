@@ -8,6 +8,7 @@ let heartbeatInterval = null;  // 心跳定时器
 let missedHeartbeats = 0;  // 未收到的心跳计数
 let aiEngine = null;  // AI 引擎实例
 let aiInitialized = false;  // AI 是否已初始化
+let turnCredentials = null;  // TURN 凭据（从信令服务器获取）
 let gameState = {
     room: null, myName: '', myColor: null, opponentName: '',
     handicap: 0, timeLimit: 30, isCreator: false,
@@ -221,6 +222,10 @@ function connectWebSocket(rid, isCreator) {
         
         switch(d.type) {
             case 'connected':
+                // 保存 TURN 凭据
+                if (d.turn) {
+                    turnCredentials = d.turn;
+                }
                 // 重连时，如果只有自己，说明对手已离开
                 if (gameState.isReconnect && d.clients === 1) {
                     showWaitingReconnectDialog(30);
@@ -326,19 +331,19 @@ function connectWebSocket(rid, isCreator) {
 function sendSignal(d) { if (ws && ws.readyState===WebSocket.OPEN) ws.send(JSON.stringify(d)); }
 
 function createPeerConnection() {
-    pc = new RTCPeerConnection({ 
-        iceServers:[
-            {urls:'stun:stun.l.google.com:19302'},
-            {urls:'stun:stun1.l.google.com:19302'},
-            {urls:'stun:stun2.l.google.com:19302'},
-            // 自建 TURN 服务器
-            {
-                urls: ['turn:1.14.205.137:3478?transport=udp', 'turn:1.14.205.137:3478?transport=tcp'],
-                username: 'weiqi',
-                credential: 'weiqi123'
-            }
-        ]
-    });
+    // ICE 服务器配置：STUN + TURN（如果有的话）
+    const iceServers = [
+        {urls:'stun:stun.l.google.com:19302'},
+        {urls:'stun:stun1.l.google.com:19302'},
+        {urls:'stun:stun2.l.google.com:19302'}
+    ];
+    
+    // 添加从信令服务器获取的 TURN 凭据
+    if (turnCredentials) {
+        iceServers.push(turnCredentials);
+    }
+    
+    pc = new RTCPeerConnection({ iceServers });
     pc.onicecandidate = (e) => { if (e.candidate) sendSignal({ type:'ice', data:e.candidate }); };
     pc.ondatachannel = (e) => { 
         console.log('Received datachannel');
@@ -1108,7 +1113,7 @@ async function initAI() {
         // 初始化模型
         await new Promise((resolve, reject) => {
             aiPendingRequests.set('init', { resolve, reject });
-            aiWorker.postMessage({ type: 'katago:init', modelUrl: './models/katago-small.bin.gz' });
+            aiWorker.postMessage({ type: 'katago:init', modelUrl: '../models/katago-small.bin.gz' });
         });
         
         // 创建 AI 引擎接口
@@ -1120,7 +1125,7 @@ async function initAI() {
                     aiWorker.postMessage({
                         type: 'katago:analyze',
                         id: id,
-                        modelUrl: './models/katago-small.bin.gz',
+                        modelUrl: '../models/katago-small.bin.gz',
                         board: board,
                         previousBoard: previousBoard,
                         currentPlayer: currentPlayer,
