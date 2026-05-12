@@ -417,13 +417,16 @@
         const MAX_RECENT = 20;
         const CACHE_EXPIRE_DAYS = 7;
 
+        // 全局变量：代理模式（默认为 true）
+        const isProxyMode = true;
+
         let currentData = null;
 
         // ========== 页面加载 ==========
         window.addEventListener('pageshow', function(event) {
             // 代理模式不需要认证
-            if (!hasToken()) {
-                // 没有 token，使用代理模式，不需要跳转认证
+            if (isProxyMode) {
+                // 代理模式，不需要跳转认证
                 // 直接渲染历史列表
                 renderHistoryList();
                 return;
@@ -642,8 +645,7 @@
                 return;
             }
 
-            // 默认使用代理模式，如果有 token 则使用 Backend 模式
-            const isProxyMode = !hasToken();
+            // 使用全局变量 isProxyMode（已在文件开头定义）
 
             queryBtn.disabled = true;
             queryBtn.textContent = '分析中...';
