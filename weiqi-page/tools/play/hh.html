@@ -335,13 +335,14 @@
             </button>
             <button class="tool-btn" id="passBtn" onclick="passMove()" title="停一手" disabled>
                 <svg viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10" stroke-dasharray="4 2" fill="none"/>
+                    <circle cx="12" cy="12" r="10" stroke-dasharray="4 2" fill="none" stroke-width="2"/>
                 </svg>
             </button>
             <button class="tool-btn" id="countBtn" onclick="requestCount()" title="数子" disabled>
                 <svg viewBox="0 0 24 24">
-                    <path d="M12 3v18M3 12h18" stroke-width="2"/>
-                    <circle cx="12" cy="12" r="9" fill="none"/>
+                    <line x1="4" y1="8" x2="20" y2="8" stroke-width="2"/>
+                    <line x1="4" y1="12" x2="20" y2="12" stroke-width="2"/>
+                    <line x1="4" y1="16" x2="20" y2="16" stroke-width="2"/>
                 </svg>
             </button>
             <button class="tool-btn danger" id="endBtn" onclick="requestEnd()" title="结束对局" disabled>

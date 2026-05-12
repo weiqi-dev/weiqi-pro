@@ -2,6 +2,58 @@ const SIGNAL_URL = 'wss://api.weiqi.lol/ws/signal';
 const BOARD_SIZE = 19;
 const STONE_RADIUS_RATIO = 0.42;
 
+// 落子音效
+let audioContext = null;
+let noiseBuffer = null;
+
+function initAudio() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        // 创建白噪声缓冲
+        const sampleCount = audioContext.sampleRate * 0.1;
+        noiseBuffer = audioContext.createBuffer(1, sampleCount, audioContext.sampleRate);
+        const data = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < sampleCount; i++) data[i] = Math.random() * 2 - 1;
+    }
+    if (audioContext.state === 'suspended') audioContext.resume();
+}
+
+function playStoneSound() {
+    if (!audioContext) initAudio();
+    if (!noiseBuffer) return;
+    
+    // 落子音：带通滤波 + 频率提示音
+    const noise = audioContext.createBufferSource();
+    noise.buffer = noiseBuffer;
+    
+    const bandpass = audioContext.createBiquadFilter();
+    bandpass.type = 'bandpass';
+    bandpass.frequency.value = 2500;
+    bandpass.Q.value = 1;
+    
+    const gain = audioContext.createGain();
+    gain.gain.setValueAtTime(0.5, audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.06);
+    
+    noise.connect(bandpass);
+    bandpass.connect(gain);
+    gain.connect(audioContext.destination);
+    noise.start();
+    noise.stop(audioContext.currentTime + 0.06);
+    
+    // 轻微频率提示
+    const osc = audioContext.createOscillator();
+    osc.type = 'triangle';
+    osc.frequency.value = 400;
+    const oscGain = audioContext.createGain();
+    oscGain.gain.setValueAtTime(0.15, audioContext.currentTime);
+    oscGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+    osc.connect(oscGain);
+    oscGain.connect(audioContext.destination);
+    osc.start();
+    osc.stop(audioContext.currentTime + 0.05);
+}
+
 let ws = null, pc = null, dataChannel = null;
 let selectedPosition = null;  // 用户选中的位置（两步落子）
 let heartbeatInterval = null;  // 心跳定时器
@@ -147,7 +199,7 @@ function showConfirmDialog(on, oc, h, t) {
     '<button class="btn-small" onclick="document.getElementById(\'confirmName\').value=generateRandomName()">随机</button>'+
     '</div></div>'+
     '<div style="margin-bottom:12px"><div style="font-size:13px;color:#666;margin-bottom:8px">对局条件</div>'+
-    '<ul class="condition-list"><li>你 执'+(mc==='black'?'黑':'白')+'</li><li>'+ht+'</li><li>每方 '+t+' 分钟</li></ul></div>'+
+    '<ul class="condition-list"><li>你执'+(mc==='black'?'黑':'白')+'</li><li>'+ht+'</li><li>每方 '+t+' 分钟</li></ul></div>'+
     '<button class="btn btn-primary" onclick="confirmJoin()">确认加入</button>'+
     '<button class="btn btn-secondary" onclick="cancelJoin()">取消</button></div></div>';
 }
@@ -177,7 +229,7 @@ function startHeartbeat() {
             missedHeartbeats++;
             if (missedHeartbeats > 3) {
                 // 连续3次没收到回复，认为连接断开
-                console.log('Heartbeat timeout');
+                // Heartbeat timeout
                 stopHeartbeat();
                 ws.close();
                 return;
@@ -188,10 +240,10 @@ function startHeartbeat() {
         // P2P 心跳（检测状态同步）
         if (dataChannel && dataChannel.readyState === 'open' && gameState.inGame) {
             const version = gameState.moveHistory ? gameState.moveHistory.length : 0;
-            console.log('Sending P2P heartbeat, version:', version);
+            // Sending P2P heartbeat
             sendGameMessage({ type: 'heartbeat', version: version });
         } else {
-            console.log('P2P heartbeat not sent - dataChannel:', dataChannel ? dataChannel.readyState : 'null', 'inGame:', gameState.inGame);
+            // P2P heartbeat not sent
         }
     }, 5000);
 }
@@ -206,15 +258,12 @@ function stopHeartbeat() {
 function connectWebSocket(rid, isCreator) {
     ws = new WebSocket(SIGNAL_URL+'?room='+rid);
     ws.onopen = () => { 
-        console.log('WS open'); 
-        // 启动心跳，每30秒发送一次
+                // 启动心跳，每30秒发送一次
         startHeartbeat();
     };
     ws.onmessage = async (e) => {
         const d = JSON.parse(e.data);
-        console.log('Signal:', d);
-        
-        // 处理心跳响应
+                // 处理心跳响应
         if (d.type === 'pong') {
             missedHeartbeats = 0;
             return;
@@ -304,7 +353,7 @@ function connectWebSocket(rid, isCreator) {
         }
     };
     ws.onerror = (e) => { 
-        console.error('WS error:', e); 
+        // WS error 
         if (gameState.isReconnect) {
             localStorage.removeItem('hh-game-state');
             closeDialog();
@@ -315,8 +364,7 @@ function connectWebSocket(rid, isCreator) {
         }
     };
     ws.onclose = () => { 
-        console.log('WS close'); 
-        stopHeartbeat();
+                stopHeartbeat();
         if (gameState.reconnectTimeout) {
             clearTimeout(gameState.reconnectTimeout);
             gameState.reconnectTimeout = null;
@@ -346,35 +394,30 @@ function createPeerConnection() {
     pc = new RTCPeerConnection({ iceServers });
     pc.onicecandidate = (e) => { if (e.candidate) sendSignal({ type:'ice', data:e.candidate }); };
     pc.ondatachannel = (e) => { 
-        console.log('Received datachannel');
-        dataChannel = e.channel; 
+                dataChannel = e.channel; 
         setupDataChannel(); 
     };
     pc.onconnectionstatechange = () => {
-        console.log('P2P connection state:', pc.connectionState);
-        if (pc.connectionState==='connected') startGame();
+                if (pc.connectionState==='connected') startGame();
         else if (pc.connectionState==='disconnected'||pc.connectionState==='failed') showToast('P2P 断开');
     };
 }
 
 function setupDataChannel() {
-    dataChannel.onopen = () => { console.log('DataChannel open'); startGame(); };
-    dataChannel.onclose = () => { console.log('DataChannel closed'); };
-    dataChannel.onerror = (e) => { console.error('DataChannel error:', e); };
+    dataChannel.onopen = () => { startGame(); };
+    dataChannel.onclose = () => { /* closed */ };
+    dataChannel.onerror = (e) => { /* error */ };
     dataChannel.onmessage = (e) => { handleGameMessage(JSON.parse(e.data)); };
 }
 
 async function createOffer() {
-    console.log('Creating WebRTC offer...');
-    createPeerConnection();
+        createPeerConnection();
     dataChannel = pc.createDataChannel('game');
-    console.log('DataChannel created, state:', dataChannel.readyState);
-    setupDataChannel();
+        setupDataChannel();
     const o = await pc.createOffer();
     await pc.setLocalDescription(o);
     sendSignal({ type:'offer', data:o });
-    console.log('Offer sent');
-}
+    }
 
 async function handleOffer(o) {
     createPeerConnection();
@@ -605,6 +648,8 @@ function placeStone(x, y) {
     selectedPosition = null;  // 清除预览
     document.getElementById('confirmBtn').style.display = 'none';  // 隐藏确定按钮
     showToolbarButtons();  // 恢复其他按钮显示
+    // 播放落子音效
+    playStoneSound();
     // 发送 move 消息，携带时间
     sendGameMessage({ 
         type:'move', 
@@ -671,9 +716,7 @@ function switchPlayer() {
 }
 
 function handleStateSync(d) {
-    console.log('Received state-sync:', d);
-    
-    // 同步对手名称
+        // 同步对手名称
     gameState.opponentName = d.name;
     if (gameState.myColor==='black') {
         document.getElementById('whiteName').textContent = d.name || '白方';
@@ -685,13 +728,9 @@ function handleStateSync(d) {
     const myVersion = gameState.moveHistory ? gameState.moveHistory.length : 0;
     const theirVersion = d.moveHistory ? d.moveHistory.length : 0;
     
-    console.log('Version comparison - Me:', myVersion, 'Opponent:', theirVersion);
-    
-    if (theirVersion > myVersion) {
+        if (theirVersion > myVersion) {
         // 对方版本更新，同步对方的状态
-        console.log('Syncing to opponent state');
-        
-        // 同步棋盘和着法历史
+                // 同步棋盘和着法历史
         gameState.board = d.board;
         gameState.moveHistory = d.moveHistory;
         gameState.currentPlayer = d.currentPlayer;
@@ -708,9 +747,7 @@ function handleStateSync(d) {
         // 如果有最后落子时间戳，计算断线期间消耗的时间
         if (d.lastMoveTimestamp && d.currentPlayer) {
             const elapsed = Math.floor((Date.now() - d.lastMoveTimestamp) / 1000);
-            console.log('Time elapsed since last move:', elapsed, 'seconds');
-            
-            // 从当前玩家的剩余时间中扣除消耗的时间
+                        // 从当前玩家的剩余时间中扣除消耗的时间
             if (d.currentPlayer === 'black') {
                 gameState.blackTime = Math.max(0, d.blackTime - elapsed);
             } else {
@@ -737,23 +774,19 @@ function handleStateSync(d) {
         showToast('状态已同步');
     } else if (myVersion > theirVersion) {
         // 我的版本更新，发送我的状态给对方
-        console.log('My version is newer, sending my state');
-        sendStateSync();
+                sendStateSync();
     } else {
         // 版本相同，不需要同步
-        console.log('Versions match, no sync needed');
-    }
+            }
 }
 
 function handleGameMessage(d) {
-    console.log('Received P2P message:', d.type, d);
-    switch(d.type) {
+        switch(d.type) {
         case 'heartbeat':
             // P2P 心跳，检查版本号
             const myVersion = gameState.moveHistory ? gameState.moveHistory.length : 0;
             if (d.version !== myVersion) {
-                console.log('Heartbeat version mismatch - Me:', myVersion, 'Opponent:', d.version);
-                // 版本不同，触发状态同步
+                                // 版本不同，触发状态同步
                 sendStateSync();
             }
             break;
@@ -870,8 +903,10 @@ function handleGameMessage(d) {
             '<div class="dialog-overlay"><div class="dialog">'+
             '<div class="dialog-title">数子请求</div>'+
             '<div style="text-align:center;margin-bottom:16px">'+d.from+' 申请数子</div>'+
-            '<button class="btn btn-primary" onclick="respondCount(true)" style="margin-right:8px">同意</button>'+
-            '<button class="btn btn-secondary" onclick="respondCount(false)" style="margin-left:8px">拒绝</button></div></div>';
+            '<div style="display:flex;gap:12px;justify-content:center">'+
+            '<button class="btn btn-primary" onclick="respondCount(true)">同意</button>'+
+            '<button class="btn btn-secondary" onclick="respondCount(false)">拒绝</button>'+
+            '</div></div></div>';
             break;
         case 'count-response':
             closeDialog();
@@ -893,9 +928,7 @@ function handleGameMessage(d) {
         case 'count-result':
             // 收到对手的数子结果
             gameState.opponentCountResult = d.scoreLead;
-            console.log('收到对手数子结果:', d.scoreLead);
-            
-            // 如果我也完成了，合并结果
+                        // 如果我也完成了，合并结果
             if (gameState.myCountResult !== null) {
                 mergeCountResults();
             }
@@ -917,20 +950,16 @@ function respondCount(agree) {
 function mergeCountResults() {
     // 避免重复调用
     if (gameState.gameEnded) {
-        console.log('对局已结束，跳过重复合并');
-        return;
+                return;
     }
     
     const myResult = gameState.myCountResult;
     const opponentResult = gameState.opponentCountResult;
     
-    console.log('合并数子结果 - 我:', myResult, '对手:', opponentResult);
-    
-    // 检查一致性
+        // 检查一致性
     const diff = Math.abs(myResult - opponentResult);
     if (diff > 1) {
-        console.warn('数子结果差异较大:', diff, '目');
-    }
+            }
     
     // 取平均值作为最终结果
     const finalScore = (myResult + opponentResult) / 2;
@@ -1005,12 +1034,16 @@ async function doCount() {
     try {
         // 初始化 AI（如果还没初始化）
         if (!aiInitialized) {
+            showAILoadingDialog(0, '正在加载 AI 模型...');
             await initAI();
         }
         
         if (!aiEngine) {
             throw new Error('AI 未初始化');
         }
+        
+        // 显示分析进度
+        showToast('AI 正在分析棋局...');
         
         // 构建棋盘状态
         const board = gameState.board.map(row => row.map(cell => cell));
@@ -1044,7 +1077,7 @@ async function doCount() {
         }
         
     } catch (error) {
-        console.error('数子失败:', error);
+        // 数子失败
         showToast('数子失败，使用简单估算...');
         // 回退：使用简单估算
         const blackCount = countStones('black');
@@ -1075,10 +1108,33 @@ function countStones(color) {
 let aiWorker = null;
 let aiPendingRequests = new Map();
 let aiRequestCounter = 0;
+let aiProgressCallback = null;
+
+// 显示 AI 进度对话框
+function showAILoadingDialog(progress = 0, text = '正在加载 AI 模型...') {
+    document.getElementById('dialogContainer').innerHTML = 
+    '<div class="dialog-overlay" style="background:rgba(0,0,0,0.7)"><div class="dialog" style="text-align:center">'+
+    '<div style="padding:20px;font-size:15px;color:#666;margin-bottom:16px">'+text+'</div>'+
+    '<div style="background:#eee;border-radius:4px;height:8px;overflow:hidden;margin:0 20px">'+
+    '<div id="aiProgressBar" style="background:linear-gradient(90deg,#667eea,#764ba2);height:100%;width:'+progress+'%;transition:width 0.3s"></div>'+
+    '</div>'+
+    '<div id="aiProgressText" style="margin-top:8px;font-size:12px;color:#999">'+progress.toFixed(0)+'%</div>'+
+    '</div></div>';
+}
+
+function updateAIProgress(progress, text) {
+    const bar = document.getElementById('aiProgressBar');
+    const txt = document.getElementById('aiProgressText');
+    if (bar) bar.style.width = progress + '%';
+    if (txt) txt.textContent = text || (progress.toFixed(0) + '%');
+}
 
 // 初始化 AI
 async function initAI() {
     try {
+        // 显示加载对话框
+        showAILoadingDialog(0, '正在初始化 AI...');
+        
         // 直接创建 KataGo Worker
         aiWorker = new Worker('./assets/worker.js', { type: 'module' });
         
@@ -1092,6 +1148,10 @@ async function initAI() {
                     else pending.reject(new Error(data.error || 'Init failed'));
                     aiPendingRequests.delete('init');
                 }
+            } else if (data.type === 'katago:progress') {
+                // 模型下载进度
+                const progress = data.total > 0 ? (data.loaded / data.total * 100) : data.progress || 0;
+                updateAIProgress(progress, '正在下载模型... ' + data.loaded + '/' + data.total + ' bytes');
             } else if (data.type === 'katago:analyze_result' || data.type === 'katago:analyze_update') {
                 const pending = aiPendingRequests.get(data.id);
                 if (pending) {
@@ -1107,7 +1167,7 @@ async function initAI() {
         };
         
         aiWorker.onerror = (e) => {
-            console.error('AI Worker error:', e);
+            // AI Worker error
         };
         
         // 初始化模型
@@ -1147,10 +1207,10 @@ async function initAI() {
         };
         
         aiInitialized = true;
-        console.log('AI 引擎已初始化');
-        
-    } catch (error) {
-        console.error('AI 初始化失败:', error);
+        closeDialog();  // 关闭加载对话框
+            } catch (error) {
+        closeDialog();  // 关闭加载对话框
+        // AI 初始化失败
         // 创建一个模拟引擎
         aiEngine = {
             analyze: async () => ({
@@ -1257,8 +1317,7 @@ function confirmEnd() {
 function endGame(reason) {
     // 避免重复调用
     if (gameState.gameEnded) {
-        console.log('对局已结束，跳过重复调用');
-        return;
+                return;
     }
     gameState.gameEnded = true;
     
