@@ -331,12 +331,12 @@ function createPeerConnection() {
             {urls:'stun:stun.l.google.com:19302'},
             {urls:'stun:stun1.l.google.com:19302'},
             {urls:'stun:stun2.l.google.com:19302'},
-            {urls:'stun:stun3.l.google.com:19302'},
-            {urls:'stun:stun4.l.google.com:19302'},
-            // OpenTalk公共STUN
-            {urls:'stun:stun.opentalk.im:3478'},
-            // Ephemeral的免费TURN（需要注册）
-            // {urls:'turn:turn.ephbl.com:3478', username:'', credential:''}
+            // 自建 TURN 服务器
+            {
+                urls: ['turn:1.14.205.137:3478?transport=udp', 'turn:1.14.205.137:3478?transport=tcp'],
+                username: 'weiqi',
+                credential: 'weiqi123'
+            }
         ]
     });
     pc.onicecandidate = (e) => { if (e.candidate) sendSignal({ type:'ice', data:e.candidate }); };
