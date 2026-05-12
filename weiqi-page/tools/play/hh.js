@@ -326,7 +326,19 @@ function connectWebSocket(rid, isCreator) {
 function sendSignal(d) { if (ws && ws.readyState===WebSocket.OPEN) ws.send(JSON.stringify(d)); }
 
 function createPeerConnection() {
-    pc = new RTCPeerConnection({ iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'}] });
+    pc = new RTCPeerConnection({ 
+        iceServers:[
+            {urls:'stun:stun.l.google.com:19302'},
+            {urls:'stun:stun1.l.google.com:19302'},
+            {urls:'stun:stun2.l.google.com:19302'},
+            {urls:'stun:stun3.l.google.com:19302'},
+            {urls:'stun:stun4.l.google.com:19302'},
+            // OpenTalk公共STUN
+            {urls:'stun:stun.opentalk.im:3478'},
+            // Ephemeral的免费TURN（需要注册）
+            // {urls:'turn:turn.ephbl.com:3478', username:'', credential:''}
+        ]
+    });
     pc.onicecandidate = (e) => { if (e.candidate) sendSignal({ type:'ice', data:e.candidate }); };
     pc.ondatachannel = (e) => { 
         console.log('Received datachannel');
