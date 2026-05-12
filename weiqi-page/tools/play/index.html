@@ -30,22 +30,19 @@
             padding: 20px 0 30px;
         }
 
-        .header-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
         h1 {
             font-size: 2em;
             margin-bottom: 8px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
+        .header-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 4px;
+        }
+
         .history-btn {
-            position: absolute;
-            right: 0;
             background: rgba(255,255,255,0.2);
             border-radius: 50%;
             width: 44px;
@@ -134,10 +131,10 @@
 <body>
     <div class="container">
         <header>
+            <h1>🎮 围棋对弈</h1>
             <div class="header-row">
-                <h1>🎮 围棋对弈</h1>
                 <a href="history.html" class="history-btn" title="历史对局">
-                    <span class="icon">📚</span>
+                    <span class="icon">📋</span>
                 </a>
             </div>
         </header>
