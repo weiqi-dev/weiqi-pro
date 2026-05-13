@@ -1,0 +1,107 @@
+[
+  {
+    "id": "202605130803140002",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-12/野狐/quiz_202605130803140002.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-12/野狐/game_202605130803140002.json",
+    "black": "최민서F",
+    "white": "於之莹",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 0,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605130803140003",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-12/野狐/quiz_202605130803140003.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-12/野狐/game_202605130803140003.json",
+    "black": "白宝祥",
+    "white": "戚泽楠",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "高段",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605130803150004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-12/野狐/quiz_202605130803150004.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-12/野狐/game_202605130803150004.json",
+    "black": "陈一鸣",
+    "white": "허서현",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>",
+    "result": "黑胜0.75目",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "黑胜0.75目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605130803150005",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-12/野狐/quiz_202605130803150005.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-12/野狐/game_202605130803150005.json",
+    "black": "崔精",
+    "white": "杨子萱",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 1
+      }
+    }
+  },
+  {
+    "id": "202605130803150006",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-12/野狐/quiz_202605130803150006.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-12/野狐/game_202605130803150006.json",
+    "black": "金恩持",
+    "white": "陆敏全",
+    "event": "第6届梦百合杯世界公开赛综合预选<张学斌＆夏夏＆绝艺解说>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  }
+]

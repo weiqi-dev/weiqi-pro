@@ -1,0 +1,74 @@
+[
+  {
+    "id": "202605130803140001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-12/野狐/game_202605130803140001.json",
+    "black": "王琛",
+    "white": "陈镱夫",
+    "black_rank": "9段",
+    "white_rank": "9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605130803140002",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-12/野狐/game_202605130803140002.json",
+    "black": "최민서F",
+    "white": "於之莹",
+    "black_rank": "P1段",
+    "white_rank": "P8段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605130803140003",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-12/野狐/game_202605130803140003.json",
+    "black": "白宝祥",
+    "white": "戚泽楠",
+    "black_rank": "9段",
+    "white_rank": "9段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605130803150004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-12/野狐/game_202605130803150004.json",
+    "black": "陈一鸣",
+    "white": "허서현",
+    "black_rank": "P5段",
+    "white_rank": "P5段",
+    "result": "B+0.75",
+    "result_cn": "黑胜0.75目",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605130803150005",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-12/野狐/game_202605130803150005.json",
+    "black": "崔精",
+    "white": "杨子萱",
+    "black_rank": "P9段",
+    "white_rank": "P6段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<绝艺讲解>"
+  },
+  {
+    "id": "202605130803150006",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-12/野狐/game_202605130803150006.json",
+    "black": "金恩持",
+    "white": "陆敏全",
+    "black_rank": "P9段",
+    "white_rank": "P7段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第6届梦百合杯世界公开赛综合预选<张学斌＆夏夏＆绝艺解说>"
+  }
+]
