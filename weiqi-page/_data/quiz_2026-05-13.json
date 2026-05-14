@@ -1,0 +1,23 @@
+[
+  {
+    "id": "202605140935210001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-13/野狐/quiz_202605140935210001.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-13/野狐/game_202605140935210001.json",
+    "black": "富士田明彦",
+    "white": "余正麒",
+    "event": "第74期日本王座战本赛<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  }
+]

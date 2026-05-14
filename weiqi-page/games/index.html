@@ -404,7 +404,7 @@
             <div class="header-actions">
                 <!-- 日历按钮 -->
                 <button id="calendarBtn" class="calendar-btn" onclick="openCalendar()">
-                    📅 <span id="selectedDateText">2026-05-12</span>
+                    📅 <span id="selectedDateText">2026-05-13</span>
                 </button>
                 <button class="icon-btn" onclick="clearVisited()" title="清除本日访问记录">👁️</button>
             </div>
@@ -413,7 +413,9 @@
         <!-- 隐藏的select用于兼容原有逻辑 -->
         <select id="dateFilter" style="display:none" onchange="filterByDate()">
             
-            <option value="2026-05-12" selected>2026-05-12</option>
+            <option value="2026-05-13" selected>2026-05-13</option>
+            
+            <option value="2026-05-12" >2026-05-12</option>
             
             <option value="2026-05-11" >2026-05-11</option>
             
@@ -1856,6 +1858,76 @@
                                 <span class="game-result white-win">白中盘胜</span>
                             </div>
                             <div class="game-event">第20届倡棋杯中国职业锦标赛本赛8强<绝艺讲解></div>
+                        </div></div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="date-section" data-date="2026-05-13">
+                
+                <div class="source-group">
+                    <div class="source-header" onclick="toggleSource(this)">
+                        <span>🏷️ 野狐 (4局)</span>
+                        <span class="source-toggle">▼</span>
+                    </div>
+                    <div class="game-list">
+                        
+                        <div class="game-card-wrapper" data-path="/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-13/野狐/game_202605140935210001.json" data-game-id="202605140935210001"><div class="game-card">
+                            <div class="game-header">
+                                <div class="game-players-row">
+                                    <div class="stone-icon stone-black"></div>
+                                    <span class="game-players">富士田明彦</span>
+                                    <span style="color:#999;">vs</span>
+                                    <div class="stone-icon stone-white"></div>
+                                    <span class="game-players">余正麒</span>
+                                </div>
+                                <span class="game-result white-win">白中盘胜</span>
+                            </div>
+                            <div class="game-event">第74期日本王座战本赛<绝艺讲解></div>
+                        </div></div>
+                        
+                        <div class="game-card-wrapper" data-path="/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-13/野狐/game_202605140935220002.json" data-game-id="202605140935220002"><div class="game-card">
+                            <div class="game-header">
+                                <div class="game-players-row">
+                                    <div class="stone-icon stone-black"></div>
+                                    <span class="game-players">朴廷桓</span>
+                                    <span style="color:#999;">vs</span>
+                                    <div class="stone-icon stone-white"></div>
+                                    <span class="game-players">申旻埈</span>
+                                </div>
+                                <span class="game-result black-win">黑中盘胜</span>
+                            </div>
+                            <div class="game-event">第31届韩国GS加德士杯胜者组决赛<绝艺讲解></div>
+                        </div></div>
+                        
+                        <div class="game-card-wrapper" data-path="/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-13/野狐/game_202605140935220003.json" data-game-id="202605140935220003"><div class="game-card">
+                            <div class="game-header">
+                                <div class="game-players-row">
+                                    <div class="stone-icon stone-black"></div>
+                                    <span class="game-players">金彩英</span>
+                                    <span style="color:#999;">vs</span>
+                                    <div class="stone-icon stone-white"></div>
+                                    <span class="game-players">김경은</span>
+                                </div>
+                                <span class="game-result black-win">黑中盘胜</span>
+                            </div>
+                            <div class="game-event">第6届韩国MOA女子最佳棋士战败者组<绝艺讲解></div>
+                        </div></div>
+                        
+                        <div class="game-card-wrapper" data-path="/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-13/野狐/game_202605140935220004.json" data-game-id="202605140935220004"><div class="game-card">
+                            <div class="game-header">
+                                <div class="game-players-row">
+                                    <div class="stone-icon stone-black"></div>
+                                    <span class="game-players">一力遼</span>
+                                    <span style="color:#999;">vs</span>
+                                    <div class="stone-icon stone-white"></div>
+                                    <span class="game-players">福岡航太朗</span>
+                                </div>
+                                <span class="game-result white-win">白中盘胜</span>
+                            </div>
+                            <div class="game-event">第81期日本本因坊战挑战赛第1/5局<绝艺讲解></div>
                         </div></div>
                         
                     </div>
@@ -8515,9 +8587,9 @@
     
     <script>
         // ========== 日历选择器功能 ==========
-        const availableDates = ["2026-05-12", "2026-05-11", "2026-05-10", "2026-05-09", "2026-05-08", "2026-05-07", "2026-05-06", "2026-05-05", "2026-05-04", "2026-05-03", "2026-05-02", "2026-05-01", "2026-04-30", "2026-04-29", "2026-04-28", "2026-04-27", "2026-04-26", "2026-04-25", "2026-04-24", "2026-04-23", "2026-04-22", "2026-04-21", "2026-04-20", "2026-04-19", "2026-04-18", "2026-04-17", "2026-04-16", "2026-04-15", "2026-04-14", "2026-04-13", "2026-04-12", "2026-04-11", "2026-04-10", "2026-04-09", "2026-04-08", "2026-04-07", "2026-04-06", "2026-04-04", "2026-04-03", "2026-04-02", "2026-04-01", "2026-03-31", "2026-03-30", "2026-03-29", "2026-03-28", "2026-03-27", "2026-03-26", "2026-03-25", "2026-03-24", "2026-03-23", "2026-03-22"];
+        const availableDates = ["2026-05-13", "2026-05-12", "2026-05-11", "2026-05-10", "2026-05-09", "2026-05-08", "2026-05-07", "2026-05-06", "2026-05-05", "2026-05-04", "2026-05-03", "2026-05-02", "2026-05-01", "2026-04-30", "2026-04-29", "2026-04-28", "2026-04-27", "2026-04-26", "2026-04-25", "2026-04-24", "2026-04-23", "2026-04-22", "2026-04-21", "2026-04-20", "2026-04-19", "2026-04-18", "2026-04-17", "2026-04-16", "2026-04-15", "2026-04-14", "2026-04-13", "2026-04-12", "2026-04-11", "2026-04-10", "2026-04-09", "2026-04-08", "2026-04-07", "2026-04-06", "2026-04-04", "2026-04-03", "2026-04-02", "2026-04-01", "2026-03-31", "2026-03-30", "2026-03-29", "2026-03-28", "2026-03-27", "2026-03-26", "2026-03-25", "2026-03-24", "2026-03-23", "2026-03-22"];
         // 默认选中有数据的最后一天，而不是今天
-        let selectedDate = availableDates.length > 0 ? availableDates[0] : '2026-05-12';
+        let selectedDate = availableDates.length > 0 ? availableDates[0] : '2026-05-13';
         let currentMonth = new Date(selectedDate + 'T00:00:00');
 
         function openCalendar() {
