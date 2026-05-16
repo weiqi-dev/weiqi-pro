@@ -1,0 +1,191 @@
+[
+  {
+    "id": "202605161357540001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-15/野狐/quiz_202605161357540001.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-15/野狐/game_202605161357540001.json",
+    "black": "김사우",
+    "white": "강경현",
+    "event": "韩国冲岩循环赛<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605161357540002",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-15/野狐/quiz_202605161357540002.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-15/野狐/game_202605161357540002.json",
+    "black": "姜東潤",
+    "white": "김승진",
+    "event": "第31届韩国GS加德士杯败者组<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 4,
+    "stats": {
+      "total": 4,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 4,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605161357540004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-15/野狐/quiz_202605161357540004.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-15/野狐/game_202605161357540004.json",
+    "black": "이지현M",
+    "white": "金明训",
+    "event": "第6届韩国最佳棋士战8强<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605161357550008",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-15/野狐/quiz_202605161357550008.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-15/野狐/game_202605161357550008.json",
+    "black": "李思璇",
+    "white": "潘阳",
+    "event": "第13届中国女子围甲第2轮 江苏国缘VS浙江体彩<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 4,
+    "stats": {
+      "total": 4,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 2,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605161357550009",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-15/野狐/quiz_202605161357550009.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-15/野狐/game_202605161357550009.json",
+    "black": "吴依铭",
+    "white": "赵奕斐",
+    "event": "第13届中国女子围甲第2轮 成都融禾VS杭州云林<绝艺讲解>",
+    "result": "白胜1.25目",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白胜1.25目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605161357550010",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-15/野狐/quiz_202605161357550010.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-15/野狐/game_202605161357550010.json",
+    "black": "严惜蓦",
+    "white": "王晨星",
+    "event": "第13届中国女子围甲第2轮 江苏国缘VS浙江体彩<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605161357560013",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-15/野狐/quiz_202605161357560013.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-15/野狐/game_202605161357560013.json",
+    "black": "李小溪05",
+    "white": "唐奕",
+    "event": "第13届中国女子围甲第2轮 山东平原VS上海星小<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 1,
+        "middle": 0,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605161357560016",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-15/野狐/quiz_202605161357560016.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-15/野狐/game_202605161357560016.json",
+    "black": "於之莹",
+    "white": "汪雨博",
+    "event": "第13届中国女子围甲第2轮 江苏国缘VS浙江体彩<绝艺讲解>",
+    "result": "黑胜0.75目",
+    "count": 6,
+    "stats": {
+      "total": 6,
+      "result": "黑胜0.75目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 3,
+        "endgame": 3
+      }
+    }
+  },
+  {
+    "id": "202605161357560017",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-15/野狐/quiz_202605161357560017.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-15/野狐/game_202605161357560017.json",
+    "black": "陆敏全",
+    "white": "周泓余",
+    "event": "第13届中国女子围甲第2轮 成都融禾VS杭州云林<张学斌＆夏夏＆绝艺解说>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  }
+]
