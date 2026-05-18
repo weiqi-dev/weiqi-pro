@@ -1,0 +1,98 @@
+[
+  {
+    "id": "202605180915580001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-17/野狐/game_202605180915580001.json",
+    "black": "李钦诚",
+    "white": "王星昊",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第11届烂柯杯中国冠军赛32强<绝艺讲解>"
+  },
+  {
+    "id": "202605180915590002",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-17/野狐/game_202605180915590002.json",
+    "black": "谢科",
+    "white": "范廷钰",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第11届烂柯杯中国冠军赛32强<绝艺讲解>"
+  },
+  {
+    "id": "202605180915590003",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-17/野狐/game_202605180915590003.json",
+    "black": "李轩豪",
+    "white": "辜梓豪",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第11届烂柯杯中国冠军赛32强<绝艺讲解>"
+  },
+  {
+    "id": "202605180915590004",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-17/野狐/game_202605180915590004.json",
+    "black": "时越",
+    "white": "党毅飞",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第11届烂柯杯中国冠军赛32强<绝艺讲解>"
+  },
+  {
+    "id": "202605180915590005",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-17/野狐/game_202605180915590005.json",
+    "black": "廖元赫",
+    "white": "檀啸",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "W+R",
+    "result_cn": "白中盘胜",
+    "event": "第11届烂柯杯中国冠军赛32强<绝艺讲解>"
+  },
+  {
+    "id": "202605180915590006",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-17/野狐/game_202605180915590006.json",
+    "black": "杨鼎新",
+    "white": "芈昱廷",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第11届烂柯杯中国冠军赛32强<绝艺讲解>"
+  },
+  {
+    "id": "202605180915590007",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-17/野狐/game_202605180915590007.json",
+    "black": "丁浩",
+    "white": "江维杰",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "B+R",
+    "result_cn": "黑中盘胜",
+    "event": "第11届烂柯杯中国冠军赛32强<绝艺讲解>"
+  },
+  {
+    "id": "202605180915590008",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-17/野狐/game_202605180915590008.json",
+    "black": "赵晨宇",
+    "white": "连笑",
+    "black_rank": "P9段",
+    "white_rank": "P9段",
+    "result": "B+0.75",
+    "result_cn": "黑胜0.75目",
+    "event": "第11届烂柯杯中国冠军赛32强<绝艺讲解>"
+  }
+]

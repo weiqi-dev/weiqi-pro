@@ -1,0 +1,86 @@
+[
+  {
+    "id": "202605180915580001",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-17/野狐/quiz_202605180915580001.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-17/野狐/game_202605180915580001.json",
+    "black": "李钦诚",
+    "white": "王星昊",
+    "event": "第11届烂柯杯中国冠军赛32强<绝艺讲解>",
+    "result": "黑中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605180915590003",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-17/野狐/quiz_202605180915590003.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-17/野狐/game_202605180915590003.json",
+    "black": "李轩豪",
+    "white": "辜梓豪",
+    "event": "第11届烂柯杯中国冠军赛32强<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605180915590005",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-17/野狐/quiz_202605180915590005.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-17/野狐/game_202605180915590005.json",
+    "black": "廖元赫",
+    "white": "檀啸",
+    "event": "第11届烂柯杯中国冠军赛32强<绝艺讲解>",
+    "result": "白中盘胜",
+    "count": 2,
+    "stats": {
+      "total": 2,
+      "result": "白中盘胜",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 2,
+        "endgame": 0
+      }
+    }
+  },
+  {
+    "id": "202605180915590008",
+    "source": "野狐",
+    "path": "/weiqi-pro/weiqi-page/quiz.html?data=/weiqi-pro/weiqi-page/quiz/2026-05-17/野狐/quiz_202605180915590008.json",
+    "game_path": "/weiqi-pro/weiqi-page/replay.html?data=/weiqi-pro/weiqi-page/games/2026-05-17/野狐/game_202605180915590008.json",
+    "black": "赵晨宇",
+    "white": "连笑",
+    "event": "第11届烂柯杯中国冠军赛32强<绝艺讲解>",
+    "result": "黑胜0.75目",
+    "count": 1,
+    "stats": {
+      "total": 1,
+      "result": "黑胜0.75目",
+      "game_level": "职业",
+      "phase": {
+        "layout": 0,
+        "middle": 1,
+        "endgame": 0
+      }
+    }
+  }
+]
